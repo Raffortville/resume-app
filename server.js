@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
+import { router as resumeRoute } from './routes/resumeRoute.js';
 
 dotenv.config();
 
@@ -25,3 +26,5 @@ mongoose
 		app.listen(PORT, () => console.log(PORT))
 	)
 	.catch((error) => console.log(error));
+
+app.use('/resume', resumeRoute);
