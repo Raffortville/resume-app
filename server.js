@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import { router as resumeRoute } from './routes/resumeRoute.js';
+import { router as userRoute } from './routes/userRoute.js';
 import config from './config/index.js';
 
 const app = express();
@@ -23,4 +24,12 @@ mongoose
 	)
 	.catch((error) => console.log(error));
 
+app.use('./user', userRoute);
 app.use('/resume', resumeRoute);
+
+app.use((err, res) => {
+	return res.status(err.status || 400).json({
+		status: err.status || 400,
+		message: err.message || 'there was an error processing request',
+	});
+});
