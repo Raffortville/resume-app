@@ -1,0 +1,8 @@
+@mixin fade {
+    opacity: 1;
+    transition: opacity ease 0.2;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}

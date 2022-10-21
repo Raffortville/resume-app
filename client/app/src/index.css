@@ -1,11 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
 body {
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
+		'Hammersmith One', sans-serif, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	background-color: #f3f9fb;
+	background-color: whitesmoke;
+	color: #303952;
 }
 
 code {
@@ -18,4 +25,8 @@ h1,
 h2,
 h3 {
 	margin: 0;
+}
+
+ul li {
+	list-style: none;
 }

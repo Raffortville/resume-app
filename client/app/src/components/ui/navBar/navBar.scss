@@ -1,0 +1,16 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles//mixins.scss';
+
+.nav-list {
+    display: flex;
+
+    .list-item {
+        padding: 0 16px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: $primary;
+        cursor: pointer;
+        @include fade()
+
+    }
+}

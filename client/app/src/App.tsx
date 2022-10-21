@@ -1,5 +1,11 @@
+import { Header } from './components/layout/header';
+
 function App() {
-	return <>App</>;
+	return (
+		<>
+			<Header isUserLogged={true} />
+		</>
+	);
 }
 
 export default App;
