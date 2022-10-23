@@ -6,7 +6,7 @@ import './navBar.scss';
 interface CustomPros {
 	items: ListItemType[];
 	className?: string;
-	onItemClick?: (key?: string) => void;
+	onItemClick?: (key: string) => void;
 }
 
 export const NavBar: React.FC<CustomPros> = ({
@@ -20,9 +20,7 @@ export const NavBar: React.FC<CustomPros> = ({
 				<li
 					key={item.key}
 					onClick={() => {
-						if (onItemClick) {
-							return () => onItemClick(item.key);
-						}
+						onItemClick && onItemClick(item.key);
 					}}
 					className='list-item'>
 					{item.label}
