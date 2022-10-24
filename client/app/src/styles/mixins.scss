@@ -6,3 +6,8 @@
         opacity: 0.8;
     }
 }
+
+@mixin box-shadow {
+    box-shadow: 0px 0px 10px 0px #BDBDBD;
+    -webkit-box-shadow: 0px 0px 10px 0px #BDBDBD; 
+}
