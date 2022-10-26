@@ -11,3 +11,10 @@ export interface IUser {
 }
 
 export type UserType = IUser | null;
+
+export interface IAlert {
+	type: 'error' | 'warning' | 'info' | 'success';
+	message: string;
+}
+
+export type AlertType = IAlert | null;
