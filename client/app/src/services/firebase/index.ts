@@ -1,14 +1,15 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
+import config from '../../config';
 
 const firebaseConfig = {
-	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-	authDomain: process.env.REACT_APP_FIREBSE_AUTHDOMAIN,
-	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-	storageBucket: process.env.REACT_APP_FIREBSE_STORAGE_BUCKET,
-	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINIG_SENDER_ID,
-	appId: process.env.REACT_APP_FIREBASE_APP_ID,
+	apiKey: config.FIREBASE.apiKey,
+	authDomain: config.FIREBASE.authDomain,
+	projectId: config.FIREBASE.projectId,
+	storageBucket: config.FIREBASE.storageBucket,
+	messagingSenderId: config.FIREBASE.messagingSenderId,
+	appId: config.FIREBASE.appId,
 };
 
 const firebaseApp = initializeApp(firebaseConfig);

@@ -6,6 +6,7 @@ import {
 import { fireBaseAuth } from '../../services';
 import { RootState } from '..';
 import type { IUser, UserType } from '../types';
+import config from '../../config';
 import { displayAlert } from '../alert/alertStore';
 
 export const initialState: { user: UserType } = {
@@ -120,7 +121,7 @@ export const saveUserToDb = async (payload: IUser): Promise<void> => {
 	const { email } = payload;
 
 	try {
-		const response = await fetch(`${process.env.REACT_APP_API_URL}/user`, {
+		const response = await fetch(`${config.API.url}/user`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
@@ -154,17 +155,14 @@ export const saveUserToDb = async (payload: IUser): Promise<void> => {
 export const getUser = async (payload: IUser): Promise<void> => {
 	const { email } = payload;
 	try {
-		const response = await fetch(
-			`${process.env.REACT_APP_API_URL}/user/loadUser`,
-			{
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email }),
-			}
-		);
+		const response = await fetch(`${config.API.url}/user/loadUser`, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ email }),
+		});
 
 		if (response.status !== 200) {
 			displayAlert({
