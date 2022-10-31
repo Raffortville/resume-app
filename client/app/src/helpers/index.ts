@@ -8,17 +8,17 @@ export const checkIsValidInputFormat = (
 			return Boolean(!pattern.test(input));
 
 		case 'password': {
-			return Boolean(input.length > 6);
+			return Boolean(input.length < 7);
 		}
 
 		case 'text': {
 			const letters = /^[A-Za-z]+$/;
-			return Boolean(input.match(letters));
+			return Boolean(!input.match(letters));
 		}
 
 		case 'number': {
 			const numbers = /^[0-9]+$/;
-			return Boolean(input.match(numbers));
+			return Boolean(!input.match(numbers));
 		}
 
 		default:
@@ -26,6 +26,6 @@ export const checkIsValidInputFormat = (
 	}
 };
 
-export const isStringEmpty = (input: string): boolean => {
+export const isStringEmpty = (input?: string): boolean => {
 	return input === undefined || input === null || input === '';
 };

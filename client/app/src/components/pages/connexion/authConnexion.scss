@@ -1,0 +1,21 @@
+@import '../../../styles/variables.scss';
+
+.form {
+	height: 315px;
+	width: 250px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-top: 32px;
+
+	input {
+		label {
+			color: $primary;
+			font-size: 16px;
+		}
+	}
+
+	p {
+		font-size: 11px;
+	}
+}

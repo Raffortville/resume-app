@@ -2,41 +2,25 @@
 @import '../../styles/variables.scss';
 
 .connexion {
-    display: flex;
-    justify-content: center;
-    margin-top: 64px;
+	display: flex;
+	justify-content: center;
+	margin-top: 64px;
 
-    .switchSections {
-        .section {
-            height: 375px;
-            width: 350px;
-            justify-content: space-between;
+	.switchSections {
+		.section {
+			padding: 24px;
 
-            .section-label {
-                font-size: 28px;
-            }
+			.section-content {
+				.section-label {
+					font-size: 28px;
+				}
+			}
 
-            input {
-                label {
-                    color: $primary;
-                    font-size: 16px;
-                }
-            }
-
-            &.isOnFocused {
-                .section-label {
-                    color: $primary;
-                }
-            }
-        }
-    }
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-
-    .form-button {
-        margin-top: 64px;
-    }
+			&.isOnFocused {
+				.section-label {
+					color: $primary;
+				}
+			}
+		}
+	}
 }
