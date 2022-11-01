@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
 import { checkIsValidInputFormat, isStringEmpty } from '../../../helpers';
-import { logIn, signUp, saveUserToDb } from '../../../store/user/userStore';
 import { Button, TextField } from '@mui/material';
 
 import './authConnexion.scss';
+import { logIn, signUp } from '../../../store/user/actions';
+import { useAppSelector } from '../../../store/hooks';
+import { alertSelector } from '../../../store/alert/reducer';
+import { useNavigate } from 'react-router-dom';
 
 type FormFieldType = {
 	key: string;
@@ -71,6 +73,7 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 	);
 
 	const navigate = useNavigate();
+	const alert = useAppSelector(alertSelector);
 
 	useEffect(() => {
 		if (keyForm === 'signUp') {
@@ -78,6 +81,12 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [keyForm]);
+
+	useEffect(() => {
+		if (alert !== null) {
+			console.log(alert);
+		}
+	}, [alert]);
 
 	const handleChange = (e: React.FormEvent<EventTarget>): void => {
 		const { value, name } = e.target as HTMLInputElement;
@@ -98,18 +107,6 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 
 	const handleErrors = (): boolean => {
 		const formFieldsErrors = [...formFields].map((field) => {
-			if (field.key === 'username') {
-				const hasError: boolean =
-					isStringEmpty(field.value) ||
-					checkIsValidInputFormat(field.value, 'email');
-				return {
-					...field,
-					hasError,
-					errorText: hasError
-						? 'Veuillez remplir le champs avec un email correct'
-						: undefined,
-				};
-			}
 			if (field.key === 'password') {
 				const hasError: boolean =
 					isStringEmpty(field.value) ||
@@ -161,9 +158,36 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 		}
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async (): Promise<void> => {
 		const isFormValid = handleErrors();
-		console.log(isFormValid);
+
+		if (!isFormValid) {
+			return;
+		}
+
+		if (keyForm === 'signUp') {
+			const [username, email, password] = formFields;
+			const response = await signUp({
+				email: email.value,
+				password: password.value,
+				userName: username.value,
+			});
+
+			if (response) {
+				navigate('/');
+			}
+			return;
+		}
+
+		const [email, password] = formFields;
+		try {
+			return await logIn({
+				payload: { email: email.value, password: password.value },
+				isFirstLogin: false,
+			});
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const renderFormFields = (): React.ReactNode => {
@@ -176,7 +200,7 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 					value={field.value}
 					name={field.key}
 					onChange={handleChange}
-					required
+					required={field.key !== 'username'}
 					variant='standard'
 					fullWidth
 					size='small'
