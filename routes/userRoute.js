@@ -20,10 +20,10 @@ router.post('/', async (req, res, next) => {
 });
 
 router.post('/getUser', async (req, res, next) => {
-	const { email } = req.body;
+	const { email, uid } = req.body;
 
 	try {
-		const user = await findOne({ email });
+		const user = await UserModel.findOne({ email, uid });
 		return success(res, user);
 	} catch (error) {
 		next(error);
@@ -32,7 +32,7 @@ router.post('/getUser', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
 	try {
-		const user = await findByIdAndUpdate(req.params.id, req.body, {
+		const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
 			new: true,
 		});
 
