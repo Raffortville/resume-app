@@ -1,66 +1,80 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
-	userName: String,
-	email: { type: String, required: true },
-	emailPro: String,
-	firstName: String,
-	lastName: String,
-	city: String,
-	phone: String,
-	country: String,
-});
+const UserSchema = new mongoose.Schema(
+	{
+		email: { type: String, required: true },
+		uid: { type: String, required: true },
+		userName: String,
+		emailPro: String,
+		firstName: String,
+		lastName: String,
+		city: String,
+		phone: String,
+		country: String,
+	},
+	{ versionKey: false }
+);
 
-const subDocSchema = new mongoose.Schema({
-	value: String || Number,
-	id: String,
-});
+const SubDocSchema = new mongoose.Schema(
+	{
+		value: String || Number,
+		id: String,
+	},
+	{ versionKey: false }
+);
 
-const expertiseSchema = new mongoose.Schema({
-	expertiseKey: String || Number,
-	name: String,
-	skills: [subDocSchema],
-});
+const ExpertiseSchema = new mongoose.Schema(
+	{
+		expertiseKey: String || Number,
+		name: String,
+		skills: [SubDocSchema],
+	},
+	{ versionKey: false }
+);
 
-const educationSchema = new mongoose.Schema({
-	academy: String,
-	period: String,
-	certificate: String,
-});
+const EducationSchema = new mongoose.Schema(
+	{
+		academy: String,
+		period: String,
+		certificate: String,
+	},
+	{ versionKey: false }
+);
 
-const experienceSchema = new mongoose.Schema({
-	company: String,
-	period: String,
-	place: String,
-	occupiedPosition: String,
-	achievements: [subDocSchema],
-	stack: [subDocSchema],
-	description: String,
-	project: String,
-	exp_id: String,
-});
+const ExperienceSchema = new mongoose.Schema(
+	{
+		company: String,
+		period: String,
+		place: String,
+		occupiedPosition: String,
+		achievements: [SubDocSchema],
+		stack: [SubDocSchema],
+		description: String,
+		project: String,
+		exp_id: String,
+	},
+	{ versionKey: false }
+);
 
-const resumeSchema = new mongoose.Schema({
-	userId: { type: String, required: true },
-	position: String,
-	introduction: String,
-	portfolio: String,
-	socialMedias: String,
-	expertises: [expertiseSchema],
-	softSkills: [subDocSchema],
-	experiences: Array,
-	createdtAt: Date,
-	state: String,
-	experiences: [experienceSchema],
-	education: educationSchema,
-	profilPic: String,
-	colorMain: String,
-});
+const ResumeSchema = new mongoose.Schema(
+	{
+		userId: { type: String, required: true },
+		position: String,
+		introduction: String,
+		portfolio: String,
+		socialMedias: String,
+		expertises: [ExpertiseSchema],
+		softSkills: [SubDocSchema],
+		experiences: Array,
+		createdtAt: Date,
+		state: String,
+		experiences: [ExperienceSchema],
+		education: EducationSchema,
+		profilPic: String,
+		colorMain: String,
+	},
+	{ versionKey: false }
+);
 
-const userModel = mongoose.model('user', userSchema);
-const resumeModel = mongoose.model('resume', resumeSchema);
-
-export default {
-	resumeModel,
-	userModel,
-};
+export const UserModel = mongoose.model('user', UserSchema);
+export const ResumeModel = mongoose.model('resume', ResumeSchema);

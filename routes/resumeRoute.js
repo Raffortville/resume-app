@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import resumeModel from '../models/index.js';
+import { ResumeModel } from '../models/index.js';
 import { success } from '../helpers/index.js';
 
 const router = Router();
@@ -8,7 +8,7 @@ router.post('/', async (req, res, next) => {
 	let paylod = { ...req.body, createdtAt: new Date().toISOString() };
 
 	try {
-		const resume = await new resumeModel(paylod);
+		const resume = ResumeModel(paylod);
 		const resumeSaved = await resume.save();
 
 		return success(res, resumeSaved);
