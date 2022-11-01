@@ -19,18 +19,5 @@ const alertSlice = createSlice({
 
 export const { setAlert, resetAlert } = alertSlice.actions;
 
-export const displayAlert = ({
-	payload,
-	timer,
-}: {
-	payload: IAlert;
-	timer?: number;
-}) => {
-	setAlert(payload);
-	setTimeout(() => {
-		resetAlert();
-	}, timer ?? 3000);
-};
-
 export const alertSelector = (state: RootState) => state.alertReducer.alert;
 export const alertReducer = alertSlice.reducer;

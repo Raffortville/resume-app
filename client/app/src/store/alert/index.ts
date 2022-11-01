@@ -1,1 +1,1 @@
-export { alertReducer } from './alertStore';
+export { alertReducer } from './reducer';
