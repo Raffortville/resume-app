@@ -2,9 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import type { UserType } from '../types';
 
-export const initialState: { user: UserType; isLogged: boolean } = {
+export const initialState: { user: UserType } = {
 	user: null,
-	isLogged: false,
 };
 
 const userSlice = createSlice({
@@ -13,11 +12,9 @@ const userSlice = createSlice({
 	reducers: {
 		setUser: (state, { payload }: PayloadAction<UserType>) => {
 			state.user = payload;
-			state.isLogged = true;
 		},
 		resetUser: (state, { payload }: PayloadAction<UserType>) => {
 			state.user = payload;
-			state.isLogged = false;
 		},
 		updateUser: (state, { payload }: PayloadAction<UserType>) => {
 			if (payload) {
@@ -30,7 +27,5 @@ const userSlice = createSlice({
 export const { setUser, resetUser, updateUser } = userSlice.actions;
 
 export const userSelector = (state: RootState) => state.userReducer.user;
-export const isUserLoggedSelector = (state: RootState) =>
-	state.userReducer.isLogged;
 
 export const userReducer = userSlice.reducer;

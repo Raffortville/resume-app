@@ -113,7 +113,7 @@ export const saveUserToDb = async (payload: IUser): Promise<any> => {
 };
 
 export const getUser = async (payload: IUser): Promise<any> => {
-	const { email } = payload;
+	const { email, uid } = payload;
 	try {
 		const response = await fetch(`${config.API.url}/user/getUser`, {
 			method: 'POST',
@@ -121,7 +121,7 @@ export const getUser = async (payload: IUser): Promise<any> => {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ email }),
+			body: JSON.stringify({ email, uid }),
 		});
 
 		const data = await response.json();
