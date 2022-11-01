@@ -158,7 +158,7 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 		}
 	};
 
-	const handleSubmit = async (): Promise<void> => {
+	const handleSubmit = async (): Promise<any> => {
 		const isFormValid = handleErrors();
 
 		if (!isFormValid) {
@@ -180,14 +180,15 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 		}
 
 		const [email, password] = formFields;
-		try {
-			return await logIn({
-				payload: { email: email.value, password: password.value },
-				isFirstLogin: false,
-			});
-		} catch (error) {
-			console.log(error);
+		const response = await logIn({
+			payload: { email: email.value, password: password.value },
+			isFirstLogin: false,
+		});
+
+		if (response) {
+			navigate('/');
 		}
+		return;
 	};
 
 	const renderFormFields = (): React.ReactNode => {

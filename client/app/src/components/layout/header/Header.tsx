@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import './header.scss';
+import { signOut } from '../../../store/user/actions';
 
 interface CustomPros {
 	isUserLogged: boolean;
@@ -13,15 +14,21 @@ interface CustomPros {
 export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 	const navigate = useNavigate();
 
-	const onNavigate = (linkKey: string) => {
+	const onNavigate = (linkKey: string): void => {
+		if (linkKey === '/deconnexion') {
+			signOut();
+			navigate('/connexion');
+			return;
+		}
 		navigate(linkKey);
+		return;
 	};
 
 	const navBarItems: ListItemType[] = [
 		{ key: '/create', label: 'Créer nouveau CV' },
 		...(isUserLogged ? [{ key: '/dashboard', label: 'Voir mes CV' }] : []),
 		{
-			key: '/connexion',
+			key: isUserLogged ? '/deconnexion' : '/connexion',
 			label: isUserLogged ? 'Deconnexion' : 'Connexion',
 		},
 	];

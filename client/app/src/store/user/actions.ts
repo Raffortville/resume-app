@@ -36,8 +36,7 @@ export const signUp = async (payload: {
 		console.log(err);
 		displayAlert({
 			payload: {
-				message:
-					'Signup Erreur lors de votre connexion, veuillez essayer plus tard',
+				message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
 				type: 'error',
 			},
 		});
@@ -50,7 +49,7 @@ export const logIn = async ({
 }: {
 	payload: { email: string; password: string; userName?: string };
 	isFirstLogin: boolean;
-}): Promise<void> => {
+}): Promise<IUser | undefined> => {
 	const { password, email, userName } = payload;
 
 	try {
@@ -73,7 +72,6 @@ export const logIn = async ({
 		if (isFirstLogin) {
 			return await saveUserToDb({ email: user.email, uid: user.uid, userName });
 		}
-		return await getUser({ email: user.email, uid: user.uid });
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -135,5 +133,13 @@ export const getUser = async (payload: IUser): Promise<any> => {
 				type: 'error',
 			},
 		});
+	}
+};
+
+export const signOut = async (): Promise<void> => {
+	try {
+		return await fireBaseAuth.signOut();
+	} catch (error) {
+		console.log(error);
 	}
 };
