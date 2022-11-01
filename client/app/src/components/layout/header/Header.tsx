@@ -22,7 +22,7 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 		...(isUserLogged ? [{ key: '/dashboard', label: 'Voir mes CV' }] : []),
 		{
 			key: '/connexion',
-			label: isUserLogged ? 'Connexion' : 'Déconnexion',
+			label: isUserLogged ? 'Deconnexion' : 'Connexion',
 		},
 	];
 
