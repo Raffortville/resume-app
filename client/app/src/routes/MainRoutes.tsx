@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { ConnexionPage } from '../pages/connexion';
+import { CreateResumePage } from '../pages/createResume';
+import { DashboardPage } from '../pages/dashboard';
 import { HomePage } from '../pages/home';
 import { PrivateRoute } from './privateRoute';
 
@@ -14,6 +16,22 @@ export const MainRoutes: React.FC<{
 				element={
 					<PrivateRoute isAllowed={!isUserLogged}>
 						<ConnexionPage />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path='/create'
+				element={
+					<PrivateRoute isAllowed={isUserLogged}>
+						<CreateResumePage />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path='/dashboard'
+				element={
+					<PrivateRoute isAllowed={isUserLogged}>
+						<DashboardPage />
 					</PrivateRoute>
 				}
 			/>
