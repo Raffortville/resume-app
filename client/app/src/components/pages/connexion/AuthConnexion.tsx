@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { checkIsValidInputFormat, isStringEmpty } from '../../../helpers';
-import { Button, TextField } from '@mui/material';
-
-import './authConnexion.scss';
-import { logIn, signUp } from '../../../store/user/actions';
 import { useAppSelector } from '../../../store/hooks';
 import { alertSelector } from '../../../store/alert/reducer';
-import { useNavigate } from 'react-router-dom';
+import { checkIsValidInputFormat, isStringEmpty } from '../../../helpers';
+import { logIn, signUp } from '../../../store/user/actions';
+import { Button, TextField } from '@mui/material';
 import { ToastAlert } from '../../ui/toastAlert';
+
+import './authConnexion.scss';
 
 type FormFieldType = {
 	key: string;
@@ -72,8 +71,6 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 	const [formFields, setFormFields] = useState<FormFieldType[]>(
 		initialFormLoginState
 	);
-
-	const navigate = useNavigate();
 	const alert = useAppSelector(alertSelector);
 
 	useEffect(() => {
@@ -129,7 +126,6 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 			return field;
 		});
 		setFormFields([...formFieldsErrors]);
-
 		return formFieldsErrors.every((field) => !field.hasError);
 	};
 
@@ -153,7 +149,7 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 		}
 	};
 
-	const handleSubmit = async (): Promise<any> => {
+	const handleSubmit = () => {
 		const isFormValid = handleErrors();
 
 		if (!isFormValid) {
@@ -162,28 +158,18 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 
 		if (keyForm === 'signUp') {
 			const [username, email, password] = formFields;
-			const response = await signUp({
+			return signUp({
 				email: email.value,
 				password: password.value,
 				userName: username.value,
 			});
-
-			if (response) {
-				navigate('/');
-			}
-			return;
 		}
 
 		const [email, password] = formFields;
-		const response = await logIn({
+		return logIn({
 			payload: { email: email.value, password: password.value },
 			isFirstLogin: false,
 		});
-
-		if (response) {
-			navigate('/');
-		}
-		return;
 	};
 
 	const renderFormFields = (): React.ReactNode => {

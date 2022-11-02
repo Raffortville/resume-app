@@ -14,7 +14,7 @@ export const MainRoutes: React.FC<{
 			<Route
 				path='/connexion'
 				element={
-					<PrivateRoute isAllowed={!isUserLogged}>
+					<PrivateRoute isAllowed={!isUserLogged} redirectPath={'/dashboard'}>
 						<ConnexionPage />
 					</PrivateRoute>
 				}
