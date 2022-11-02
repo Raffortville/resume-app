@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { checkIsValidInputFormat, isStringEmpty } from '../../../helpers';
 import { Button, TextField } from '@mui/material';
@@ -8,6 +8,7 @@ import { logIn, signUp } from '../../../store/user/actions';
 import { useAppSelector } from '../../../store/hooks';
 import { alertSelector } from '../../../store/alert/reducer';
 import { useNavigate } from 'react-router-dom';
+import { ToastAlert } from '../../ui/toastAlert';
 
 type FormFieldType = {
 	key: string;
@@ -81,12 +82,6 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [keyForm]);
-
-	useEffect(() => {
-		if (alert !== null) {
-			console.log(alert);
-		}
-	}, [alert]);
 
 	const handleChange = (e: React.FormEvent<EventTarget>): void => {
 		const { value, name } = e.target as HTMLInputElement;
@@ -214,15 +209,25 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 	};
 
 	return (
-		<form className='form' onMouseLeave={resetErrorsField}>
-			<div>{renderFormFields()}</div>
-			<Button
-				className='form-button'
-				onClick={handleSubmit}
-				variant='contained'
-				fullWidth>
-				{keyForm === 'login' ? 'connecter' : 'enregistrer'}
-			</Button>
-		</form>
+		<>
+			{alert !== null && (
+				<ToastAlert
+					isOpen={alert !== null}
+					message={alert?.message ?? ''}
+					severity={alert?.type ?? 'info'}
+				/>
+			)}
+
+			<form className='form' onMouseLeave={resetErrorsField}>
+				<div>{renderFormFields()}</div>
+				<Button
+					className='form-button'
+					onClick={handleSubmit}
+					variant='contained'
+					fullWidth>
+					{keyForm === 'login' ? 'connecter' : 'enregistrer'}
+				</Button>
+			</form>
+		</>
 	);
 };
