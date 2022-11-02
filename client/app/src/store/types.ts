@@ -1,3 +1,5 @@
+import { AlertColor } from '@mui/material/Alert';
+
 export interface IUser {
 	email: string;
 	uid: string;
@@ -15,7 +17,7 @@ export interface IUser {
 export type UserType = IUser | null;
 
 export interface IAlert {
-	type: 'error' | 'warning' | 'info' | 'success';
+	type: AlertColor | undefined;
 	message: string;
 }
 
