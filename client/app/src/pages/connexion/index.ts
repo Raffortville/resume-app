@@ -1,1 +1,1 @@
-export * from './Connexion';
+export * from './ConnexionPage';
