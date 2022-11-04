@@ -1,0 +1,27 @@
+@import '../../../../styles/mixins.scss';
+@import '../../../../styles//variables.scss';
+
+.resume-card {
+	max-width: 248px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 16px;
+	cursor: pointer;
+	background-color: whitesmoke;
+	@include box-shadow;
+
+	&:hover {
+		.resume-card-icon {
+			opacity: 1;
+		}
+	}
+
+	.resume-card-icon {
+		width: 156px;
+		height: 176px;
+		opacity: 0.4;
+		color: $grey;
+		transition: opacity ease 0.3s;
+	}
+}
