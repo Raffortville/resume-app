@@ -6,3 +6,8 @@ export type ListItemType = {
 export interface ISectionItemProps extends ListItemType {
 	content: React.ReactNode;
 }
+
+export interface IIconItem {
+	key: string;
+	node: React.ReactNode;
+}
