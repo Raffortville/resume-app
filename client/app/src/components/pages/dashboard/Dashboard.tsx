@@ -11,7 +11,7 @@ export const Dashboard: React.FC = () => {
 	const navigate = useNavigate();
 
 	const onNavigateToCreatePage = (): void => {
-		navigate('/create');
+		navigate('/create/contact');
 	};
 	return (
 		<div className='dashboard'>
