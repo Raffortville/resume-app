@@ -206,11 +206,7 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 
 			<form className='form' onMouseLeave={resetErrorsField}>
 				<div>{renderFormFields()}</div>
-				<Button
-					className='form-button'
-					onClick={handleSubmit}
-					variant='contained'
-					fullWidth>
+				<Button onClick={handleSubmit} variant='contained' fullWidth>
 					{keyForm === 'login' ? 'connecter' : 'enregistrer'}
 				</Button>
 			</form>

@@ -1,0 +1,30 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
+
+.skeleton {
+	display: flex;
+
+	.button-nav {
+		height: 60px;
+		align-self: flex-end;
+		margin: 16px 32px;
+		border-radius: 50%;
+	}
+
+	.skeleton-container {
+		border-radius: 3px;
+		@include box-shadow;
+
+		.header {
+			display: flex;
+			justify-content: center;
+			padding: 24px;
+			background-color: $primary;
+			color: whitesmoke;
+			text-transform: capitalize;
+			border-radius: inherit;
+			border-bottom-left-radius: unset;
+			border-bottom-right-radius: unset;
+		}
+	}
+}
