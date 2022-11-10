@@ -110,7 +110,7 @@ export const saveUserToDb = async (payload: IUser): Promise<any> => {
 	}
 };
 
-export const getUser = async (payload: IUser): Promise<any> => {
+export const getUser = async (payload: IUser): Promise<IUser | undefined> => {
 	const { email, uid } = payload;
 	try {
 		const response = await fetch(`${config.API.url}/user/getUser`, {
@@ -122,9 +122,7 @@ export const getUser = async (payload: IUser): Promise<any> => {
 			body: JSON.stringify({ email, uid }),
 		});
 
-		const data = await response.json();
-		store.dispatch(setUser(data));
-		return data;
+		return await response.json();
 	} catch (error) {
 		console.log(error);
 		displayAlert({

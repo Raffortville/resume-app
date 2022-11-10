@@ -21,7 +21,6 @@ router.post('/', async (req, res, next) => {
 
 router.post('/getUser', async (req, res, next) => {
 	const { email, uid } = req.body;
-
 	try {
 		const user = await UserModel.findOne({ email, uid });
 		return success(res, user);
