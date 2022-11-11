@@ -137,27 +137,40 @@ export const getUser = async (payload: IUser): Promise<IUser | undefined> => {
 };
 
 export const updateUserToDB = async (
-	payload: IUserLite,
-	userId: string
+	payload: IUserLite
 ): Promise<IUser | undefined> => {
 	try {
-		const response = await fetch(`${config.API.url}/user/update/${userId}`, {
-			method: 'PUT',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(payload),
-		});
+		const response = await fetch(
+			`${config.API.url}/user/update/${payload._id}`,
+			{
+				method: 'PUT',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(payload),
+			}
+		);
+
+		if (response.status === 200) {
+			const userUpdated = await response.json();
+			store.dispatch(updateUser(userUpdated));
+			displayAlert({
+				payload: {
+					message: 'Vos données ont enregistrés avec succès !',
+					type: 'success',
+				},
+			});
+			return userUpdated;
+		}
 
 		displayAlert({
 			payload: {
-				message: 'Vos données ont enregistrés avec succès !',
-				type: 'success',
+				message:
+					"Erreur lors l'enregistrement de vos données, veuillez essayer plus tard",
+				type: 'error',
 			},
 		});
-
-		return await response.json();
 	} catch (error) {
 		console.log(error);
 		displayAlert({
