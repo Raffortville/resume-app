@@ -2,14 +2,18 @@
 @import '../../../../styles/mixins.scss';
 
 .contact-form {
-	@include root-container;
 	display: flex;
 	justify-content: center;
 	padding: 32px;
 
 	.form {
 		width: 600px;
-		height: 77%;
+		height: 570px;
 		padding: 0 32px 32px;
+
+		.form-button {
+			max-width: 182px;
+			margin: 32px auto 0;
+		}
 	}
 }

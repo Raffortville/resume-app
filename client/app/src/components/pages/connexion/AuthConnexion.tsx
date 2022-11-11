@@ -114,7 +114,7 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 			if (field.key === 'email') {
 				const hasError: boolean =
 					isStringEmpty(field.value) ||
-					checkIsValidInputFormat(field.value, 'email');
+					!checkIsValidInputFormat(field.value, 'email');
 				return {
 					...field,
 					hasError,

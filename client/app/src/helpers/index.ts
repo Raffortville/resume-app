@@ -5,20 +5,20 @@ export const checkIsValidInputFormat = (
 	switch (type) {
 		case 'email':
 			const pattern = new RegExp(/.+@.+\..+/i);
-			return Boolean(!pattern.test(input));
+			return Boolean(pattern.test(input));
 
 		case 'password': {
 			return Boolean(input.length < 7);
 		}
 
 		case 'text': {
-			const letters = /^[A-Za-z]+$/;
-			return Boolean(!input.match(letters));
+			const letters = new RegExp(/^[a-zA-Z]*$/);
+			return Boolean(input.match(letters));
 		}
 
 		case 'number': {
-			const numbers = /^[0-9]+$/;
-			return Boolean(!input.match(numbers));
+			const numbers = new RegExp(/^\d*(\.\d+)?$/);
+			return Boolean(input.match(numbers));
 		}
 
 		default:
