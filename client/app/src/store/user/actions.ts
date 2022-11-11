@@ -6,9 +6,9 @@ import { fireBaseAuth } from '../../services';
 
 import config from '../../config';
 import { store } from '../../store';
-import type { IUser } from '../../store/types';
+import type { IUser, IUserLite } from '../../store/types';
 import { displayAlert } from '../alert/actions';
-import { setUser } from './reducer';
+import { setUser, updateUser } from './reducer';
 
 export const signUp = async (payload: {
 	email: string;
@@ -96,7 +96,7 @@ export const saveUserToDb = async (payload: IUser): Promise<any> => {
 			body: JSON.stringify({ email, uid, userName }),
 		});
 
-		const data = await response.json();
+		const data: IUser = await response.json();
 		store.dispatch(setUser(data));
 		return data;
 	} catch (error) {
@@ -122,12 +122,48 @@ export const getUser = async (payload: IUser): Promise<IUser | undefined> => {
 			body: JSON.stringify({ email, uid }),
 		});
 
-		return await response.json();
+		const userUpdated: IUser = await response.json();
+		store.dispatch(updateUser(userUpdated));
+		return userUpdated;
 	} catch (error) {
 		console.log(error);
 		displayAlert({
 			payload: {
 				message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
+				type: 'error',
+			},
+		});
+	}
+};
+
+export const updateUserToDB = async (
+	payload: IUserLite,
+	userId: string
+): Promise<IUser | undefined> => {
+	try {
+		const response = await fetch(`${config.API.url}/user/update/${userId}`, {
+			method: 'PUT',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(payload),
+		});
+
+		displayAlert({
+			payload: {
+				message: 'Vos données ont enregistrés avec succès !',
+				type: 'success',
+			},
+		});
+
+		return await response.json();
+	} catch (error) {
+		console.log(error);
+		displayAlert({
+			payload: {
+				message:
+					"Erreur lors l'enregistrement de vos données, veuillez essayer plus tard",
 				type: 'error',
 			},
 		});
