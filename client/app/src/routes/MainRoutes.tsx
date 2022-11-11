@@ -3,10 +3,10 @@ import { PrivateRoute } from './privateRoute';
 import { ConnexionPage } from '../pages/connexion';
 import { DashboardPage } from '../pages/dashboard';
 import { HomePage } from '../pages/home';
-import { ContactFormPage } from '../pages/createResume/contactForm/';
-import { ProfileFormPage } from '../pages/createResume/profileForm';
-import { ExperienceFormPage } from '../pages/createResume/experienceForm';
-import { DesignFormPage } from '../pages/createResume/designForm';
+import { ContactFormPage } from '../pages/resumeForm/contactForm';
+import { ProfileFormPage } from '../pages/resumeForm/profileForm';
+import { ExperienceFormPage } from '../pages/resumeForm/experienceForm';
+import { DesignFormPage } from '../pages/resumeForm/designForm';
 
 export const MainRoutes: React.FC<{
 	isUserLogged: boolean;
@@ -31,7 +31,7 @@ export const MainRoutes: React.FC<{
 				}
 			/>
 			<Route
-				path='/create/contact'
+				path='/resume_form/contact'
 				element={
 					<PrivateRoute isAllowed={isUserLogged}>
 						<ContactFormPage />
@@ -39,7 +39,7 @@ export const MainRoutes: React.FC<{
 				}
 			/>
 			<Route
-				path='/create/profile'
+				path='/resume_form/profile'
 				element={
 					<PrivateRoute isAllowed={isUserLogged}>
 						<ProfileFormPage />
@@ -47,7 +47,7 @@ export const MainRoutes: React.FC<{
 				}
 			/>
 			<Route
-				path='/create/experience'
+				path='/resume_form/experience'
 				element={
 					<PrivateRoute isAllowed={isUserLogged}>
 						<ExperienceFormPage />
@@ -55,7 +55,7 @@ export const MainRoutes: React.FC<{
 				}
 			/>
 			<Route
-				path='/create/design'
+				path='/resume_form/design'
 				element={
 					<PrivateRoute isAllowed={isUserLogged}>
 						<DesignFormPage />

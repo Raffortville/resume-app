@@ -25,7 +25,7 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 	};
 
 	const navBarItems: ListItemType[] = [
-		{ key: '/create/contact', label: 'Créer nouveau CV' },
+		{ key: '/resume_form/contact', label: 'Créer nouveau CV' },
 		...(isUserLogged ? [{ key: '/dashboard', label: 'Voir mes CV' }] : []),
 		{
 			key: isUserLogged ? '/deconnexion' : '/connexion',
