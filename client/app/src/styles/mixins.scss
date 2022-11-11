@@ -13,3 +13,7 @@
 	box-shadow: 0px 0px 10px 0px lightgray;
 	-webkit-box-shadow: 0px 0px 10px 0px lightgray;
 }
+
+@mixin root-container {
+	min-height: calc(100vh - 64px);
+}

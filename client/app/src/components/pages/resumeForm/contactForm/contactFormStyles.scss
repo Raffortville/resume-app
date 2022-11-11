@@ -1,0 +1,15 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/mixins.scss';
+
+.contact-form {
+	@include root-container;
+	display: flex;
+	justify-content: center;
+	padding: 32px;
+
+	.form {
+		width: 600px;
+		height: 77%;
+		padding: 0 32px 32px;
+	}
+}
