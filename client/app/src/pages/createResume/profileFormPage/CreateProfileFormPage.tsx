@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const ProfileFormPage: React.FC = () => {
+export const CreateProfileFormPage: React.FC = () => {
 	return <>ProfileFormPage</>;
 };

@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const ExperienceFormPage: React.FC = () => {
+export const CreateExperienceFormPage: React.FC = () => {
 	return <>ExperienceFormPage</>;
 };

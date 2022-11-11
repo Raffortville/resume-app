@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const DesignFormPage: React.FC = () => {
+export const CreateDesignFormPage: React.FC = () => {
 	return <>DesignFormPage</>;
 };
