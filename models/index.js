@@ -56,22 +56,29 @@ const ExperienceSchema = new mongoose.Schema(
 	{ versionKey: false }
 );
 
+const ProfileSchema = new mongoose.Schema({
+	position: String,
+	introduction: String,
+	portfolio: String,
+	sosocialMedias: String,
+	expertises: [ExpertiseSchema],
+	softSkills: [SubDocSchema],
+	education: EducationSchema,
+});
+
+const DesignSchema = new mongoose.Schema({
+	profilPic: String,
+	colorMain: String,
+});
+
 const ResumeSchema = new mongoose.Schema(
 	{
 		userId: { type: String, required: true },
-		position: String,
-		introduction: String,
-		portfolio: String,
-		socialMedias: String,
-		expertises: [ExpertiseSchema],
-		softSkills: [SubDocSchema],
-		experiences: Array,
 		createdtAt: Date,
 		state: String,
+		profil: ProfileSchema,
 		experiences: [ExperienceSchema],
-		education: EducationSchema,
-		profilPic: String,
-		colorMain: String,
+		design: DesignSchema,
 	},
 	{ versionKey: false }
 );
