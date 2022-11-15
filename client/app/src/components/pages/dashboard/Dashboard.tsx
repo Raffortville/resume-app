@@ -11,7 +11,7 @@ export const Dashboard: React.FC = () => {
 	const navigate = useNavigate();
 
 	const onNavigateToCreatePage = (): void => {
-		navigate('/resume_form/create/contact');
+		navigate('/resume_form/create');
 	};
 	return (
 		<div className='dashboard'>
