@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { LibraryBooksTwoTone } from '@mui/icons-material';
-import { IIconItem } from '../../../../types';
+import { IKeyNodeItem } from '../../../../types';
 import { BottomCard } from './bottomCard';
 
 import './resumeCardStyles.scss';
@@ -9,7 +9,7 @@ import './resumeCardStyles.scss';
 interface CustomProps {
 	bottomLabel: string;
 	onClick?: () => void;
-	icons?: IIconItem[];
+	icons?: IKeyNodeItem[];
 	className?: string;
 }
 
@@ -20,7 +20,7 @@ export const ResumeCard: React.FC<CustomProps> = ({
 	className,
 }) => {
 	const renderIconsElement = (): React.ReactNode => {
-		return icons?.map((icon) => <div key={icon.key}>{icon.node}</div>);
+		return icons?.map((icon) => <div key={icon.key}>{icon.nodeElement}</div>);
 	};
 
 	return (

@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 
 import { alertSelector } from '../../../store/alert/reducer';
 import { useAppSelector } from '../../../store/hooks';
-import { FormSectionType } from '../../../types';
+import { FormSectionType, IKeyNodeItem } from '../../../types';
 
+import { ImportContacts, Face, Work, Brush } from '@mui/icons-material/';
 import { FormSkeleton } from '../../layout/form';
 import { ToastAlert } from '../../ui/toastAlert';
 import { ContactForm } from './forms/contactForm';
 import { ProfileForm } from './forms/profileForm';
 import { ExperiencesForm } from './forms/experiencesForm';
 import { DesignForm } from './forms/designForm/DesignForm';
+import { BreadCrumbs } from '../../ui/breadcrumbs';
 
 import './resumeFormsStyles.scss';
 
@@ -18,6 +20,41 @@ export const ResumeFormContainer: React.FC = () => {
 		useState<FormSectionType>('contact');
 
 	const alert = useAppSelector(alertSelector);
+
+	const breadcrumbsItems: IKeyNodeItem[] = [
+		{
+			key: 'contact',
+			nodeElement: (
+				<>
+					<ImportContacts style={{ fontSize: '1em' }} /> Contact
+				</>
+			),
+		},
+		{
+			key: 'profil',
+			nodeElement: (
+				<>
+					<Face style={{ fontSize: '1em' }} /> Profil
+				</>
+			),
+		},
+		{
+			key: 'experiences',
+			nodeElement: (
+				<>
+					<Work style={{ fontSize: '1em' }} /> Expériences
+				</>
+			),
+		},
+		{
+			key: 'design',
+			nodeElement: (
+				<>
+					<Brush style={{ fontSize: '1em' }} /> Design
+				</>
+			),
+		},
+	];
 
 	const getFormTitle = (): string => {
 		switch (formSectionSelected) {
@@ -28,7 +65,7 @@ export const ResumeFormContainer: React.FC = () => {
 				return 'Votre Profil';
 
 			case 'experiences':
-				return 'Vos Expériences professionnalles';
+				return 'Expériences professionnelles';
 
 			case 'design':
 				return 'Styliser votre CV';
@@ -87,14 +124,23 @@ export const ResumeFormContainer: React.FC = () => {
 
 	return (
 		<>
-			{alert !== null && (
-				<ToastAlert
-					isOpen={alert !== null}
-					message={alert?.message ?? ''}
-					severity={alert?.type ?? 'info'}
-				/>
-			)}
+			<ToastAlert
+				isOpen={alert !== null}
+				message={alert?.message ?? ''}
+				severity={alert?.type ?? 'info'}
+			/>
+
 			<div className='resume-form'>
+				<div className='resume-form-breadcrumbs-container'>
+					<BreadCrumbs
+						items={breadcrumbsItems}
+						onItemClick={(key): void =>
+							setFormSectionSelected(key as FormSectionType)
+						}
+						hasTextLink
+					/>
+				</div>
+
 				<FormSkeleton
 					title={getFormTitle()}
 					children={getFormContent()}

@@ -2,9 +2,15 @@
 
 .resume-form {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 	padding: 24px;
 	@include fade;
+
+	.resume-form-breadcrumbs-container {
+		align-self: flex-start;
+		margin-bottom: 40px;
+	}
 
 	.resume-form-container {
 		min-width: 600px;
