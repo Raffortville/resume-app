@@ -1,0 +1,14 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
+
+.breadcrumbs {
+	.breadcrumbs-item {
+		@include text-link($text-black);
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		text-transform: capitalize;
+		font-weight: 550;
+		letter-spacing: 1px;
+	}
+}

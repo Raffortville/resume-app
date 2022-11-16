@@ -21,7 +21,7 @@ export const Dashboard: React.FC = () => {
 				icons={[
 					{
 						key: 'create',
-						node: (
+						nodeElement: (
 							<Tooltip title='Créer CV' onClick={onNavigateToCreatePage}>
 								<AddCircleRounded className='action-icon' />
 							</Tooltip>

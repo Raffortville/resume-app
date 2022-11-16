@@ -18,6 +18,40 @@
 	min-height: calc(100vh - 64px);
 }
 
+@mixin text-link($color) {
+	position: relative;
+	opacity: 0.7;
+	color: $color;
+	cursor: pointer;
+	transition: opacity 0.2s ease-in;
+
+	&:after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 0%;
+		height: 1px;
+		background-color: $color;
+		transition: width 0.2s ease-in;
+	}
+
+	&:hover {
+		opacity: 1;
+		&:after {
+			width: 100%;
+		}
+	}
+
+	&.active {
+		opacity: 1;
+
+		&:after {
+			width: 100%;
+		}
+	}
+}
+
 @mixin fade {
 	animation: fade 800ms ease;
 }

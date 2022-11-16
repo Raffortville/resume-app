@@ -7,9 +7,9 @@ export interface ISectionItemProps extends ListItemType {
 	content: React.ReactNode;
 }
 
-export interface IIconItem {
+export interface IKeyNodeItem {
 	key: string;
-	node: React.ReactNode;
+	nodeElement: React.ReactNode;
 }
 
 // FORM
