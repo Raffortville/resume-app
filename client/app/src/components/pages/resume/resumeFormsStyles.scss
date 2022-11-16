@@ -1,0 +1,22 @@
+@import '../../../styles/mixins.scss';
+
+.resume-form {
+	display: flex;
+	justify-content: center;
+	padding: 24px;
+	@include fade;
+
+	.resume-form-container {
+		min-width: 600px;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		padding: 32px;
+
+		.resume-form-button {
+			max-width: 182px;
+			margin: 32px auto 0;
+		}
+	}
+}

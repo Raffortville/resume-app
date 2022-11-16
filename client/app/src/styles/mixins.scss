@@ -17,3 +17,16 @@
 @mixin root-container {
 	min-height: calc(100vh - 64px);
 }
+
+@mixin fade {
+	animation: fade 800ms ease;
+}
+
+@keyframes fade {
+	0% {
+		opacity: 0.1;
+	}
+	100% {
+		opacity: 1;
+	}
+}

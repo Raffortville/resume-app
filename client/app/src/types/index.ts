@@ -11,3 +11,6 @@ export interface IIconItem {
 	key: string;
 	node: React.ReactNode;
 }
+
+// FORM
+export type FormSectionType = 'contact' | 'profil' | 'experiences' | 'design';
