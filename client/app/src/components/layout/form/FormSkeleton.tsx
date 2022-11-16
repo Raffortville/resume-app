@@ -23,16 +23,18 @@ export const FormSkeleton: React.FC<CustomProps> = ({
 }) => {
 	return (
 		<div className={`skeleton ${className}`}>
-			{hasBackButton && (
-				<Button
-					onClick={() => {
-						onNavigateButtonClick && onNavigateButtonClick('back');
-					}}
-					className='button-nav'
-					variant='contained'>
-					<ArrowBack />
-				</Button>
-			)}
+			<div className='skeleton-button'>
+				{hasBackButton && (
+					<Button
+						onClick={() => {
+							onNavigateButtonClick && onNavigateButtonClick('back');
+						}}
+						className='button-nav'
+						variant='contained'>
+						<ArrowBack />
+					</Button>
+				)}
+			</div>
 
 			<div className='skeleton-container'>
 				<div className='header'>
@@ -40,16 +42,18 @@ export const FormSkeleton: React.FC<CustomProps> = ({
 				</div>
 				{children}
 			</div>
-			{hasNextButton && (
-				<Button
-					onClick={() => {
-						onNavigateButtonClick && onNavigateButtonClick('next');
-					}}
-					className='button-nav'
-					variant='contained'>
-					<ArrowForward />
-				</Button>
-			)}
+			<div className='skeleton-button'>
+				{hasNextButton && (
+					<Button
+						onClick={() => {
+							onNavigateButtonClick && onNavigateButtonClick('next');
+						}}
+						className='button-nav'
+						variant='contained'>
+						<ArrowForward />
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 };

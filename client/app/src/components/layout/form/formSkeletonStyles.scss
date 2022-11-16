@@ -4,15 +4,18 @@
 .skeleton {
 	display: flex;
 
-	.button-nav {
-		height: 60px;
-		align-self: flex-end;
-		margin-bottom: 32px;
-		border-radius: 50%;
+	.skeleton-button {
+		margin: auto 32px 16px;
+		width: 64px;
+
+		.button-nav {
+			height: 60px;
+			align-self: flex-end;
+			border-radius: 50%;
+		}
 	}
 
 	.skeleton-container {
-		margin: 0 32px;
 		border-radius: 3px;
 		@include box-shadow;
 
