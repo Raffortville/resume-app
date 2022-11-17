@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { IKeyNodeItem } from '../../../types';
 
@@ -9,6 +9,7 @@ import './breadCrumbsStyles.scss';
 interface CustomProps {
 	items: IKeyNodeItem[];
 	onItemClick: (key: string) => void;
+	selectedKey?: string;
 	hasTextLink?: boolean;
 	className?: string;
 }
@@ -16,10 +17,18 @@ interface CustomProps {
 export const BreadCrumbs: React.FC<CustomProps> = ({
 	items,
 	onItemClick,
+	selectedKey,
 	hasTextLink,
 	className,
 }) => {
 	const [activeKey, setActiveKey] = useState<string>(items[0].key);
+
+	useEffect(() => {
+		if (selectedKey) {
+			setActiveKey(selectedKey);
+		}
+	}, [selectedKey]);
+
 	const renderBreadcrumbsElement = (): React.ReactNode => {
 		return items.map((item) => (
 			<div

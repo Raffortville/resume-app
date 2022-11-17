@@ -137,6 +137,7 @@ export const ResumeFormContainer: React.FC = () => {
 						onItemClick={(key): void =>
 							setFormSectionSelected(key as FormSectionType)
 						}
+						selectedKey={formSectionSelected}
 						hasTextLink
 					/>
 				</div>
