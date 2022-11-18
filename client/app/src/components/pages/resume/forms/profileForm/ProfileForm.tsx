@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { TextareaAutosize, TextField } from '@mui/material';
 import { IProfil } from '../../../../../store/types';
 import { checkIsValidInputFormat } from '../../../../../helpers';
+
+import { Button, TextareaAutosize, TextField } from '@mui/material';
 
 export const ProfileForm: React.FC = () => {
 	const [profileValues, setProfileValues] = useState<IProfil>({
@@ -112,6 +113,9 @@ export const ProfileForm: React.FC = () => {
 				variant='standard'
 				helperText='Lien LinkedIn,...'
 			/>
+			<Button className='resume-form-button' variant='contained'>
+				ENREGISTRER
+			</Button>
 		</div>
 	);
 };

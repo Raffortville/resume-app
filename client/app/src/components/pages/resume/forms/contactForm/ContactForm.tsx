@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../../../store/hooks';
 import { userSelector } from '../../../../../store/user/reducer';
 import { IUserLite } from '../../../../../store/types';
 import { updateUserToDB } from '../../../../../store/user/actions';
-import { checkIsValidInputFormat } from '../../../../../helpers';
+import { checkIsValidInputFormat, isStringEmpty } from '../../../../../helpers';
 
 import { Button, TextField } from '@mui/material';
 
@@ -15,13 +15,13 @@ interface CustomProps {
 export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 	const user = useAppSelector(userSelector);
 	const [userValues, setUserValues] = useState<IUserLite>({
-		_id: user?._id,
-		emailPro: user?.emailPro,
-		lastName: user?.lastName,
-		firstName: user?.firstName,
-		city: user?.city,
-		country: user?.country,
-		phone: user?.phone,
+		_id: user?._id || '',
+		emailPro: user?.emailPro || '',
+		lastName: user?.lastName || '',
+		firstName: user?.firstName || '',
+		city: user?.city || '',
+		country: user?.country || '',
+		phone: user?.phone || '',
 	});
 	const [emailError, setEmailError] = useState<boolean>(false);
 
@@ -40,7 +40,14 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 
 	const handleSubmit = async (): Promise<void> => {
 		const { emailPro, lastName, firstName, phone, country, city } = userValues;
-		if (!emailPro && !lastName && !firstName && !phone && !country && !city) {
+		if (
+			isStringEmpty(emailPro) &&
+			isStringEmpty(lastName) &&
+			isStringEmpty(firstName) &&
+			isStringEmpty(phone) &&
+			isStringEmpty(country) &&
+			isStringEmpty(city)
+		) {
 			return;
 		}
 
