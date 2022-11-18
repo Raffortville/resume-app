@@ -4,10 +4,17 @@ import { alertSelector } from '../../../store/alert/reducer';
 import { useAppSelector } from '../../../store/hooks';
 import { FormSectionType, IKeyNodeItem } from '../../../types';
 
-import { ImportContacts, Face, Work, Brush } from '@mui/icons-material/';
+import {
+	ImportContacts,
+	Face,
+	Work,
+	Brush,
+	DeveloperMode,
+} from '@mui/icons-material/';
 import { FormSkeleton } from '../../layout/form';
 import { ToastAlert } from '../../ui/toastAlert';
 import { ContactForm } from './forms/contactForm';
+import { ExpertisesForm } from './forms/expertisesForm';
 import { ProfileForm } from './forms/profileForm';
 import { ExperiencesForm } from './forms/experiencesForm';
 import { DesignForm } from './forms/designForm/DesignForm';
@@ -35,6 +42,14 @@ export const ResumeFormContainer: React.FC = () => {
 			nodeElement: (
 				<>
 					<Face style={{ fontSize: '1em' }} /> Profil
+				</>
+			),
+		},
+		{
+			key: 'expertises',
+			nodeElement: (
+				<>
+					<DeveloperMode style={{ fontSize: '1em' }} /> Expertises
 				</>
 			),
 		},
@@ -70,6 +85,9 @@ export const ResumeFormContainer: React.FC = () => {
 			case 'design':
 				return 'Styliser votre CV';
 
+			case 'expertises':
+				return 'Vos expertises';
+
 			default:
 				return '';
 		}
@@ -81,13 +99,15 @@ export const ResumeFormContainer: React.FC = () => {
 				setFormSectionSelected('profil');
 				break;
 			case 'profil':
-				setFormSectionSelected(
-					direction === 'back' ? 'contact' : 'experiences'
-				);
+				setFormSectionSelected(direction === 'back' ? 'contact' : 'expertises');
+				break;
+
+			case 'expertises':
+				setFormSectionSelected(direction === 'back' ? 'profil' : 'experiences');
 				break;
 
 			case 'experiences':
-				setFormSectionSelected(direction === 'back' ? 'profil' : 'design');
+				setFormSectionSelected(direction === 'back' ? 'expertises' : 'design');
 				break;
 
 			case 'design':
@@ -110,6 +130,9 @@ export const ResumeFormContainer: React.FC = () => {
 
 			case 'profil':
 				return <ProfileForm />;
+
+			case 'expertises':
+				return <ExpertisesForm />;
 
 			case 'experiences':
 				return <ExperiencesForm />;

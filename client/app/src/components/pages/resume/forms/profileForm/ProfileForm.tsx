@@ -4,22 +4,12 @@ import { TextareaAutosize, TextField } from '@mui/material';
 import { IProfil } from '../../../../../store/types';
 import { checkIsValidInputFormat } from '../../../../../helpers';
 
-// position?: string;
-// 	introduction?: string;
-// 	portfolio?: string;
-// 	socialMedias?: string;
-// 	expertises?: IExpertise[];
-// 	softSkills?: ObjKeyValueType[];
-// 	education?: IEducation;
-
 export const ProfileForm: React.FC = () => {
 	const [profileValues, setProfileValues] = useState<IProfil>({
-		position: undefined,
-		portfolio: undefined,
-		socialMedias: undefined,
-		expertises: undefined,
-		softSkills: undefined,
-		education: undefined,
+		position: '',
+		portfolio: '',
+		socialMedias: '',
+		education: { academy: '', period: '', certificate: '' },
 	});
 
 	const handleChange = ({
@@ -56,6 +46,71 @@ export const ProfileForm: React.FC = () => {
 					const { name, value } = event.target;
 					handleChange({ value, name });
 				}}
+			/>
+			<TextField
+				label='Académie'
+				value={profileValues.education?.academy}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+					const { value } = e.target;
+					setProfileValues({
+						...profileValues,
+						education: { ...profileValues.education, academy: value },
+					});
+				}}
+				variant='standard'
+				helperText='Ecole, centre de formation, université...'
+			/>
+			<TextField
+				label='Periode'
+				value={profileValues.education?.period}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+					const { value } = e.target;
+					setProfileValues({
+						...profileValues,
+						education: { ...profileValues.education, period: value },
+					});
+				}}
+				variant='standard'
+				helperText='Année de formations'
+			/>
+			<TextField
+				label='Diplôme'
+				value={profileValues.education?.certificate}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+					const { value } = e.target;
+					setProfileValues({
+						...profileValues,
+						education: { ...profileValues.education, certificate: value },
+					});
+				}}
+				variant='standard'
+				helperText='Certificats, parcours diplomant'
+			/>
+			<TextField
+				label='Portfolio'
+				value={profileValues.portfolio}
+				name='portfolio'
+				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+					const { value, name } = e.target;
+					if (checkIsValidInputFormat(value, 'text')) {
+						handleChange({ value, name });
+					}
+				}}
+				helperText='Portfolio / Website / répo GIT'
+				variant='standard'
+			/>
+			<TextField
+				label='Réseau social'
+				value={profileValues.portfolio}
+				name='socialMedias'
+				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+					const { value, name } = e.target;
+					if (checkIsValidInputFormat(value, 'text')) {
+						handleChange({ value, name });
+					}
+				}}
+				variant='standard'
+				helperText='Lien LinkedIn,...'
 			/>
 		</div>
 	);

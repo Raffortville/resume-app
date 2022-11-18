@@ -1,5 +1,13 @@
 import mongoose from 'mongoose';
 
+const SubDocSchema = new mongoose.Schema(
+	{
+		value: String || Number,
+		key: String,
+	},
+	{ versionKey: false }
+);
+
 const UserSchema = new mongoose.Schema(
 	{
 		email: { type: String, required: true },
@@ -15,19 +23,15 @@ const UserSchema = new mongoose.Schema(
 	{ versionKey: false }
 );
 
-const SubDocSchema = new mongoose.Schema(
-	{
-		value: String || Number,
-		id: String,
-	},
-	{ versionKey: false }
-);
-
 const ExpertiseSchema = new mongoose.Schema(
 	{
-		expertiseKey: String || Number,
-		name: String,
-		skills: [SubDocSchema],
+		languages: [SubDocSchema],
+		frameworks: [SubDocSchema],
+		database: [SubDocSchema],
+		services: [SubDocSchema],
+		control_version: [SubDocSchema],
+		productivity: [SubDocSchema],
+		soft_skills: [SubDocSchema],
 	},
 	{ versionKey: false }
 );
@@ -61,8 +65,6 @@ const ProfileSchema = new mongoose.Schema({
 	introduction: String,
 	portfolio: String,
 	sosocialMedias: String,
-	expertises: [ExpertiseSchema],
-	softSkills: [SubDocSchema],
 	education: EducationSchema,
 });
 
@@ -77,6 +79,7 @@ const ResumeSchema = new mongoose.Schema(
 		createdtAt: Date,
 		state: String,
 		profil: ProfileSchema,
+		expertises: ExpertiseSchema,
 		experiences: [ExperienceSchema],
 		design: DesignSchema,
 	},

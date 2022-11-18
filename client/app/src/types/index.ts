@@ -13,4 +13,9 @@ export interface IKeyNodeItem {
 }
 
 // FORM
-export type FormSectionType = 'contact' | 'profil' | 'experiences' | 'design';
+export type FormSectionType =
+	| 'contact'
+	| 'profil'
+	| 'expertises'
+	| 'experiences'
+	| 'design';

@@ -1,10 +1,9 @@
-import { AlertColor } from '@mui/material/Alert';
+import type { AlertColor } from '@mui/material/Alert';
 
 export type ObjKeyValueType = {
 	key: string;
 	value: string;
 };
-
 export interface IUserLite {
 	_id?: string;
 	userName?: string;
@@ -15,7 +14,6 @@ export interface IUserLite {
 	phone?: string;
 	country?: string;
 }
-
 export interface IUser extends IUserLite {
 	email: string;
 	uid: string;
@@ -23,20 +21,17 @@ export interface IUser extends IUserLite {
 }
 
 export type UserType = IUser | null;
-
 export interface IAlert {
 	type: AlertColor | undefined;
 	message: string;
 }
 
 export type AlertType = IAlert | null;
-
 export interface IEducation {
-	academy: string;
-	period: string;
-	certificate: string;
+	academy?: string;
+	period?: string;
+	certificate?: string;
 }
-
 export interface IExperience {
 	exp_id: string;
 	company: string;
@@ -48,23 +43,22 @@ export interface IExperience {
 	achievements: ObjKeyValueType[];
 	stack: ObjKeyValueType[];
 }
-
 export interface IExpertise {
-	key: string | number;
-	name: string;
-	skills: ObjKeyValueType[];
+	languages?: ObjKeyValueType[];
+	frameworks?: ObjKeyValueType[];
+	databases?: ObjKeyValueType[];
+	services?: ObjKeyValueType[];
+	control_version?: ObjKeyValueType[];
+	productivity?: ObjKeyValueType[];
+	soft_skills?: ObjKeyValueType[];
 }
-
 export interface IProfil {
 	position?: string;
 	introduction?: string;
 	portfolio?: string;
 	socialMedias?: string;
-	expertises?: IExpertise[];
-	softSkills?: ObjKeyValueType[];
 	education?: IEducation;
 }
-
 export interface IDesign {
 	profilPic: string;
 	colorMain: string;
@@ -75,6 +69,7 @@ export interface IResume {
 	createdtAt?: Date;
 	state?: string;
 	profil?: IProfil;
+	expertises?: IExpertise;
 	experiences?: IExperience[];
 	design?: IDesign;
 }
