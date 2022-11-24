@@ -6,26 +6,23 @@ import { useNavigate } from 'react-router-dom';
 
 import './header.scss';
 import { signOut } from '../../../store/user/actions';
+import { createResumeToDB } from '../../../store/resume/actions';
+import { useAppSelector } from '../../../store/hooks';
+import { alertSelector } from '../../../store/alert/reducer';
+import { userSelector } from '../../../store/user/reducer';
+import { ToastAlert } from '../../ui/toastAlert';
 
 interface CustomPros {
 	isUserLogged: boolean;
 }
 
 export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
+	const user = useAppSelector(userSelector);
+	const alert = useAppSelector(alertSelector);
 	const navigate = useNavigate();
 
-	const onNavigate = (linkKey: string): void => {
-		if (linkKey === '/deconnexion') {
-			signOut();
-			navigate('/connexion');
-			return;
-		}
-		navigate(linkKey);
-		return;
-	};
-
 	const navBarItems: ListItemType[] = [
-		{ key: '/resume_form/create', label: 'Créer nouveau CV' },
+		{ key: '/resume/form', label: 'Créer nouveau CV' },
 		...(isUserLogged ? [{ key: '/dashboard', label: 'Voir mes CV' }] : []),
 		{
 			key: isUserLogged ? '/deconnexion' : '/connexion',
@@ -33,15 +30,48 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 		},
 	];
 
+	const createResume = async (): Promise<void> => {
+		if (user === null || !user._id) {
+			return;
+		}
+		const createdResume = await createResumeToDB({ userId: user._id });
+		if (createdResume) {
+			navigate(`resume/form/${createdResume._id}`);
+		}
+	};
+
+	const onNavItemClick = (linkKey: string): void => {
+		if (linkKey === '/deconnexion') {
+			signOut();
+			navigate('/connexion');
+			return;
+		}
+		if (linkKey === '/resume/form') {
+			createResume();
+			return;
+		}
+		navigate(linkKey);
+		return;
+	};
+
 	return (
-		<header className='header'>
-			<h2 onClick={() => onNavigate('/')} className='header-title'>
-				Resume Maker
-			</h2>
-			<div className='menu'>
-				<NavBar items={navBarItems} onItemClick={onNavigate} />
-			</div>
-			{/* <AccountCircleIcon fontSize='large' style={{ cursor: 'pointer' }} /> */}
-		</header>
+		<>
+			{alert !== null && (
+				<ToastAlert
+					isOpen={alert !== null}
+					message={alert?.message ?? ''}
+					severity={alert?.type ?? 'info'}
+				/>
+			)}
+			<header className='header'>
+				<h2 onClick={() => onNavItemClick('/')} className='header-title'>
+					Resume Maker
+				</h2>
+				<div className='menu'>
+					<NavBar items={navBarItems} onItemClick={onNavItemClick} />
+				</div>
+				{/* <AccountCircleIcon fontSize='large' style={{ cursor: 'pointer' }} /> */}
+			</header>
+		</>
 	);
 };
