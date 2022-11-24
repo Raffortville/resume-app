@@ -6,7 +6,7 @@ import { setResume, setResumes } from './reducer';
 
 export const getResumes = async (userId: string): Promise<IResume[] | void> => {
 	try {
-		const response = await fetch(`${config.API.url}/getAll/${userId}`, {
+		const response = await fetch(`${config.API.url}/resume/getAll/${userId}`, {
 			method: 'GET',
 			headers: {
 				Accept: 'application/json',

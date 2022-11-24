@@ -28,11 +28,23 @@ const resumeSlice = createSlice({
 				state.resumes = [...state.resumes, payload];
 			}
 		},
+		resetResumes: (state) => {
+			state.resumes = null;
+		},
+		resetResume: (state) => {
+			state.resume = null;
+		},
 	},
 });
 
-export const { setResume, setResumes, addResume, updateResume } =
-	resumeSlice.actions;
+export const {
+	setResume,
+	setResumes,
+	addResume,
+	updateResume,
+	resetResume,
+	resetResumes,
+} = resumeSlice.actions;
 
 export const resumeReducer = resumeSlice.reducer;
 
