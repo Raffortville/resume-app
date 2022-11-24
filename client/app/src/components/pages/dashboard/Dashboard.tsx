@@ -10,6 +10,7 @@ import { Tooltip } from '@mui/material';
 import { AddCircleRounded } from '@mui/icons-material';
 import { ResumeCard } from '../../ui/cards/resumeCard';
 import { ToastAlert } from '../../ui/toastAlert';
+import { Separator } from '../../ui/separator';
 
 import './dashboardStyles.scss';
 
@@ -53,6 +54,7 @@ export const Dashboard: React.FC = () => {
 						},
 					]}
 				/>
+				<Separator />
 			</div>
 		</>
 	);
