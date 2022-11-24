@@ -31,26 +31,12 @@ const resumeSlice = createSlice({
 	},
 });
 
-// const userSlice = createSlice({
-// 	name: 'USER',
-// 	initialState: initialState,
-// 	reducers: {
-// 		setUser: (state, { payload }: PayloadAction<UserType>) => {
-// 			state.user = payload;
-// 		},
-// 		resetUser: (state, { payload }: PayloadAction<UserType>) => {
-// 			state.user = payload;
-// 		},
-// 		updateUser: (state, { payload }: PayloadAction<UserType>) => {
-// 			if (payload) {
-// 				state.user = { ...state.user, ...payload };
-// 			}
-// 		},
-// 	},
-// });
+export const { setResume, setResumes, addResume, updateResume } =
+	resumeSlice.actions;
 
-// export const { setUser, resetUser, updateUser } = userSlice.actions;
+export const resumeReducer = resumeSlice.reducer;
 
-// export const userSelector = (state: RootState) => state.userReducer.user;
-
-// export const userReducer = userSlice.reducer;
+export const resumeSelector = (state: RootState): IResume | null =>
+	state.resumeReducer.resume;
+export const resumesSelector = (state: RootState): IResume[] | null =>
+	state.resumeReducer.resumes;

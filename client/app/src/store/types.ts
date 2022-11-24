@@ -66,6 +66,7 @@ export interface IDesign {
 
 export interface IResume {
 	userId: string;
+	_id?: string;
 	createdtAt?: Date;
 	state?: string;
 	profil?: IProfil;

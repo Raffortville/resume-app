@@ -4,10 +4,12 @@ import thunk from 'redux-thunk';
 
 import { userReducer } from './user';
 import { alertReducer } from './alert';
+import { resumeReducer } from './resume';
 
 const rootReducer = combineReducers({
 	userReducer,
 	alertReducer,
+	resumeReducer,
 });
 
 export const store = configureStore({
