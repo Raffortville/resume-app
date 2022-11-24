@@ -1,8 +1,25 @@
 @import '../../../../styles/mixins.scss';
 @import '../../../../styles//variables.scss';
 
+.resume-card-action-icons {
+	width: 194px;
+	display: flex;
+	justify-content: space-between;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+
+	.action-icon {
+		font-size: 1.3em;
+		color: $primary;
+		opacity: 1;
+		pointer-events: initial;
+		cursor: pointer;
+		@include fadeText();
+	}
+}
+
 .resume-card {
-	max-width: 224px;
+	width: 194px;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -10,25 +27,14 @@
 	padding-top: 16px;
 	cursor: pointer;
 	background-color: whitesmoke;
+	border: 1px solid $primary;
+	border-radius: 3px;
 	@include box-shadow;
 
 	&:hover {
 		.resume-card-icon {
 			opacity: 1;
-		}
-	}
-
-	.resume-card-action-icons {
-		width: 260px;
-		position: absolute;
-		top: -20px;
-		display: flex;
-		justify-content: space-between;
-
-		.action-icon {
-			margin: 0 4px;
-			font-size: 1.7em;
-			color: $primary;
+			transform: scale(1.1);
 		}
 	}
 
@@ -37,6 +43,6 @@
 		height: 140px;
 		opacity: 0.7;
 		color: $grey;
-		transition: opacity ease 0.3s;
+		transition: all ease 0.3s;
 	}
 }

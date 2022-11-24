@@ -2,7 +2,7 @@ import { store } from '..';
 import config from '../../config';
 import { displayAlert } from '../alert/actions';
 import { IResume } from '../types';
-import { setResume, setResumes } from './reducer';
+import { addResume, setResume, setResumes } from './reducer';
 
 export const getResumes = async (userId: string): Promise<IResume[] | void> => {
 	try {
@@ -78,6 +78,7 @@ export const createResumeToDB = async (
 		if (response.status === 200) {
 			const createdResume: IResume = await response.json();
 			store.dispatch(setResume(createdResume));
+			store.dispatch(addResume(createdResume));
 			return createdResume;
 		}
 	} catch (error) {
@@ -102,6 +103,7 @@ export const updateResumeToDB = async (
 
 		if (response.status === 200) {
 			const updatedResume = await response.json();
+			store.dispatch(updatedResume(updatedResume));
 			store.dispatch(updatedResume(updatedResume));
 			return updatedResume;
 		}

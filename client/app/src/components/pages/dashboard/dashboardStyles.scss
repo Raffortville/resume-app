@@ -1,5 +1,13 @@
 .dashboard {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	padding: 64px;
+
+	.dashboard-resumes-list {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 72px;
+	}
 }

@@ -11,6 +11,7 @@ interface CustomProps {
 	onClick?: () => void;
 	icons?: IKeyNodeItem[];
 	className?: string;
+	styles?: React.CSSProperties;
 }
 
 export const ResumeCard: React.FC<CustomProps> = ({
@@ -18,18 +19,24 @@ export const ResumeCard: React.FC<CustomProps> = ({
 	onClick,
 	icons,
 	className,
+	styles,
 }) => {
 	const renderIconsElement = (): React.ReactNode => {
 		return icons?.map((icon) => <div key={icon.key}>{icon.nodeElement}</div>);
 	};
 
 	return (
-		<div className={`resume-card ${className}`} onClick={onClick}>
+		<>
 			{icons && (
 				<div className='resume-card-action-icons'>{renderIconsElement()}</div>
 			)}
-			<LibraryBooksTwoTone className='resume-card-icon' />
-			<BottomCard label={bottomLabel} />
-		</div>
+			<div
+				className={`resume-card ${className}`}
+				style={styles}
+				onClick={onClick}>
+				<LibraryBooksTwoTone className='resume-card-icon' />
+				<BottomCard label={bottomLabel} />
+			</div>
+		</>
 	);
 };

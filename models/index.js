@@ -77,7 +77,7 @@ const ResumeSchema = new mongoose.Schema(
 	{
 		userId: { type: String, required: true },
 		createdtAt: Date,
-		state: String,
+		status: String,
 		profil: ProfileSchema,
 		expertises: ExpertiseSchema,
 		experiences: [ExperienceSchema],

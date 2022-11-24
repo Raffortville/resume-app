@@ -64,11 +64,13 @@ export interface IDesign {
 	colorMain: string;
 }
 
+export type StatusType = 'complete' | 'draft';
+
 export interface IResume {
 	userId: string;
 	_id?: string;
 	createdtAt?: Date;
-	state?: string;
+	status?: StatusType;
 	profil?: IProfil;
 	expertises?: IExpertise;
 	experiences?: IExperience[];
