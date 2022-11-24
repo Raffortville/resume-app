@@ -5,10 +5,10 @@ import { success } from '../helpers/index.js';
 const router = Router();
 
 router.post('/create', async (req, res, next) => {
-	let paylod = { ...req.body, createdtAt: new Date().toISOString() };
+	const paylod = { ...req.body, createdtAt: new Date().toISOString() };
 
 	try {
-		const resume = ResumeModel(paylod);
+		const resume = new ResumeModel(paylod);
 		const resumeSaved = await resume.save();
 
 		return success(res, resumeSaved);
