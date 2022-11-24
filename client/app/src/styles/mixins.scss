@@ -1,6 +1,6 @@
 @import './variables.scss';
 
-@mixin fade {
+@mixin fadeText {
 	opacity: 1;
 	transition: opacity ease 0.2;
 
