@@ -42,7 +42,10 @@ export const Dashboard: React.FC = () => {
 		}
 
 		const createdResume = await createResumeToDB({ userId: user._id });
-		createdResume && onNavigateToResumeForm('create', createdResume._id);
+		createdResume &&
+			navigate(`/resume/create/${createdResume._id}`, {
+				state: { previousPathKey: createdResume._id },
+			});
 	};
 
 	const onViewResume = (resumeId?: string) => {

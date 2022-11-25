@@ -36,7 +36,9 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 		}
 		const createdResume = await createResumeToDB({ userId: user._id });
 		if (createdResume) {
-			navigate(`resume/create/${createdResume._id}`);
+			navigate(`resume/create/${createdResume._id}`, {
+				state: { previousPathKey: createdResume._id },
+			});
 		}
 	};
 

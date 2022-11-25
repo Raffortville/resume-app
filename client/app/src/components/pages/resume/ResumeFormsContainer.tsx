@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { alertSelector } from '../../../store/alert/reducer';
 import { useAppSelector } from '../../../store/hooks';
@@ -21,12 +21,25 @@ import { DesignForm } from './forms/designForm/DesignForm';
 import { BreadCrumbs } from '../../ui/breadcrumbs';
 
 import './resumeFormsStyles.scss';
+import { useLocation } from 'react-router-dom';
 
 export const ResumeFormContainer: React.FC = () => {
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
 
 	const alert = useAppSelector(alertSelector);
+	const location = useLocation();
+	const previousPathKey = useRef(location.state?.previousPathKey);
+
+	useEffect(() => {
+		if (
+			!location.pathname.includes(previousPathKey?.current) &&
+			formSectionSelected !== 'contact'
+		) {
+			setFormSectionSelected('contact');
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [location]);
 
 	const breadcrumbsItems: IKeyNodeItem[] = [
 		{
@@ -164,16 +177,17 @@ export const ResumeFormContainer: React.FC = () => {
 						hasTextLink
 					/>
 				</div>
-
-				<FormSkeleton
-					title={getFormTitle()}
-					children={getFormContent()}
-					hasBackButton={formSectionSelected !== 'contact'}
-					hasNextButton={formSectionSelected !== 'design'}
-					onNavigateButtonClick={(direction) =>
-						handleNavigateFormSections(direction)
-					}
-				/>
+				<div className='resume-form--section'>
+					<FormSkeleton
+						title={getFormTitle()}
+						children={getFormContent()}
+						hasBackButton={formSectionSelected !== 'contact'}
+						hasNextButton={formSectionSelected !== 'design'}
+						onNavigateButtonClick={(direction) =>
+							handleNavigateFormSections(direction)
+						}
+					/>
+				</div>
 			</div>
 		</>
 	);
