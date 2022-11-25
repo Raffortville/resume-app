@@ -1,7 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { createResumeToDB } from '../../../store/resume/actions';
+import {
+	createResumeToDB,
+	deleteResumeFromDB,
+} from '../../../store/resume/actions';
 import { useAppSelector } from '../../../store/hooks';
 import { userSelector } from '../../../store/user/reducer';
 import { alertSelector } from '../../../store/alert/reducer';
@@ -39,13 +42,6 @@ export const Dashboard: React.FC = () => {
 		createdResume && onNavigateToResumeForm(createdResume._id);
 	};
 
-	const onDeleteResume = (resumeId?: string): void => {
-		if (!resumeId) {
-			return;
-		}
-		console.log(resumeId, 'delete');
-	};
-
 	const onViewResume = (resumeId?: string) => {
 		if (!resumeId) {
 			return;
@@ -59,9 +55,8 @@ export const Dashboard: React.FC = () => {
 		}
 
 		return resumes.map((resume, index: number) => (
-			<div className='dashboard-resumes-list--item'>
+			<div key={index} className='dashboard-resumes-list--item'>
 				<ResumeCard
-					key={index}
 					bottomLabel={resume.profil?.position ?? `Votre CV ${index + 1}`}
 					icons={[
 						{
@@ -69,7 +64,9 @@ export const Dashboard: React.FC = () => {
 							nodeElement: (
 								<Tooltip
 									title='Supprimer CV'
-									onClick={(): void => onDeleteResume(resume._id)}>
+									onClick={(): void => {
+										resume._id && deleteResumeFromDB(resume._id);
+									}}>
 									<RemoveCircleRounded className='action-icon' />
 								</Tooltip>
 							),

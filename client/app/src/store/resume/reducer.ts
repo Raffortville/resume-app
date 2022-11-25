@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { RootState } from '..';
 import type { IResume } from '../types';
 
@@ -28,6 +29,13 @@ const resumeSlice = createSlice({
 				state.resumes = [...state.resumes, payload];
 			}
 		},
+		deleteResume: (state, { payload }: PayloadAction<string>) => {
+			if (state.resumes !== null) {
+				state.resumes = state.resumes.filter(
+					(resume) => resume._id !== payload
+				);
+			}
+		},
 		resetResumes: (state) => {
 			state.resumes = null;
 		},
@@ -42,6 +50,7 @@ export const {
 	setResumes,
 	addResume,
 	updateResume,
+	deleteResume,
 	resetResume,
 	resetResumes,
 } = resumeSlice.actions;

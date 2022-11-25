@@ -2,7 +2,7 @@ import { store } from '..';
 import config from '../../config';
 import { displayAlert } from '../alert/actions';
 import { IResume } from '../types';
-import { addResume, setResume, setResumes } from './reducer';
+import { addResume, deleteResume, setResume, setResumes } from './reducer';
 
 export const getResumes = async (userId: string): Promise<IResume[] | void> => {
 	try {
@@ -98,7 +98,15 @@ export const updateResumeToDB = async (
 ): Promise<IResume | void> => {
 	try {
 		const response = await fetch(
-			`${config.API.url}/resume/update/${payload._id}`
+			`${config.API.url}/resume/update/${payload._id}`,
+			{
+				method: 'PUT',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(payload),
+			}
 		);
 
 		if (response.status === 200) {
@@ -113,6 +121,28 @@ export const updateResumeToDB = async (
 			payload: {
 				message:
 					'Erreur lors de la modification de votre cv, veuillez essayer plus tard',
+				type: 'error',
+			},
+		});
+	}
+};
+
+export const deleteResumeFromDB = async (id: string) => {
+	try {
+		await fetch(`${config.API.url}/resume/delete/${id}`, {
+			method: 'DELETE',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+		});
+		store.dispatch(deleteResume(id));
+	} catch (error) {
+		console.log(error);
+		displayAlert({
+			payload: {
+				message:
+					'Erreur lors de la suppression de votre cv, veuillez essayer plus tard',
 				type: 'error',
 			},
 		});
