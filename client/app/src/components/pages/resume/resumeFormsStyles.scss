@@ -12,17 +12,22 @@
 		margin-bottom: 40px;
 	}
 
-	.resume-form-container {
-		min-width: 600px;
-		height: 100%;
+	.resume-form--section {
 		display: flex;
-		flex-direction: column;
-		gap: 24px;
-		padding: 32px;
+		width: 100%;
 
-		.resume-form-button {
-			max-width: 182px;
-			margin: 32px auto 0;
+		.resume-form-container {
+			min-width: 600px;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+			padding: 32px;
+
+			.resume-form-button {
+				max-width: 182px;
+				margin: 32px auto 0;
+			}
 		}
 	}
 }
