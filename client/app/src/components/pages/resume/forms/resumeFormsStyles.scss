@@ -1,20 +1,24 @@
-@import '../../../styles/mixins.scss';
+@import '../../../../styles/mixins.scss';
 
 .resume-form {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	padding: 24px;
 	@include fade;
 
 	.resume-form-breadcrumbs-container {
-		align-self: flex-start;
-		margin-bottom: 40px;
+		margin-bottom: 64px;
 	}
 
 	.resume-form--section {
 		display: flex;
-		width: 100%;
+
+		& > h2 {
+			width: 20%;
+			color: $primary-dark;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
 
 		.resume-form-container {
 			min-width: 600px;

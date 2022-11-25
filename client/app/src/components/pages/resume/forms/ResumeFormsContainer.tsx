@@ -1,6 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import { FormSectionType, IKeyNodeItem } from '../../../types';
+import { useAppSelector } from '../../../../store/hooks';
+import { resumeSelector } from '../../../../store/resume/reducer';
+import { getResumeById } from '../../../../store/resume/actions';
+import { FormSectionType, IKeyNodeItem } from '../../../../types';
 
 import {
 	ImportContacts,
@@ -9,76 +13,74 @@ import {
 	Brush,
 	DeveloperMode,
 } from '@mui/icons-material/';
-import { FormSkeleton } from '../../layout/form';
-import { ContactForm } from './forms/contactForm';
-import { ExpertisesForm } from './forms/expertisesForm';
-import { ProfileForm } from './forms/profileForm';
-import { ExperiencesForm } from './forms/experiencesForm';
-import { DesignForm } from './forms/designForm/DesignForm';
-import { BreadCrumbs } from '../../ui/breadcrumbs';
+import { FormSkeleton } from '../../../layout/form';
+import { ContactForm } from './contactForm';
+import { ExpertisesForm } from './expertisesForm';
+import { ProfileForm } from './profileForm';
+import { ExperiencesForm } from './experiencesForm';
+import { DesignForm } from './designForm/DesignForm';
+import { BreadCrumbs } from '../../../ui/breadcrumbs';
 
 import './resumeFormsStyles.scss';
-import { useLocation } from 'react-router-dom';
+
+const breadcrumbsItems: IKeyNodeItem[] = [
+	{
+		key: 'contact',
+		nodeElement: (
+			<>
+				<ImportContacts style={{ fontSize: '1em' }} /> Contact
+			</>
+		),
+	},
+	{
+		key: 'profil',
+		nodeElement: (
+			<>
+				<Face style={{ fontSize: '1em' }} /> Profil
+			</>
+		),
+	},
+	{
+		key: 'expertises',
+		nodeElement: (
+			<>
+				<DeveloperMode style={{ fontSize: '1em' }} /> Expertises
+			</>
+		),
+	},
+	{
+		key: 'experiences',
+		nodeElement: (
+			<>
+				<Work style={{ fontSize: '1em' }} /> Expériences
+			</>
+		),
+	},
+	{
+		key: 'design',
+		nodeElement: (
+			<>
+				<Brush style={{ fontSize: '1em' }} /> Design
+			</>
+		),
+	},
+];
 
 export const ResumeFormContainer: React.FC = () => {
+	const resume = useAppSelector(resumeSelector);
+	const location = useLocation();
+
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
 
-	const location = useLocation();
-	const previousPathKey = useRef(location.state?.previousPathKey);
-
 	useEffect(() => {
-		if (
-			!location.pathname.includes(previousPathKey?.current) &&
-			formSectionSelected !== 'contact'
-		) {
-			setFormSectionSelected('contact');
+		if (resume !== null || !location.state?.resumeId) {
+			return;
 		}
+		const { resumeId } = location.state;
+		getResumeById(resumeId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [location]);
-
-	const breadcrumbsItems: IKeyNodeItem[] = [
-		{
-			key: 'contact',
-			nodeElement: (
-				<>
-					<ImportContacts style={{ fontSize: '1em' }} /> Contact
-				</>
-			),
-		},
-		{
-			key: 'profil',
-			nodeElement: (
-				<>
-					<Face style={{ fontSize: '1em' }} /> Profil
-				</>
-			),
-		},
-		{
-			key: 'expertises',
-			nodeElement: (
-				<>
-					<DeveloperMode style={{ fontSize: '1em' }} /> Expertises
-				</>
-			),
-		},
-		{
-			key: 'experiences',
-			nodeElement: (
-				<>
-					<Work style={{ fontSize: '1em' }} /> Expériences
-				</>
-			),
-		},
-		{
-			key: 'design',
-			nodeElement: (
-				<>
-					<Brush style={{ fontSize: '1em' }} /> Design
-				</>
-			),
-		},
-	];
+	}, [resume]);
 
 	const getFormTitle = (): string => {
 		switch (formSectionSelected) {
@@ -168,6 +170,7 @@ export const ResumeFormContainer: React.FC = () => {
 					/>
 				</div>
 				<div className='resume-form--section'>
+					<h2>{resume?.title}</h2>
 					<FormSkeleton
 						title={getFormTitle()}
 						children={getFormContent()}
