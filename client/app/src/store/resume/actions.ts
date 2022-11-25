@@ -90,6 +90,12 @@ export const createResumeToDB = async (payload: {
 
 		if (response.status === 200) {
 			const createdResume: IResume = await response.json();
+			displayAlert({
+				payload: {
+					message: `${createdResume.title} a été initié avec succès !`,
+					type: 'success',
+				},
+			});
 			store.dispatch(setResume(createdResume));
 			store.dispatch(addResume(createdResume));
 			return createdResume;
@@ -150,6 +156,12 @@ export const deleteResumeFromDB = async (id: string) => {
 			},
 		});
 		store.dispatch(deleteResume(id));
+		displayAlert({
+			payload: {
+				message: 'Votre cv a bien été supprimé',
+				type: 'info',
+			},
+		});
 	} catch (error) {
 		console.log(error);
 		displayAlert({

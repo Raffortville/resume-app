@@ -8,11 +8,15 @@ import { resetUser, setUser, userSelector } from './store/user/reducer';
 import { Header } from './components/layout/header';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useAppSelector } from './store/hooks';
+import { ToastAlert } from './components/ui/toastAlert';
+import { alertSelector } from './store/alert/reducer';
 
 function App() {
 	const [isUserLogged, setIsUserLogged] = useState<boolean | undefined>();
-	const userSelect = useAppSelector(userSelector);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	const userSelect = useAppSelector(userSelector);
+	const alert = useAppSelector(alertSelector);
 
 	const fetchUser = async ({
 		email,
@@ -67,6 +71,13 @@ function App() {
 
 	return (
 		<>
+			{alert !== null && (
+				<ToastAlert
+					isOpen={alert !== null}
+					message={alert?.message ?? ''}
+					severity={alert?.type ?? 'info'}
+				/>
+			)}
 			<Header isUserLogged={isUserLogged} />
 			<MainRoutes isUserLogged={isUserLogged} />
 		</>

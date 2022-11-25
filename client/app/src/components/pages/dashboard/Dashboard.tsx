@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { deleteResumeFromDB } from '../../../store/resume/actions';
 import { useAppSelector } from '../../../store/hooks';
-import { alertSelector } from '../../../store/alert/reducer';
 import { resumesSelector } from '../../../store/resume/reducer';
 
 import { Tooltip } from '@mui/material';
@@ -14,13 +13,11 @@ import {
 	VisibilityRounded,
 } from '@mui/icons-material';
 import { ResumeCard } from '../../ui/cards/resumeCard';
-import { ToastAlert } from '../../ui/toastAlert';
 import { Separator } from '../../ui/separator';
 
 import './dashboardStyles.scss';
 
 export const Dashboard: React.FC = () => {
-	const alert = useAppSelector(alertSelector);
 	const resumes = useAppSelector(resumesSelector);
 	const navigate = useNavigate();
 
@@ -82,13 +79,6 @@ export const Dashboard: React.FC = () => {
 
 	return (
 		<>
-			{alert !== null && (
-				<ToastAlert
-					isOpen={alert !== null}
-					message={alert?.message ?? ''}
-					severity={alert?.type ?? 'info'}
-				/>
-			)}
 			<div className='dashboard'>
 				<ResumeCard
 					bottomLabel='creér cv'

@@ -7,13 +7,10 @@ import { resumesSelector } from '../../store/resume/reducer';
 
 import { CircularProgress } from '@mui/material';
 import { Dashboard } from '../../components/pages/dashboard';
-import { ToastAlert } from '../../components/ui/toastAlert';
-import { alertSelector } from '../../store/alert/reducer';
 
 export const DashboardPage: React.FC = () => {
 	const user = useAppSelector(userSelector);
 	const resumes = useAppSelector(resumesSelector);
-	const alert = useAppSelector(alertSelector);
 
 	const getResumesByUser = (): void => {
 		if (user === null || !user._id) {
@@ -46,13 +43,6 @@ export const DashboardPage: React.FC = () => {
 
 	return (
 		<>
-			{alert !== null && (
-				<ToastAlert
-					isOpen={alert !== null}
-					message={alert?.message ?? ''}
-					severity={alert?.type ?? 'info'}
-				/>
-			)}
 			<Dashboard />
 		</>
 	);

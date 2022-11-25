@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { alertSelector } from '../../../store/alert/reducer';
-import { useAppSelector } from '../../../store/hooks';
 import { FormSectionType, IKeyNodeItem } from '../../../types';
 
 import {
@@ -12,7 +10,6 @@ import {
 	DeveloperMode,
 } from '@mui/icons-material/';
 import { FormSkeleton } from '../../layout/form';
-import { ToastAlert } from '../../ui/toastAlert';
 import { ContactForm } from './forms/contactForm';
 import { ExpertisesForm } from './forms/expertisesForm';
 import { ProfileForm } from './forms/profileForm';
@@ -27,7 +24,6 @@ export const ResumeFormContainer: React.FC = () => {
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
 
-	const alert = useAppSelector(alertSelector);
 	const location = useLocation();
 	const previousPathKey = useRef(location.state?.previousPathKey);
 
@@ -160,12 +156,6 @@ export const ResumeFormContainer: React.FC = () => {
 
 	return (
 		<>
-			<ToastAlert
-				isOpen={alert !== null}
-				message={alert?.message ?? ''}
-				severity={alert?.type ?? 'info'}
-			/>
-
 			<div className='resume-form'>
 				<div className='resume-form-breadcrumbs-container'>
 					<BreadCrumbs

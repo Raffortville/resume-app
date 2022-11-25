@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { useAppSelector } from '../../../store/hooks';
-import { alertSelector } from '../../../store/alert/reducer';
 import { checkIsValidInputFormat, isStringEmpty } from '../../../helpers';
 import { logIn, signUp } from '../../../store/user/actions';
 import { Button, TextField } from '@mui/material';
-import { ToastAlert } from '../../ui/toastAlert';
 
 import './authConnexion.scss';
 
@@ -71,7 +68,6 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 	const [formFields, setFormFields] = useState<FormFieldType[]>(
 		initialFormLoginState
 	);
-	const alert = useAppSelector(alertSelector);
 
 	useEffect(() => {
 		if (keyForm === 'signUp') {
@@ -196,14 +192,6 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 
 	return (
 		<>
-			{alert !== null && (
-				<ToastAlert
-					isOpen={alert !== null}
-					message={alert?.message ?? ''}
-					severity={alert?.type ?? 'info'}
-				/>
-			)}
-
 			<form className='connexion-form' onMouseLeave={resetErrorsField}>
 				<div>{renderFormFields()}</div>
 				<Button onClick={handleSubmit} variant='contained' fullWidth>
