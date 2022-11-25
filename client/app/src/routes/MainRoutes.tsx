@@ -3,7 +3,8 @@ import { PrivateRoute } from './privateRoute';
 import { ConnexionPage } from '../pages/connexion';
 import { DashboardPage } from '../pages/dashboard';
 import { HomePage } from '../pages/home';
-import { ResumeFormPage } from '../pages/resumeForm';
+import { ResumeCreatePage } from '../pages/resumeCreate';
+import { ResumeUpdatePage } from '../pages/resumeUpdate';
 
 export const MainRoutes: React.FC<{
 	isUserLogged: boolean;
@@ -28,10 +29,18 @@ export const MainRoutes: React.FC<{
 				}
 			/>
 			<Route
-				path='/resume/form/:id'
+				path='/resume/create/:id'
 				element={
 					<PrivateRoute isAllowed={isUserLogged} redirectPath='/connexion'>
-						<ResumeFormPage />
+						<ResumeCreatePage />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path='/resume/update/:id'
+				element={
+					<PrivateRoute isAllowed={isUserLogged} redirectPath='/connexion'>
+						<ResumeUpdatePage />
 					</PrivateRoute>
 				}
 			/>

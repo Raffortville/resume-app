@@ -29,8 +29,11 @@ export const Dashboard: React.FC = () => {
 	const resumes = useAppSelector(resumesSelector);
 	const navigate = useNavigate();
 
-	const onNavigateToResumeForm = (resumeId?: string): void => {
-		resumeId && navigate(`/resume/form/${resumeId}`);
+	const onNavigateToResumeForm = (
+		key: 'create' | 'update',
+		resumeId?: string
+	): void => {
+		resumeId && navigate(`/resume/${key}/${resumeId}`);
 	};
 
 	const onCreateNewResume = async (): Promise<void> => {
@@ -39,7 +42,7 @@ export const Dashboard: React.FC = () => {
 		}
 
 		const createdResume = await createResumeToDB({ userId: user._id });
-		createdResume && onNavigateToResumeForm(createdResume._id);
+		createdResume && onNavigateToResumeForm('create', createdResume._id);
 	};
 
 	const onViewResume = (resumeId?: string) => {
@@ -86,7 +89,9 @@ export const Dashboard: React.FC = () => {
 							nodeElement: (
 								<Tooltip
 									title='Modifier CV'
-									onClick={(): void => onNavigateToResumeForm(resume._id)}>
+									onClick={(): void =>
+										onNavigateToResumeForm('update', resume._id)
+									}>
 									<CreateRounded className='action-icon' />
 								</Tooltip>
 							),

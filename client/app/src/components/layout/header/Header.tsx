@@ -22,7 +22,7 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 	const navigate = useNavigate();
 
 	const navBarItems: ListItemType[] = [
-		{ key: '/resume/form', label: 'Créer nouveau CV' },
+		{ key: '/resume/create', label: 'Créer nouveau CV' },
 		...(isUserLogged ? [{ key: '/dashboard', label: 'Voir mes CV' }] : []),
 		{
 			key: isUserLogged ? '/deconnexion' : '/connexion',
@@ -36,7 +36,7 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 		}
 		const createdResume = await createResumeToDB({ userId: user._id });
 		if (createdResume) {
-			navigate(`resume/form/${createdResume._id}`);
+			navigate(`resume/create/${createdResume._id}`);
 		}
 	};
 
@@ -46,7 +46,7 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 			navigate('/connexion');
 			return;
 		}
-		if (linkKey === '/resume/form') {
+		if (linkKey === '/resume/create') {
 			createResume();
 			return;
 		}
