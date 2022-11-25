@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { deleteResumeFromDB } from '../../../store/resume/actions';
-import { useAppSelector } from '../../../store/hooks';
-import { resumesSelector } from '../../../store/resume/reducer';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { resumesSelector, setResume } from '../../../store/resume/reducer';
 
 import { Tooltip } from '@mui/material';
 import {
@@ -19,6 +19,7 @@ import './dashboardStyles.scss';
 
 export const Dashboard: React.FC = () => {
 	const resumes = useAppSelector(resumesSelector);
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const onViewResume = (resumeId?: string) => {
@@ -36,7 +37,7 @@ export const Dashboard: React.FC = () => {
 		return resumes.map((resume, index: number) => (
 			<div key={index} className='dashboard-resumes-list--item'>
 				<ResumeCard
-					bottomLabel={resume.profil?.position ?? `Votre CV ${index + 1}`}
+					bottomLabel={resume.title}
 					icons={[
 						{
 							key: 'delete',
@@ -65,7 +66,12 @@ export const Dashboard: React.FC = () => {
 							nodeElement: (
 								<Tooltip
 									title='Modifier CV'
-									onClick={(): void => navigate(`/resume/form/${resume._id}`)}>
+									onClick={(): void => {
+										navigate(`/resume/form/${resume._id}`, {
+											state: { resumeId: resume._id },
+										});
+										dispatch(setResume(resume));
+									}}>
 									<CreateRounded className='action-icon' />
 								</Tooltip>
 							),
