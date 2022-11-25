@@ -76,8 +76,9 @@ const DesignSchema = new mongoose.Schema({
 const ResumeSchema = new mongoose.Schema(
 	{
 		userId: { type: String, required: true },
-		createdtAt: Date,
+		title: String,
 		status: String,
+		createdtAt: Date,
 		profil: ProfileSchema,
 		expertises: ExpertiseSchema,
 		experiences: [ExperienceSchema],

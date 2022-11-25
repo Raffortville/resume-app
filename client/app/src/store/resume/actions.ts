@@ -62,9 +62,22 @@ export const getResumeById = async (
 	}
 };
 
-export const createResumeToDB = async (
-	payload: IResume
-): Promise<IResume | void> => {
+export const createResumeToDB = async (payload: {
+	title: string;
+}): Promise<IResume | void> => {
+	const { user } = store.getState().userReducer;
+	if (!user || user === null || !user._id) {
+		displayAlert({
+			payload: {
+				message: "Vous n'êtes pas connecté, veuillez vous logger",
+				type: 'error',
+			},
+		});
+		return;
+	}
+
+	const data: IResume = { ...payload, userId: user._id };
+
 	try {
 		const response = await fetch(`${config.API.url}/resume/create`, {
 			method: 'POST',
@@ -72,7 +85,7 @@ export const createResumeToDB = async (
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(payload),
+			body: JSON.stringify(data),
 		});
 
 		if (response.status === 200) {

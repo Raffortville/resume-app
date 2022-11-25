@@ -68,6 +68,7 @@ export type StatusType = 'complete' | 'draft';
 
 export interface IResume {
 	userId: string;
+	title: string;
 	_id?: string;
 	createdtAt?: Date;
 	status?: StatusType;

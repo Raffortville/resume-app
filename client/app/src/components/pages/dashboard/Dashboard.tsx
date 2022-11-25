@@ -68,7 +68,7 @@ export const Dashboard: React.FC = () => {
 							nodeElement: (
 								<Tooltip
 									title='Modifier CV'
-									onClick={(): void => navigate(`resume/form/${resume._id}`)}>
+									onClick={(): void => navigate(`/resume/form/${resume._id}`)}>
 									<CreateRounded className='action-icon' />
 								</Tooltip>
 							),
