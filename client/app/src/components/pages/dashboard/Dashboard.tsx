@@ -1,12 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-	createResumeToDB,
-	deleteResumeFromDB,
-} from '../../../store/resume/actions';
+import { deleteResumeFromDB } from '../../../store/resume/actions';
 import { useAppSelector } from '../../../store/hooks';
-import { userSelector } from '../../../store/user/reducer';
 import { alertSelector } from '../../../store/alert/reducer';
 import { resumesSelector } from '../../../store/resume/reducer';
 
@@ -24,29 +20,9 @@ import { Separator } from '../../ui/separator';
 import './dashboardStyles.scss';
 
 export const Dashboard: React.FC = () => {
-	const user = useAppSelector(userSelector);
 	const alert = useAppSelector(alertSelector);
 	const resumes = useAppSelector(resumesSelector);
 	const navigate = useNavigate();
-
-	const onNavigateToResumeForm = (
-		key: 'create' | 'update',
-		resumeId?: string
-	): void => {
-		resumeId && navigate(`/resume/${key}/${resumeId}`);
-	};
-
-	const onCreateNewResume = async (): Promise<void> => {
-		if (user === null || !user._id) {
-			return;
-		}
-
-		const createdResume = await createResumeToDB({ userId: user._id });
-		createdResume &&
-			navigate(`/resume/create/${createdResume._id}`, {
-				state: { previousPathKey: createdResume._id },
-			});
-	};
 
 	const onViewResume = (resumeId?: string) => {
 		if (!resumeId) {
@@ -92,9 +68,7 @@ export const Dashboard: React.FC = () => {
 							nodeElement: (
 								<Tooltip
 									title='Modifier CV'
-									onClick={(): void =>
-										onNavigateToResumeForm('update', resume._id)
-									}>
+									onClick={(): void => navigate(`resume/form/${resume._id}`)}>
 									<CreateRounded className='action-icon' />
 								</Tooltip>
 							),
@@ -118,12 +92,14 @@ export const Dashboard: React.FC = () => {
 			<div className='dashboard'>
 				<ResumeCard
 					bottomLabel='creér cv'
-					onClick={onCreateNewResume}
+					onClick={(): void => navigate('/resume/create')}
 					icons={[
 						{
 							key: 'create',
 							nodeElement: (
-								<Tooltip title='Créer CV' onClick={onCreateNewResume}>
+								<Tooltip
+									title='Créer CV'
+									onClick={(): void => navigate('/resume/create')}>
 									<AddCircleRounded className='action-icon' />
 								</Tooltip>
 							),

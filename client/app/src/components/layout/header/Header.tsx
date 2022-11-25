@@ -6,10 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import './header.scss';
 import { signOut } from '../../../store/user/actions';
-import { createResumeToDB } from '../../../store/resume/actions';
 import { useAppSelector } from '../../../store/hooks';
 import { alertSelector } from '../../../store/alert/reducer';
-import { userSelector } from '../../../store/user/reducer';
 import { ToastAlert } from '../../ui/toastAlert';
 
 interface CustomPros {
@@ -17,7 +15,6 @@ interface CustomPros {
 }
 
 export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
-	const user = useAppSelector(userSelector);
 	const alert = useAppSelector(alertSelector);
 	const navigate = useNavigate();
 
@@ -30,26 +27,10 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 		},
 	];
 
-	const createResume = async (): Promise<void> => {
-		if (user === null || !user._id) {
-			return;
-		}
-		const createdResume = await createResumeToDB({ userId: user._id });
-		if (createdResume) {
-			navigate(`resume/create/${createdResume._id}`, {
-				state: { previousPathKey: createdResume._id },
-			});
-		}
-	};
-
 	const onNavItemClick = (linkKey: string): void => {
 		if (linkKey === '/deconnexion') {
 			signOut();
 			navigate('/connexion');
-			return;
-		}
-		if (linkKey === '/resume/create') {
-			createResume();
 			return;
 		}
 		navigate(linkKey);

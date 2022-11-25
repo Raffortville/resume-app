@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResumeFormContainer } from '../../components/pages/resume';
 
-export const ResumeUpdatePage: React.FC = () => {
+export const ResumeFormsPage: React.FC = () => {
 	return <ResumeFormContainer />;
 };

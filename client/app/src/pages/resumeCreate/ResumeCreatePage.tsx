@@ -1,6 +1,6 @@
 import React from 'react';
-import { ResumeFormContainer } from '../../components/pages/resume';
+import { ResumeCreateContainer } from '../../components/pages/resume/create';
 
 export const ResumeCreatePage: React.FC = () => {
-	return <ResumeFormContainer />;
+	return <ResumeCreateContainer />;
 };
