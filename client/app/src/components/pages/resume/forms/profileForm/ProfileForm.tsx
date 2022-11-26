@@ -12,7 +12,7 @@ interface CustomProps {
 	onSubmit: (profil: IProfil) => void;
 }
 
-const ProfileFormLayout: React.FC<CustomProps> = ({
+const ProfileFormInputFields: React.FC<CustomProps> = ({
 	initialState,
 	onSubmit,
 }) => {
@@ -149,7 +149,7 @@ export const ProfileForm: React.FC<IProfilFormProps> = ({ onSubmitForm }) => {
 	};
 
 	return (
-		<ProfileFormLayout
+		<ProfileFormInputFields
 			initialState={profileInitialState}
 			onSubmit={handleSubmit}
 		/>

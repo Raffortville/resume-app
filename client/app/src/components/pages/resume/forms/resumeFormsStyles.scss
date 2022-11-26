@@ -28,6 +28,13 @@
 			gap: 24px;
 			padding: 32px;
 
+			.resume-form--expertises-icon {
+				padding-bottom: 3px;
+				font-size: 1.7em;
+				@include fadeText();
+				cursor: pointer;
+			}
+
 			.resume-form-button {
 				max-width: 182px;
 				margin: 32px auto 0;
