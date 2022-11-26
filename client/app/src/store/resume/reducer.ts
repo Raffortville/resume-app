@@ -21,8 +21,15 @@ const resumeSlice = createSlice({
 		setResume: (state, { payload }: PayloadAction<IResume>) => {
 			state.resume = payload;
 		},
-		updateResume: (state, { payload }: PayloadAction<IResume>) => {
-			state.resume = { ...state.resume, ...payload };
+		updateResumes: (state, { payload }: PayloadAction<IResume>) => {
+			if (state.resumes !== null) {
+				state.resumes = state.resumes.map((resume) => {
+					if (resume._id === payload._id) {
+						return payload;
+					}
+					return resume;
+				});
+			}
 		},
 		addResume: (state, { payload }: PayloadAction<IResume>) => {
 			if (state.resumes !== null) {
@@ -49,7 +56,7 @@ export const {
 	setResume,
 	setResumes,
 	addResume,
-	updateResume,
+	updateResumes,
 	deleteResume,
 	resetResume,
 	resetResumes,

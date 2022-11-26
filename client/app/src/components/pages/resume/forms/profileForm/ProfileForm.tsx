@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 
 import { IProfil } from '../../../../../store/types';
-import { checkIsValidInputFormat } from '../../../../../helpers';
 
 import { Button, TextareaAutosize, TextField } from '@mui/material';
+import { useAppSelector } from '../../../../../store/hooks';
+import { resumeSelector } from '../../../../../store/resume/reducer';
+import { updateResumeToDB } from '../../../../../store/resume/actions';
 
-export const ProfileForm: React.FC = () => {
-	const [profileValues, setProfileValues] = useState<IProfil>({
-		position: '',
-		portfolio: '',
-		socialMedias: '',
-		education: { academy: '', period: '', certificate: '' },
-	});
+interface CustomProps {
+	initialState: IProfil;
+	onSubmit: (profil: IProfil) => void;
+}
+
+const ProfileFormLayout: React.FC<CustomProps> = ({
+	initialState,
+	onSubmit,
+}) => {
+	const [profileValues, setProfileValues] = useState<IProfil>(initialState);
 
 	const handleChange = ({
 		name,
@@ -31,11 +36,9 @@ export const ProfileForm: React.FC = () => {
 				name='position'
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value, name } = e.target;
-					if (checkIsValidInputFormat(value, 'text')) {
-						handleChange({ value, name });
-					}
+					handleChange({ value, name });
 				}}
-				helperText='Titre du cv'
+				helperText='Titre de votre profil professionnel'
 				variant='standard'
 			/>
 			<TextareaAutosize
@@ -93,29 +96,62 @@ export const ProfileForm: React.FC = () => {
 				name='portfolio'
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value, name } = e.target;
-					if (checkIsValidInputFormat(value, 'text')) {
-						handleChange({ value, name });
-					}
+					handleChange({ value, name });
 				}}
 				helperText='Portfolio / Website / répo GIT'
 				variant='standard'
 			/>
 			<TextField
 				label='Réseau social'
-				value={profileValues.portfolio}
+				value={profileValues.socialMedias}
 				name='socialMedias'
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value, name } = e.target;
-					if (checkIsValidInputFormat(value, 'text')) {
-						handleChange({ value, name });
-					}
+					handleChange({ value, name });
 				}}
 				variant='standard'
 				helperText='Lien LinkedIn,...'
 			/>
-			<Button className='resume-form-button' variant='contained'>
+			<Button
+				className='resume-form-button'
+				onClick={(): void => onSubmit(profileValues)}
+				variant='contained'>
 				ENREGISTRER
 			</Button>
 		</div>
+	);
+};
+
+interface IProfilFormProps {
+	onSubmitForm: () => void;
+}
+
+export const ProfileForm: React.FC<IProfilFormProps> = ({ onSubmitForm }) => {
+	const resume = useAppSelector(resumeSelector);
+
+	const profileInitialState = {
+		position: resume?.profil?.position || '',
+		portfolio: resume?.profil?.portfolio || '',
+		socialMedias: resume?.profil?.socialMedias || '',
+		education: {
+			academy: resume?.profil?.education?.academy || '',
+			period: resume?.profil?.education?.period || '',
+			certificate: resume?.profil?.education?.certificate || '',
+		},
+	};
+
+	const handleSubmit = async (profil: IProfil): Promise<void> => {
+		if (!resume?.userId) {
+			return;
+		}
+		await updateResumeToDB({ ...resume, profil });
+		onSubmitForm();
+	};
+
+	return (
+		<ProfileFormLayout
+			initialState={profileInitialState}
+			onSubmit={handleSubmit}
+		/>
 	);
 };

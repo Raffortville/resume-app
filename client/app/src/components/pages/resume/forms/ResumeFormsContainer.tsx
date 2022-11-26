@@ -140,7 +140,11 @@ export const ResumeFormContainer: React.FC = () => {
 				);
 
 			case 'profil':
-				return <ProfileForm />;
+				return (
+					<ProfileForm
+						onSubmitForm={(): void => handleNavigateFormSections('next')}
+					/>
+				);
 
 			case 'expertises':
 				return <ExpertisesForm />;
