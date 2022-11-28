@@ -129,7 +129,7 @@ interface IProfilFormProps {
 export const ProfileForm: React.FC<IProfilFormProps> = ({ onSubmitForm }) => {
 	const resume = useAppSelector(resumeSelector);
 
-	const profileInitialState = {
+	const profileInitialState: IProfil = {
 		position: resume?.profil?.position || '',
 		portfolio: resume?.profil?.portfolio || '',
 		socialMedias: resume?.profil?.socialMedias || '',

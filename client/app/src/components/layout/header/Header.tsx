@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavBar } from '../../ui/navBar';
-import type { ListItemType } from '../../../types';
+import type { ObjectKeyLabel } from '../../../types';
 import { useNavigate } from 'react-router-dom';
 // import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -14,7 +14,7 @@ interface CustomPros {
 export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 	const navigate = useNavigate();
 
-	const navBarItems: ListItemType[] = [
+	const navBarItems: ObjectKeyLabel[] = [
 		{ key: '/resume/create', label: 'Créer nouveau CV' },
 		...(isUserLogged ? [{ key: '/dashboard', label: 'Voir mes CV' }] : []),
 		{

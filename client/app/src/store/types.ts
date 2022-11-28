@@ -1,9 +1,6 @@
 import type { AlertColor } from '@mui/material/Alert';
+import { ObjKeyValueType } from '../types';
 
-export type ObjKeyValueType = {
-	key: string;
-	value: string;
-};
 export interface IUserLite {
 	_id?: string;
 	userName?: string;

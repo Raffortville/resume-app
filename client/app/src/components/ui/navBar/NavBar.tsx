@@ -1,10 +1,10 @@
 import React from 'react';
-import type { ListItemType } from '../../../types';
+import type { ObjectKeyLabel } from '../../../types';
 
 import './navBar.scss';
 
 interface CustomPros {
-	items: ListItemType[];
+	items: ObjectKeyLabel[];
 	className?: string;
 	onItemClick?: (key: string) => void;
 }

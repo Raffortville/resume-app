@@ -1,9 +1,19 @@
-export type ListItemType = {
+export type ObjectKeyLabel = {
 	key: string;
 	label: string;
 };
 
-export interface ISectionItemProps extends ListItemType {
+export type ObjKeyValueType = {
+	key: string;
+	value: string;
+};
+
+export type ObjectIdLabel = {
+	id: string;
+	label: string;
+};
+
+export interface ISectionItemProps extends ObjectKeyLabel {
 	content: React.ReactNode;
 }
 
