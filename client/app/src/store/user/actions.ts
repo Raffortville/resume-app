@@ -6,7 +6,7 @@ import { fireBaseAuth } from '../../services';
 
 import config from '../../config';
 import { store } from '../../store';
-import type { IUser, IUserLite } from '../../store/types';
+import type { IUser, IUserLite } from '../../types/store';
 import { displayAlert } from '../alert/actions';
 import { setUser, updateUser } from './reducer';
 

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
-import { AlertType, IAlert } from '../types';
+import { AlertType, IAlert } from '../../types/store';
 
 export const initialState: { alert: AlertType } = { alert: null };
 

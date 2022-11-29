@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../../../store/hooks';
 import { resumeSelector } from '../../../../store/resume/reducer';
 import { getResumeById } from '../../../../store/resume/actions';
-import { FormSectionType, IKeyNodeItem } from '../../../../types';
+import { FormSectionType, IKeyNodeItem } from '../../../../types/common';
 
 import {
 	ImportContacts,

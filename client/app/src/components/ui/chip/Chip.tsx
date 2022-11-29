@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chip, ChipProps } from '@mui/material';
-import { ObjectIdLabel } from '../../../types';
+import { ObjectIdLabel } from '../../../types/common';
 
 interface CustomProps {
 	chipData: ObjectIdLabel;

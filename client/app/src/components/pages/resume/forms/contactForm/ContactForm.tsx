@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useAppSelector } from '../../../../../store/hooks';
 import { userSelector } from '../../../../../store/user/reducer';
-import { IUserLite } from '../../../../../store/types';
+import { IUserLite } from '../../../../../types/store';
 import { updateUserToDB } from '../../../../../store/user/actions';
 import { checkIsValidInputFormat, isStringEmpty } from '../../../../../helpers';
 

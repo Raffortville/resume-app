@@ -1,5 +1,5 @@
 import { store } from '..';
-import { IAlert } from '../types';
+import { IAlert } from '../../types/store';
 import { setAlert, resetAlert } from './reducer';
 
 export const displayAlert = ({

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ObjectIdLabel } from '../../../../types';
+import { ObjectIdLabel } from '../../../../types/common';
 import { ChipUI } from '../../chip';
 
 import './listChipsStyles.scss';

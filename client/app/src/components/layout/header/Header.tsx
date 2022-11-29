@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavBar } from '../../ui/navBar';
-import type { ObjectKeyLabel } from '../../../types';
+import type { ObjectKeyLabel } from '../../../types/common';
 import { useNavigate } from 'react-router-dom';
 // import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 

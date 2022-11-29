@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ISectionItemProps } from '../../../types';
+import { ISectionItemProps } from '../../../types/common';
 
 import './switchSections.scss';
 

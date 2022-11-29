@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { LibraryBooksTwoTone } from '@mui/icons-material';
-import { IKeyNodeItem } from '../../../../types';
+import { IKeyNodeItem } from '../../../../types/common';
 import { BottomCard } from './bottomCard';
 
 import './resumeCardStyles.scss';

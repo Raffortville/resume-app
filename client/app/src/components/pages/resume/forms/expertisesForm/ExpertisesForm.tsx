@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useAppSelector } from '../../../../../store/hooks';
 import { resumeSelector } from '../../../../../store/resume/reducer';
-import { IExpertise } from '../../../../../store/types';
+import { IExpertise } from '../../../../../types/store';
 
 import { AddCircleOutline } from '@mui/icons-material';
 import { Button, InputAdornment, TextField } from '@mui/material';

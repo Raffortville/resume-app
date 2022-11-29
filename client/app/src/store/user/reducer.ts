@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
-import type { IUser, UserType } from '../types';
+import type { IUser, UserType } from '../../types/store';
 
 export const initialState: { user: UserType } = {
 	user: null,

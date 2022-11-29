@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
-import type { IResume } from '../types';
+import type { IResume } from '../../types/store';
 
 export const initialState: {
 	resumes: IResume[] | null;

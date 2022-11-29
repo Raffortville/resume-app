@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { IProfil } from '../../../../../store/types';
+import { IProfil } from '../../../../../types/store';
 
 import { Button, TextareaAutosize, TextField } from '@mui/material';
 import { useAppSelector } from '../../../../../store/hooks';

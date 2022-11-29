@@ -1,7 +1,7 @@
 import { store } from '..';
 import config from '../../config';
 import { displayAlert } from '../alert/actions';
-import { IResume } from '../types';
+import { IResume } from '../../types/store';
 import { addResume, deleteResume, setResume, setResumes } from './reducer';
 
 export const getResumes = async (userId: string): Promise<IResume[] | void> => {

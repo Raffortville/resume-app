@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { IKeyNodeItem } from '../../../types';
+import { IKeyNodeItem } from '../../../types/common';
 
 import { Breadcrumbs } from '@mui/material';
 

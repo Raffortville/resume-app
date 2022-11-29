@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ObjectKeyLabel } from '../../../types';
+import type { ObjectKeyLabel } from '../../../types/common';
 
 import './navBar.scss';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ISectionItemProps } from '../../types';
+import { ISectionItemProps } from '../../types/common';
 
 import { SwitchSections } from '../../components/ui/switchSections';
 import { AuthConnexion } from '../../components/pages/connexion';
