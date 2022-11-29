@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 
 import { useResume } from '../../../../hooks/resume/useResume';
-import { FormSectionType, IKeyNodeItem } from '../../../../types/common';
+import {
+	FormSectionType,
+	IKeyNodeItem,
+	ObjectKeyListItems,
+} from '../../../../types/common';
 
 import {
 	ImportContacts,
@@ -65,8 +69,7 @@ const breadcrumbsItems: IKeyNodeItem[] = [
 ];
 
 export const ResumeFormContainer: React.FC = () => {
-	const { resumeTitle } = useResume();
-
+	const { resumeTitle, resume } = useResume();
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
 
@@ -175,21 +178,11 @@ export const ResumeFormContainer: React.FC = () => {
 					<div>
 						{formSectionSelected === 'expertises' && (
 							<ListChips
-								chips={[
-									{
-										key: 'language',
-										title: 'Languages informatiques',
-										items: [
-											{ id: '1', label: 'Javascript' },
-											{ id: '2', label: 'Typescript' },
-										],
-									},
-									{
-										key: 'frameworks',
-										title: 'Frameworks',
-										items: [{ id: '3', label: 'React.js' }],
-									},
-								]}
+								chips={
+									resume?.expertises
+										? ([resume.expertises] as ObjectKeyListItems[])
+										: []
+								}
 								onDeleteChip={function ({
 									chipKey,
 									itemId,

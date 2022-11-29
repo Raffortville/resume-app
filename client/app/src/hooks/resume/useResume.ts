@@ -34,10 +34,6 @@ export const useResume = () => {
 		};
 	}, [resume]);
 
-	const resumeTitle = useMemo((): string | undefined => {
-		return resume?.title;
-	}, [resume?.title]);
-
 	const updateResumeProfilToDB = (profil: IProfil): { isSucces: boolean } => {
 		if (!resume?.userId) {
 			return { isSucces: false };
@@ -51,6 +47,10 @@ export const useResume = () => {
 		profilFiltred && updateResumeToDB({ ...resume, profil: profilFiltred });
 		return { isSucces: true };
 	};
+
+	const resumeTitle = useMemo((): string | undefined => {
+		return resume?.title;
+	}, [resume?.title]);
 
 	return {
 		resume,

@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
-import { ObjectIdLabel } from '../../../../types/common';
+import { ObjectKeyListItems, ObjectIdLabel } from '../../../../types/common';
 import { ChipUI } from '../../chip';
 
 import './listChipsStyles.scss';
 
-type ListChipsObject = {
-	title: string;
-	key: string;
-	items: ObjectIdLabel[];
-};
-
 interface CustomProps {
-	chips: ListChipsObject[];
+	chips: ObjectKeyListItems[];
 	onDeleteChip: ({
 		chipKey,
 		itemId,
@@ -22,7 +16,7 @@ interface CustomProps {
 }
 
 export const ListChips: React.FC<CustomProps> = ({ chips, onDeleteChip }) => {
-	const [listChips, setListChips] = useState<ListChipsObject[]>(chips);
+	const [listChips, setListChips] = useState<ObjectKeyListItems[]>(chips);
 
 	const renderChipsItem = ({
 		chipItems,

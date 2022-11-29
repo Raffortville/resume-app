@@ -1,5 +1,7 @@
 import type { AlertColor } from '@mui/material/Alert';
 import { ObjKeyValueType } from '../common/index';
+import type { ObjectIdLabel } from '../common/index';
+import type { ObjectKeyListItems } from '../common/index';
 
 export interface IUserLite {
 	_id?: string;
@@ -41,13 +43,13 @@ export interface IExperience {
 	stack: ObjKeyValueType[];
 }
 export interface IExpertise {
-	languages?: ObjKeyValueType[];
-	frameworks?: ObjKeyValueType[];
-	databases?: ObjKeyValueType[];
-	services?: ObjKeyValueType[];
-	control_version?: ObjKeyValueType[];
-	productivity?: ObjKeyValueType[];
-	soft_skills?: ObjKeyValueType[];
+	languages?: ObjectKeyListItems;
+	frameworks?: ObjectKeyListItems;
+	databases?: ObjectKeyListItems;
+	services?: ObjectKeyListItems;
+	control_version?: ObjectKeyListItems;
+	productivity?: ObjectKeyListItems;
+	soft_skills?: ObjectKeyListItems;
 }
 export interface IProfil {
 	position?: string;

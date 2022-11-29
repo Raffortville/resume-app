@@ -13,6 +13,12 @@ export type ObjectIdLabel = {
 	label: string;
 };
 
+export type ObjectKeyListItems = {
+	title: string;
+	key: string;
+	items: ObjectIdLabel[];
+};
+
 export interface ISectionItemProps extends ObjectKeyLabel {
 	content: React.ReactNode;
 }

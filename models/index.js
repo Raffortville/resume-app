@@ -8,6 +8,11 @@ const SubDocSchema = new mongoose.Schema(
 	{ versionKey: false }
 );
 
+const SubDocIdLabelSchema = new mongoose.Schema({
+	id: String,
+	label: String,
+});
+
 const UserSchema = new mongoose.Schema(
 	{
 		email: { type: String, required: true },
@@ -25,13 +30,17 @@ const UserSchema = new mongoose.Schema(
 
 const ExpertiseSchema = new mongoose.Schema(
 	{
-		languages: [SubDocSchema],
-		frameworks: [SubDocSchema],
-		database: [SubDocSchema],
-		services: [SubDocSchema],
-		control_version: [SubDocSchema],
-		productivity: [SubDocSchema],
-		soft_skills: [SubDocSchema],
+		languages: { title: String, key: String, items: [SubDocIdLabelSchema] },
+		frameworks: { title: String, key: String, items: [SubDocIdLabelSchema] },
+		database: { title: String, key: String, items: [SubDocIdLabelSchema] },
+		services: { title: String, key: String, items: [SubDocIdLabelSchema] },
+		control_version: {
+			title: String,
+			key: String,
+			items: [SubDocIdLabelSchema],
+		},
+		productivity: { title: String, key: String, items: [SubDocIdLabelSchema] },
+		soft_skills: { title: String, key: String, items: [SubDocIdLabelSchema] },
 	},
 	{ versionKey: false }
 );

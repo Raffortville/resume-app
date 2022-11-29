@@ -10,9 +10,7 @@ interface CustomProps {
 
 export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 	const { user, updateUser } = useUser();
-	const [userValues, setUserValues] = useState<IUserLite>({
-		...user,
-	});
+	const [userValues, setUserValues] = useState<IUserLite>({ ...user });
 	const [emailError, setEmailError] = useState<boolean>(false);
 
 	const handleChange = ({

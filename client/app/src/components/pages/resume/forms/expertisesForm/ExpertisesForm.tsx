@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-import { useAppSelector } from '../../../../../store/hooks';
-import { resumeSelector } from '../../../../../store/resume/reducer';
-import { IExpertise } from '../../../../../types/store';
-
 import { AddCircleOutline } from '@mui/icons-material';
 import { Button, InputAdornment, TextField } from '@mui/material';
 
@@ -13,6 +9,7 @@ type ExpertisesFormType = {
 	databases: string;
 	services: string;
 	control_version: string;
+	productivity: string;
 	soft_skills: string;
 };
 
@@ -23,6 +20,7 @@ const ExpertisesFormInputFields: React.FC = () => {
 		databases: '',
 		services: '',
 		control_version: '',
+		productivity: '',
 		soft_skills: '',
 	});
 
@@ -106,12 +104,30 @@ const ExpertisesFormInputFields: React.FC = () => {
 				}}
 			/>
 			<TextField
-				label='Productivité & Controle de version'
+				label='Controle de version'
 				name='control_version'
 				value={expertisesValues.control_version}
 				onChange={handleChange}
 				variant='standard'
-				helperText='Git, Assana, Jira, les environements que vous maitrisez'
+				helperText='Git, etc..'
+				InputProps={{
+					endAdornment: (
+						<InputAdornment position='end'>
+							<AddCircleOutline
+								className='resume-form--expertises-icon'
+								color='primary'
+							/>
+						</InputAdornment>
+					),
+				}}
+			/>
+			<TextField
+				label='Productivité'
+				name='productivity'
+				value={expertisesValues.productivity}
+				onChange={handleChange}
+				variant='standard'
+				helperText='Jira, assana, etc...'
 				InputProps={{
 					endAdornment: (
 						<InputAdornment position='end'>
@@ -149,15 +165,5 @@ const ExpertisesFormInputFields: React.FC = () => {
 };
 
 export const ExpertisesForm: React.FC = () => {
-	const resume = useAppSelector(resumeSelector);
-	const initialExpertisesState: IExpertise = {
-		languages: resume?.expertises?.languages || [],
-		frameworks: resume?.expertises?.frameworks || [],
-		databases: resume?.expertises?.databases || [],
-		services: resume?.expertises?.services || [],
-		control_version: resume?.expertises?.control_version || [],
-		soft_skills: resume?.expertises?.soft_skills || [],
-	};
-	console.log(initialExpertisesState);
 	return <ExpertisesFormInputFields />;
 };
