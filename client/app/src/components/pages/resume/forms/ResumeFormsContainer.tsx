@@ -22,6 +22,7 @@ import { DesignForm } from './designForm/DesignForm';
 import { BreadCrumbs } from '../../../ui/breadcrumbs';
 
 import './resumeFormsStyles.scss';
+import { ListChips } from '../../../ui/list/listChips';
 
 const breadcrumbsItems: IKeyNodeItem[] = [
 	{
@@ -184,6 +185,36 @@ export const ResumeFormContainer: React.FC = () => {
 							handleNavigateFormSections(direction)
 						}
 					/>
+					<div>
+						{formSectionSelected === 'expertises' && (
+							<ListChips
+								chips={[
+									{
+										key: 'language',
+										title: 'Languages informatiques',
+										items: [
+											{ id: '1', label: 'Javascript' },
+											{ id: '2', label: 'Typescript' },
+										],
+									},
+									{
+										key: 'frameworks',
+										title: 'Frameworks',
+										items: [{ id: '3', label: 'React.js' }],
+									},
+								]}
+								onDeleteChip={function ({
+									chipKey,
+									itemId,
+								}: {
+									chipKey: string;
+									itemId: string;
+								}): void {
+									throw new Error('Function not implemented.');
+								}}
+							/>
+						)}
+					</div>
 				</div>
 			</div>
 		</>

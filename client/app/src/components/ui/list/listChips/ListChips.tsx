@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ObjectIdLabel } from '../../../../types';
 import { ChipUI } from '../../chip';
 
+import './listChipsStyles.scss';
+
 type ListChipsObject = {
 	title: string;
 	key: string;
@@ -10,9 +12,16 @@ type ListChipsObject = {
 
 interface CustomProps {
 	chips: ListChipsObject[];
+	onDeleteChip: ({
+		chipKey,
+		itemId,
+	}: {
+		chipKey: string;
+		itemId: string;
+	}) => void;
 }
 
-export const ListChips: React.FC<CustomProps> = ({ chips }) => {
+export const ListChips: React.FC<CustomProps> = ({ chips, onDeleteChip }) => {
 	const [listChips, setListChips] = useState<ListChipsObject[]>(chips);
 
 	const renderChipsItem = ({
@@ -34,6 +43,7 @@ export const ListChips: React.FC<CustomProps> = ({ chips }) => {
 					return listChip;
 				})
 			);
+			onDeleteChip({ chipKey: chipKey, itemId: id });
 		};
 
 		return chipItems.map((item) => {
@@ -53,9 +63,11 @@ export const ListChips: React.FC<CustomProps> = ({ chips }) => {
 	return (
 		<>
 			{listChips.map((chip) => (
-				<div key={chip.key}>
-					<h2>{chip.title}</h2>
-					{renderChipsItem({ chipItems: chip.items, chipKey: chip.key })}
+				<div key={chip.key} className='listChips'>
+					<h3>{chip.title}</h3>
+					<div className='listChips-items'>
+						{renderChipsItem({ chipItems: chip.items, chipKey: chip.key })}
+					</div>
 				</div>
 			))}
 		</>

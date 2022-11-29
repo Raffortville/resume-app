@@ -1,0 +1,13 @@
+@import '../../../../styles/variables.scss';
+
+.listChips {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 32px;
+
+	.listChips-items {
+		display: flex;
+		gap: 8px;
+	}
+}
