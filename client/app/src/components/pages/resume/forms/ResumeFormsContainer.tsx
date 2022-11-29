@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
 
-import { useAppSelector } from '../../../../store/hooks';
-import { resumeSelector } from '../../../../store/resume/reducer';
-import { getResumeById } from '../../../../store/resume/actions';
+import { useResume } from '../../../../hooks/resume/useResume';
 import { FormSectionType, IKeyNodeItem } from '../../../../types/common';
 
 import {
@@ -20,9 +17,9 @@ import { ProfileForm } from './profileForm';
 import { ExperiencesForm } from './experiencesForm';
 import { DesignForm } from './designForm/DesignForm';
 import { BreadCrumbs } from '../../../ui/breadcrumbs';
+import { ListChips } from '../../../ui/list/listChips';
 
 import './resumeFormsStyles.scss';
-import { ListChips } from '../../../ui/list/listChips';
 
 const breadcrumbsItems: IKeyNodeItem[] = [
 	{
@@ -68,20 +65,10 @@ const breadcrumbsItems: IKeyNodeItem[] = [
 ];
 
 export const ResumeFormContainer: React.FC = () => {
-	const resume = useAppSelector(resumeSelector);
-	const location = useLocation();
+	const { resumeTitle } = useResume();
 
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
-
-	useEffect(() => {
-		if (resume !== null || !location.state?.resumeId) {
-			return;
-		}
-		const { resumeId } = location.state;
-		getResumeById(resumeId);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [resume]);
 
 	const getFormTitle = (): string => {
 		switch (formSectionSelected) {
@@ -175,7 +162,7 @@ export const ResumeFormContainer: React.FC = () => {
 					/>
 				</div>
 				<div className='resume-form--section'>
-					<h2>{resume?.title}</h2>
+					<h2>{resumeTitle}</h2>
 					<FormSkeleton
 						title={getFormTitle()}
 						children={getFormContent()}

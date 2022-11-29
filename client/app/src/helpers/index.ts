@@ -29,3 +29,23 @@ export const checkIsValidInputFormat = (
 export const isStringEmpty = (input?: string): boolean => {
 	return input === undefined || input === null || input === '';
 };
+
+export const isObjectEmpty = (obj: any): boolean => {
+	return Object.keys(obj).length === 0;
+};
+
+export const removeEmptyOrNullKeyValueFromObject = (
+	obj: any
+): any | undefined => {
+	const objectFilred = Object.fromEntries(
+		Object.entries(obj).filter(
+			([key, value]) => value !== '' || value != null || value !== undefined
+		)
+	);
+
+	if (isObjectEmpty(objectFilred)) {
+		return;
+	}
+
+	return objectFilred;
+};

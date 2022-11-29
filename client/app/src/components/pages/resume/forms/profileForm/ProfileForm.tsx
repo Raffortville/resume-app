@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-
+import { useResume } from '../../../../../hooks/resume/';
 import { IProfil } from '../../../../../types/store';
-
 import { Button, TextareaAutosize, TextField } from '@mui/material';
-import { useAppSelector } from '../../../../../store/hooks';
-import { resumeSelector } from '../../../../../store/resume/reducer';
-import { updateResumeToDB } from '../../../../../store/resume/actions';
 
 interface CustomProps {
 	initialState: IProfil;
@@ -32,7 +28,7 @@ const ProfileFormInputFields: React.FC<CustomProps> = ({
 		<div className='resume-form-container'>
 			<TextField
 				label='Position'
-				value={profileValues.position}
+				value={profileValues.position || ''}
 				name='position'
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value, name } = e.target;
@@ -43,6 +39,7 @@ const ProfileFormInputFields: React.FC<CustomProps> = ({
 			/>
 			<TextareaAutosize
 				name='introduction'
+				value={profileValues.introduction || ''}
 				minRows={3}
 				maxRows={6}
 				placeholder='Présentez-vous en quelques mots'
@@ -53,7 +50,7 @@ const ProfileFormInputFields: React.FC<CustomProps> = ({
 			/>
 			<TextField
 				label='Académie'
-				value={profileValues.education?.academy}
+				value={profileValues.education?.academy || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value } = e.target;
 					setProfileValues({
@@ -66,7 +63,7 @@ const ProfileFormInputFields: React.FC<CustomProps> = ({
 			/>
 			<TextField
 				label='Periode'
-				value={profileValues.education?.period}
+				value={profileValues.education?.period || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value } = e.target;
 					setProfileValues({
@@ -79,7 +76,7 @@ const ProfileFormInputFields: React.FC<CustomProps> = ({
 			/>
 			<TextField
 				label='Diplôme'
-				value={profileValues.education?.certificate}
+				value={profileValues.education?.certificate || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value } = e.target;
 					setProfileValues({
@@ -92,7 +89,7 @@ const ProfileFormInputFields: React.FC<CustomProps> = ({
 			/>
 			<TextField
 				label='Portfolio'
-				value={profileValues.portfolio}
+				value={profileValues.portfolio || ''}
 				name='portfolio'
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value, name } = e.target;
@@ -103,7 +100,7 @@ const ProfileFormInputFields: React.FC<CustomProps> = ({
 			/>
 			<TextField
 				label='Réseau social'
-				value={profileValues.socialMedias}
+				value={profileValues.socialMedias || ''}
 				name='socialMedias'
 				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
 					const { value, name } = e.target;
@@ -127,25 +124,15 @@ interface IProfilFormProps {
 }
 
 export const ProfileForm: React.FC<IProfilFormProps> = ({ onSubmitForm }) => {
-	const resume = useAppSelector(resumeSelector);
+	const { resumeProfil, updateResumeProfilToDB } = useResume();
 
 	const profileInitialState: IProfil = {
-		position: resume?.profil?.position || '',
-		portfolio: resume?.profil?.portfolio || '',
-		socialMedias: resume?.profil?.socialMedias || '',
-		education: {
-			academy: resume?.profil?.education?.academy || '',
-			period: resume?.profil?.education?.period || '',
-			certificate: resume?.profil?.education?.certificate || '',
-		},
+		...resumeProfil,
 	};
 
-	const handleSubmit = async (profil: IProfil): Promise<void> => {
-		if (!resume?.userId) {
-			return;
-		}
-		await updateResumeToDB({ ...resume, profil });
-		onSubmitForm();
+	const handleSubmit = (profil: IProfil): void => {
+		const { isSucces } = updateResumeProfilToDB(profil);
+		isSucces && onSubmitForm();
 	};
 
 	return (

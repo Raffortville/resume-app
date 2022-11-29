@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-
-import { useAppSelector } from '../../../../../store/hooks';
-import { userSelector } from '../../../../../store/user/reducer';
+import { useUser } from '../../../../../hooks/user';
 import { IUserLite } from '../../../../../types/store';
-import { updateUserToDB } from '../../../../../store/user/actions';
-import { checkIsValidInputFormat, isStringEmpty } from '../../../../../helpers';
-
+import { checkIsValidInputFormat } from '../../../../../helpers';
 import { Button, TextField } from '@mui/material';
 
 interface CustomProps {
@@ -13,15 +9,9 @@ interface CustomProps {
 }
 
 export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
-	const user = useAppSelector(userSelector);
+	const { user, updateUser } = useUser();
 	const [userValues, setUserValues] = useState<IUserLite>({
-		_id: user?._id || '',
-		emailPro: user?.emailPro || '',
-		lastName: user?.lastName || '',
-		firstName: user?.firstName || '',
-		city: user?.city || '',
-		country: user?.country || '',
-		phone: user?.phone || '',
+		...user,
 	});
 	const [emailError, setEmailError] = useState<boolean>(false);
 
@@ -38,28 +28,10 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 		setUserValues({ ...userValues, [name]: value });
 	};
 
-	const handleSubmit = async (): Promise<void> => {
-		const { emailPro, lastName, firstName, phone, country, city } = userValues;
-		if (
-			isStringEmpty(emailPro) &&
-			isStringEmpty(lastName) &&
-			isStringEmpty(firstName) &&
-			isStringEmpty(phone) &&
-			isStringEmpty(country) &&
-			isStringEmpty(city)
-		) {
-			return;
-		}
-
-		if (emailPro !== undefined && emailPro !== '') {
-			const isEmailValid = checkIsValidInputFormat(emailPro, 'email');
-			setEmailError(!isEmailValid);
-			if (!isEmailValid) {
-				return;
-			}
-		}
-		await updateUserToDB(userValues);
-		onSubmitForm();
+	const handleSubmit = (): void => {
+		const { isEmailValid, isSucces } = updateUser(userValues);
+		setEmailError(!isEmailValid);
+		isSucces && onSubmitForm();
 	};
 
 	return (
@@ -67,7 +39,7 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 			<TextField
 				label='Nom'
 				type='text'
-				value={userValues?.lastName}
+				value={userValues?.lastName || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					if (checkIsValidInputFormat(e.target.value, 'text')) {
 						handleChange({ value: e.target.value, name: 'lastName' });
@@ -78,7 +50,7 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 			<TextField
 				label='Prénom'
 				type='text'
-				value={userValues?.firstName}
+				value={userValues?.firstName || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					if (checkIsValidInputFormat(e.target.value, 'text')) {
 						handleChange({ value: e.target.value, name: 'firstName' });
@@ -89,7 +61,7 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 			<TextField
 				label='Email'
 				type='email'
-				value={userValues?.emailPro}
+				value={userValues?.emailPro || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					handleChange({ value: e.target.value, name: 'emailPro' });
 				}}
@@ -102,7 +74,7 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 			<TextField
 				label='Ville'
 				type='text'
-				value={userValues?.city}
+				value={userValues?.city || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					if (checkIsValidInputFormat(e.target.value, 'text')) {
 						handleChange({ value: e.target.value, name: 'city' });
@@ -113,7 +85,7 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 			<TextField
 				label='Pays'
 				type='text'
-				value={userValues?.country}
+				value={userValues?.country || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					if (checkIsValidInputFormat(e.target.value, 'text')) {
 						handleChange({ value: e.target.value, name: 'country' });
@@ -124,7 +96,7 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 			<TextField
 				label='Téléphone'
 				type='tel'
-				value={userValues?.phone}
+				value={userValues?.phone || ''}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					if (checkIsValidInputFormat(e.target.value, 'number')) {
 						handleChange({ value: e.target.value, name: 'phone' });
