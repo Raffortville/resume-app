@@ -23,9 +23,10 @@ router.post('/create', async (req, res, next) => {
 
 router.put('/update/:id', async (req, res, next) => {
 	try {
-		const resume = await ResumeModel.updateOne(
-			{ _id: req.params.id },
-			req.body
+		const resume = await ResumeModel.findByIdAndUpdate(
+			req.params.id,
+			req.body,
+			{ new: true }
 		);
 		return success(res, resume);
 	} catch (error) {

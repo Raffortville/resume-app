@@ -7,20 +7,23 @@ import { Button, TextField } from '@mui/material';
 
 import './resumeCreateStyles.scss';
 
-export const ResumeCreateContainer: React.FC = () => {
+interface IResumeCreateFormProps {
+	onSubmitForm: (title: string) => void;
+}
+
+const ResumeCreateForm: React.FC<IResumeCreateFormProps> = ({
+	onSubmitForm,
+}) => {
 	const [title, setTitle] = useState<{ value: string; error?: string }>({
 		value: '',
 	});
-	const navigate = useNavigate();
 
-	const createResume = async (): Promise<void> => {
+	const handleSubmit = async (): Promise<void> => {
 		if (isStringEmpty(title.value)) {
 			setTitle({ ...title, error: 'Veuillez remplir le champs' });
 			return;
 		}
-		const createdResume = await createResumeToDB({ title: title.value });
-		createdResume &&
-			navigate(`/resume/form/${createdResume._id}`, { replace: true });
+		onSubmitForm(title.value);
 	};
 
 	return (
@@ -44,9 +47,20 @@ export const ResumeCreateContainer: React.FC = () => {
 					variant='standard'
 				/>
 			</div>
-			<Button variant='contained' onClick={createResume}>
+			<Button variant='contained' onClick={handleSubmit}>
 				créer
 			</Button>
 		</div>
 	);
+};
+
+export const ResumeCreateContainer: React.FC = () => {
+	const navigate = useNavigate();
+
+	const createResume = async (title: string): Promise<void> => {
+		const createdResume = await createResumeToDB({ title });
+		createdResume &&
+			navigate(`/resume/form/${createdResume._id}`, { replace: true });
+	};
+	return <ResumeCreateForm onSubmitForm={createResume} />;
 };

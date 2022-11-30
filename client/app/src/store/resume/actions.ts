@@ -112,7 +112,9 @@ export const createResumeToDB = async (payload: {
 	}
 };
 
-export const updateResumeToDB = async (payload: IResume): Promise<void> => {
+export const updateResumeToDB = async (
+	payload: IResume
+): Promise<IResume | undefined> => {
 	try {
 		const response = await fetch(
 			`${config.API.url}/resume/update/${payload._id}`,
@@ -127,13 +129,15 @@ export const updateResumeToDB = async (payload: IResume): Promise<void> => {
 		);
 
 		if (response.status === 200) {
-			store.dispatch(setResume(payload));
+			const updatedResume = await response.json();
+			store.dispatch(setResume(updatedResume));
 			displayAlert({
 				payload: {
 					message: 'Vos informations ont bien été enregisrtés',
 					type: 'info',
 				},
 			});
+			return updatedResume;
 		}
 	} catch (error) {
 		console.log(error);

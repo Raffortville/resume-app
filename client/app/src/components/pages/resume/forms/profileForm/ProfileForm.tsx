@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { useResume } from '../../../../../hooks/resume/';
 import { IProfil } from '../../../../../types/store';
 import { Button, TextareaAutosize, TextField } from '@mui/material';
+import { removeEmptyOrNullKeyValueFromObject } from '../../../../../helpers';
+import { updateResumeToDB } from '../../../../../store/resume/actions';
 
-interface CustomProps {
+interface IProfileFormInputFieldsProps {
 	initialState: IProfil;
-	onSubmit: (profil: IProfil) => void;
+	updateResumeProfil: (profil: IProfil) => void;
 }
 
-const ProfileFormInputFields: React.FC<CustomProps> = ({
+const ProfileFormInputFields: React.FC<IProfileFormInputFieldsProps> = ({
 	initialState,
-	onSubmit,
+	updateResumeProfil,
 }) => {
 	const [profileValues, setProfileValues] = useState<IProfil>(initialState);
 
@@ -111,7 +113,7 @@ const ProfileFormInputFields: React.FC<CustomProps> = ({
 			/>
 			<Button
 				className='resume-form-button'
-				onClick={(): void => onSubmit(profileValues)}
+				onClick={(): void => updateResumeProfil(profileValues)}
 				variant='contained'>
 				ENREGISTRER
 			</Button>
@@ -124,21 +126,34 @@ interface IProfilFormProps {
 }
 
 export const ProfileForm: React.FC<IProfilFormProps> = ({ onSubmitForm }) => {
-	const { resumeProfil, updateResumeProfilToDB } = useResume();
+	const { resume } = useResume();
 
 	const profileInitialState: IProfil = {
-		...resumeProfil,
+		...resume?.profil,
 	};
 
-	const handleSubmit = (profil: IProfil): void => {
-		const { isSucces } = updateResumeProfilToDB(profil);
-		isSucces && onSubmitForm();
+	const onUpdateResumeProfile = async (profil: IProfil): Promise<void> => {
+		if (!resume?.userId) {
+			return;
+		}
+		const profilFiltred: IProfil | undefined =
+			removeEmptyOrNullKeyValueFromObject(profil);
+
+		if (!profilFiltred) {
+			return;
+		}
+
+		const updatedResume = await updateResumeToDB({
+			...resume,
+			profil: profilFiltred,
+		});
+		updatedResume && onSubmitForm();
 	};
 
 	return (
 		<ProfileFormInputFields
 			initialState={profileInitialState}
-			onSubmit={handleSubmit}
+			updateResumeProfil={onUpdateResumeProfile}
 		/>
 	);
 };

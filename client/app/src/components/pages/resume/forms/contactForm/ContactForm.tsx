@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
-import { useUser } from '../../../../../hooks/user';
+
+import { useAppSelector } from '../../../../../store/hooks';
+import { userSelector } from '../../../../../store/user/reducer';
+import { updateUserToDB } from '../../../../../store/user/actions';
+
 import { IUserLite } from '../../../../../types/store';
-import { checkIsValidInputFormat } from '../../../../../helpers';
+import {
+	checkIsValidInputFormat,
+	removeEmptyOrNullKeyValueFromObject,
+} from '../../../../../helpers';
 import { Button, TextField } from '@mui/material';
 
-interface CustomProps {
-	onSubmitForm: () => void;
+interface IContactFormInputFieldProps {
+	initialState: IUserLite;
+	onSubmitForm: (userValues: IUserLite) => void;
 }
 
-export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
-	const { user, updateUser } = useUser();
-	const [userValues, setUserValues] = useState<IUserLite>({ ...user });
+const ContactFormInputFields: React.FC<IContactFormInputFieldProps> = ({
+	initialState,
+	onSubmitForm,
+}) => {
+	const [userValues, setUserValues] = useState<IUserLite>(initialState);
 	const [emailError, setEmailError] = useState<boolean>(false);
 
 	const handleChange = ({
@@ -26,10 +36,15 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 		setUserValues({ ...userValues, [name]: value });
 	};
 
-	const handleSubmit = (): void => {
-		const { isEmailValid, isSucces } = updateUser(userValues);
-		setEmailError(!isEmailValid);
-		isSucces && onSubmitForm();
+	const handleSubmit = () => {
+		const { emailPro } = userValues;
+
+		if (emailPro !== undefined && emailPro !== '') {
+			const isEmailValid = checkIsValidInputFormat(emailPro, 'email');
+			setEmailError(!isEmailValid);
+			return;
+		}
+		onSubmitForm(userValues);
 	};
 
 	return (
@@ -109,5 +124,31 @@ export const ContactForm: React.FC<CustomProps> = ({ onSubmitForm }) => {
 				ENREGISTRER
 			</Button>
 		</div>
+	);
+};
+
+interface IContactFormProps {
+	onSubmitForm: () => void;
+}
+
+export const ContactForm: React.FC<IContactFormProps> = ({ onSubmitForm }) => {
+	const user = useAppSelector(userSelector);
+	const initialUserState = { ...user };
+
+	const updateUser = async (userValues: IUserLite): Promise<void> => {
+		const userFiltred: IUserLite | undefined =
+			removeEmptyOrNullKeyValueFromObject(userValues);
+		if (!userFiltred) {
+			return;
+		}
+		const userUpdated = await updateUserToDB(userFiltred);
+		userUpdated && onSubmitForm();
+	};
+
+	return (
+		<ContactFormInputFields
+			initialState={initialUserState}
+			onSubmitForm={updateUser}
+		/>
 	);
 };

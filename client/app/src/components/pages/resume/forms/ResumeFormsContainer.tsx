@@ -69,7 +69,7 @@ const breadcrumbsItems: IKeyNodeItem[] = [
 ];
 
 export const ResumeFormContainer: React.FC = () => {
-	const { resumeTitle, resume } = useResume();
+	const { resume } = useResume();
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
 
@@ -165,7 +165,7 @@ export const ResumeFormContainer: React.FC = () => {
 					/>
 				</div>
 				<div className='resume-form--section'>
-					<h2>{resumeTitle}</h2>
+					<h2>{resume?.title}</h2>
 					<FormSkeleton
 						title={getFormTitle()}
 						children={getFormContent()}
