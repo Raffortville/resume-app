@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { useResume } from '../../../../hooks/resume/useResume';
 import { FormSectionType, IKeyNodeItem } from '../../../../types/common';
 
 import {
@@ -9,7 +8,6 @@ import {
 	Work,
 	Brush,
 	DeveloperMode,
-	EditRounded,
 } from '@mui/icons-material/';
 import { FormSkeleton } from '../../../layout/form';
 import { ContactForm } from './contactForm';
@@ -19,7 +17,7 @@ import { ExperiencesForm } from './experiencesForm';
 import { DesignForm } from './designForm/DesignForm';
 import { BreadCrumbs } from '../../../ui/breadcrumbs';
 import { ListChips } from '../../../ui/list/listChips';
-import { InputInfo } from '../../../ui/inputs/inputInfo';
+import { UpdateTitleForm } from './updateTitleForm';
 
 import './resumeFormsStyles.scss';
 
@@ -67,7 +65,6 @@ const breadcrumbsItems: IKeyNodeItem[] = [
 ];
 
 export const ResumeFormContainer: React.FC = () => {
-	const { resume } = useResume();
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
 
@@ -163,11 +160,7 @@ export const ResumeFormContainer: React.FC = () => {
 					/>
 				</div>
 				<div className='resume-form--section'>
-					<InputInfo
-						value={resume?.title ?? 'Titre du cv'}
-						label='Titre du CV'
-						icon={<EditRounded fontSize='small' color='primary' />}
-					/>
+					<UpdateTitleForm />
 					<FormSkeleton
 						title={getFormTitle()}
 						children={getFormContent()}

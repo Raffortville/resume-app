@@ -24,7 +24,7 @@ export const InputInfo: React.FC<CustomProps> = ({
 				icon
 					? {
 							endAdornment: (
-								<InputAdornment position='start'>
+								<InputAdornment position='end'>
 									<IconButton onClick={onIconClick}>{icon}</IconButton>
 								</InputAdornment>
 							),

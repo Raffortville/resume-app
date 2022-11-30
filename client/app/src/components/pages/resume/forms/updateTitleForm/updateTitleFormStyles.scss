@@ -1,0 +1,11 @@
+@import '../../../../../styles/mixins.scss';
+
+.update-title {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	.update-title--textField {
+		@include fade();
+	}
+}
