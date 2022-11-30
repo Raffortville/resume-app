@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useResume } from '../../../../hooks/resume/useResume';
 import { FormSectionType, IKeyNodeItem } from '../../../../types/common';
