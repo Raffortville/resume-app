@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useResume } from '../../../../hooks/resume/useResume';
-import {
-	FormSectionType,
-	IKeyNodeItem,
-	ObjectKeyListItems,
-} from '../../../../types/common';
+import { FormSectionType, IKeyNodeItem } from '../../../../types/common';
 
 import {
 	ImportContacts,
@@ -178,11 +174,7 @@ export const ResumeFormContainer: React.FC = () => {
 					<div>
 						{formSectionSelected === 'expertises' && (
 							<ListChips
-								chips={
-									resume?.expertises
-										? ([resume.expertises] as ObjectKeyListItems[])
-										: []
-								}
+								chips={[]}
 								onDeleteChip={function ({
 									chipKey,
 									itemId,

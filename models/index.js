@@ -8,9 +8,9 @@ const SubDocSchema = new mongoose.Schema(
 	{ versionKey: false }
 );
 
-const SubDocIdLabelSchema = new mongoose.Schema({
+const SubDocIdSchema = new mongoose.Schema({
 	id: String,
-	label: String,
+	value: String,
 });
 
 const UserSchema = new mongoose.Schema(
@@ -30,19 +30,11 @@ const UserSchema = new mongoose.Schema(
 
 const ExpertiseSchema = new mongoose.Schema(
 	{
-		languages: { title: String, key: String, items: [SubDocIdLabelSchema] },
-		frameworks: { title: String, key: String, items: [SubDocIdLabelSchema] },
-		database: { title: String, key: String, items: [SubDocIdLabelSchema] },
-		services: { title: String, key: String, items: [SubDocIdLabelSchema] },
-		control_version: {
-			title: String,
-			key: String,
-			items: [SubDocIdLabelSchema],
-		},
-		productivity: { title: String, key: String, items: [SubDocIdLabelSchema] },
-		soft_skills: { title: String, key: String, items: [SubDocIdLabelSchema] },
+		title: String,
+		key: String,
+		items: [SubDocIdSchema],
 	},
-	{ versionKey: false }
+	{ versionKey: false, _id: false }
 );
 
 const EducationSchema = new mongoose.Schema(
@@ -89,7 +81,7 @@ const ResumeSchema = new mongoose.Schema(
 		status: String,
 		createdtAt: Date,
 		profil: ProfileSchema,
-		expertises: ExpertiseSchema,
+		expertises: [ExpertiseSchema],
 		experiences: [ExperienceSchema],
 		design: DesignSchema,
 	},

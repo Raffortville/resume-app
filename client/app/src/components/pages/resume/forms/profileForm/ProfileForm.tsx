@@ -133,7 +133,7 @@ export const ProfileForm: React.FC<IProfilFormProps> = ({ onSubmitForm }) => {
 	};
 
 	const onUpdateResumeProfile = async (profil: IProfil): Promise<void> => {
-		if (!resume?.userId) {
+		if (!resume) {
 			return;
 		}
 		const profilFiltred: IProfil | undefined =

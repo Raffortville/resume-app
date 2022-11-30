@@ -3,6 +3,7 @@ import config from '../../config';
 import { displayAlert } from '../alert/actions';
 import { IResume } from '../../types/store';
 import { addResume, deleteResume, setResume, setResumes } from './reducer';
+import { expertises } from '../../constants';
 
 export const getResumes = async (userId: string): Promise<IResume[] | void> => {
 	try {
@@ -75,8 +76,11 @@ export const createResumeToDB = async (payload: {
 		});
 		return;
 	}
-
-	const data: IResume = { ...payload, userId: user._id };
+	const data = {
+		...payload,
+		userId: user._id,
+		expertises: expertises,
+	};
 
 	try {
 		const response = await fetch(`${config.API.url}/resume/create`, {

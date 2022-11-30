@@ -1,7 +1,5 @@
 import type { AlertColor } from '@mui/material/Alert';
-import { ObjKeyValueType } from '../common/index';
-import type { ObjectIdLabel } from '../common/index';
-import type { ObjectKeyListItems } from '../common/index';
+import { ObjectIdValue, ObjKeyValueType } from '../common/index';
 
 export interface IUserLite {
 	_id?: string;
@@ -42,14 +40,20 @@ export interface IExperience {
 	achievements: ObjKeyValueType[];
 	stack: ObjKeyValueType[];
 }
+
+export type ExpertiseKeyType =
+	| 'languages'
+	| 'frameworks'
+	| 'databases'
+	| 'services'
+	| 'control_version'
+	| 'productivity'
+	| 'soft_skills';
+
 export interface IExpertise {
-	languages?: ObjectKeyListItems;
-	frameworks?: ObjectKeyListItems;
-	databases?: ObjectKeyListItems;
-	services?: ObjectKeyListItems;
-	control_version?: ObjectKeyListItems;
-	productivity?: ObjectKeyListItems;
-	soft_skills?: ObjectKeyListItems;
+	key: ExpertiseKeyType;
+	title: string;
+	items: ObjectIdValue[];
 }
 export interface IProfil {
 	position?: string;
@@ -67,12 +71,12 @@ export type StatusType = 'complete' | 'draft';
 
 export interface IResume {
 	userId: string;
+	_id: string;
 	title: string;
-	_id?: string;
+	expertises: IExpertise[];
 	createdtAt?: Date;
 	status?: StatusType;
 	profil?: IProfil;
-	expertises?: IExpertise;
 	experiences?: IExperience[];
 	design?: IDesign;
 }

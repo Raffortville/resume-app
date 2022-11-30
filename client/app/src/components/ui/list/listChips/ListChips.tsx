@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ObjectKeyListItems, ObjectIdLabel } from '../../../../types/common';
+import { ObjectIdValue, ObjectKeyListItems } from '../../../../types/common';
 import { ChipUI } from '../../chip';
 
 import './listChipsStyles.scss';
@@ -22,7 +22,7 @@ export const ListChips: React.FC<CustomProps> = ({ chips, onDeleteChip }) => {
 		chipItems,
 		chipKey,
 	}: {
-		chipItems: ObjectIdLabel[];
+		chipItems: ObjectIdValue[];
 		chipKey: string;
 	}) => {
 		const handleDeleteItem = (id: string): void => {
@@ -46,7 +46,7 @@ export const ListChips: React.FC<CustomProps> = ({ chips, onDeleteChip }) => {
 					key={item.id}
 					chipData={{
 						id: item.id,
-						label: item.label,
+						value: item.value,
 					}}
 					onDeleteItem={handleDeleteItem}
 				/>

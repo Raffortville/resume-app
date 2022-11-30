@@ -1,9 +1,9 @@
 import React from 'react';
 import { Chip, ChipProps } from '@mui/material';
-import { ObjectIdLabel } from '../../../types/common';
+import { ObjectIdValue } from '../../../types/common';
 
 interface CustomProps {
-	chipData: ObjectIdLabel;
+	chipData: ObjectIdValue;
 	onDeleteItem: (id: string) => void;
 	className?: string;
 	styles?: React.CSSProperties;
@@ -20,7 +20,7 @@ export const ChipUI: React.FC<CustomProps> = ({
 	return (
 		<Chip
 			id={chipData.id}
-			label={chipData.label}
+			label={chipData.value}
 			onDelete={() => onDeleteItem(chipData.id)}
 			className={className}
 			variant='outlined'

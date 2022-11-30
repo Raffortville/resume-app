@@ -8,15 +8,15 @@ export type ObjKeyValueType = {
 	value: string;
 };
 
-export type ObjectIdLabel = {
+export type ObjectIdValue = {
 	id: string;
-	label: string;
+	value: string;
 };
 
 export type ObjectKeyListItems = {
 	title: string;
 	key: string;
-	items: ObjectIdLabel[];
+	items: ObjectIdValue[];
 };
 
 export interface ISectionItemProps extends ObjectKeyLabel {

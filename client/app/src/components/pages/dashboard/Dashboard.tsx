@@ -19,6 +19,7 @@ import './dashboardStyles.scss';
 
 export const Dashboard: React.FC = () => {
 	const resumes = useAppSelector(resumesSelector);
+	const hasResumeIems = resumes !== null && resumes?.length > 0;
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -103,7 +104,8 @@ export const Dashboard: React.FC = () => {
 					]}
 					styles={{ border: '1px dotted' }}
 				/>
-				<Separator spacing={40} />
+				{hasResumeIems && <Separator spacing={40} />}
+
 				<div className='dashboard-resumes-list'>{renderListResumes()}</div>
 			</div>
 		</>
