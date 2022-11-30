@@ -60,7 +60,10 @@ export const ResumeCreateContainer: React.FC = () => {
 	const createResume = async (title: string): Promise<void> => {
 		const createdResume = await createResumeToDB({ title });
 		createdResume &&
-			navigate(`/resume/form/${createdResume._id}`, { replace: true });
+			navigate(`/resume/form/${createdResume._id}`, {
+				state: { resumeId: createdResume._id },
+				replace: true,
+			});
 	};
 	return <ResumeCreateForm onSubmitForm={createResume} />;
 };
