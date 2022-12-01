@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
-import type { IResume } from '../../types/store';
+import type { ExpertiseKeyType, IResume } from '../../types/store';
 
 export const initialState: {
 	resumes: IResume[] | null;
@@ -21,20 +21,59 @@ const resumeSlice = createSlice({
 		setResume: (state, { payload }: PayloadAction<IResume>) => {
 			state.resume = payload;
 		},
-		updateResumes: (state, { payload }: PayloadAction<IResume>) => {
-			if (state.resumes !== null) {
-				state.resumes = state.resumes.map((resume) => {
-					if (resume._id === payload._id) {
-						return payload;
-					}
-					return resume;
-				});
-			}
-		},
 		addResume: (state, { payload }: PayloadAction<IResume>) => {
 			if (state.resumes !== null) {
 				state.resumes = [...state.resumes, payload];
 			}
+		},
+		addExpertiseToResume: (
+			state,
+			{
+				payload,
+			}: PayloadAction<{
+				expertiseKey: ExpertiseKeyType;
+				skill: {
+					id: string;
+					value: string;
+				};
+			}>
+		) => {
+			if (state.resume === null) {
+				return;
+			}
+			state.resume = {
+				...state.resume,
+				expertises: [...state.resume.expertises].map((expertise) => {
+					if (expertise.key === payload.expertiseKey) {
+						return { ...expertise, items: [...expertise.items, payload.skill] };
+					}
+					return expertise;
+				}),
+			};
+		},
+		deleteExpertiseFromResume: (
+			state,
+			{
+				payload,
+			}: PayloadAction<{ expertiseKey: ExpertiseKeyType; skillId: string }>
+		) => {
+			if (state.resume === null) {
+				return;
+			}
+			state.resume = {
+				...state.resume,
+				expertises: [...state.resume.expertises].map((expertise) => {
+					if (expertise.key === payload.expertiseKey) {
+						return {
+							...expertise,
+							items: [...expertise.items].filter(
+								(item) => item.id !== payload.skillId
+							),
+						};
+					}
+					return expertise;
+				}),
+			};
 		},
 		deleteResume: (state, { payload }: PayloadAction<string>) => {
 			if (state.resumes !== null) {
@@ -56,7 +95,8 @@ export const {
 	setResume,
 	setResumes,
 	addResume,
-	updateResumes,
+	addExpertiseToResume,
+	deleteExpertiseFromResume,
 	deleteResume,
 	resetResume,
 	resetResumes,

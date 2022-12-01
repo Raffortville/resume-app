@@ -19,7 +19,7 @@ import { BreadCrumbs } from '../../../ui/breadcrumbs';
 import { UpdateTitleForm } from './updateTitleForm';
 
 import './resumeFormsStyles.scss';
-import { ListChipsResume } from './listChipsResume/ListChipsResume';
+import { ListChipsResume } from './listChipsResume/';
 
 const breadcrumbsItems: IKeyNodeItem[] = [
 	{
@@ -133,7 +133,11 @@ export const ResumeFormContainer: React.FC = () => {
 				);
 
 			case 'expertises':
-				return <ExpertisesForm />;
+				return (
+					<ExpertisesForm
+						onSubmitForm={(): void => handleNavigateFormSections('next')}
+					/>
+				);
 
 			case 'experiences':
 				return <ExperiencesForm />;
