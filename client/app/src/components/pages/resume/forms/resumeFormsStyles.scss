@@ -13,15 +13,8 @@
 	.resume-form--section {
 		display: flex;
 
-		& > h2 {
-			width: 20%;
-			color: $primary-dark;
-			text-transform: uppercase;
-			letter-spacing: 1px;
-		}
-
 		.resume-form-container {
-			min-width: 600px;
+			width: 545px;
 			height: 100%;
 			display: flex;
 			flex-direction: column;

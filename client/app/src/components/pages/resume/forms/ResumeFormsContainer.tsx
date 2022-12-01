@@ -16,10 +16,10 @@ import { ProfileForm } from './profileForm';
 import { ExperiencesForm } from './experiencesForm';
 import { DesignForm } from './designForm/DesignForm';
 import { BreadCrumbs } from '../../../ui/breadcrumbs';
-import { ListChips } from '../../../ui/list/listChips';
 import { UpdateTitleForm } from './updateTitleForm';
 
 import './resumeFormsStyles.scss';
+import { ListChipsResume } from './listChipsResume/ListChipsResume';
 
 const breadcrumbsItems: IKeyNodeItem[] = [
 	{
@@ -170,22 +170,11 @@ export const ResumeFormContainer: React.FC = () => {
 							handleNavigateFormSections(direction)
 						}
 					/>
-					<div>
-						{formSectionSelected === 'expertises' && (
-							<ListChips
-								chips={[]}
-								onDeleteChip={function ({
-									chipKey,
-									itemId,
-								}: {
-									chipKey: string;
-									itemId: string;
-								}): void {
-									throw new Error('Function not implemented.');
-								}}
-							/>
-						)}
-					</div>
+					{formSectionSelected === 'expertises' && (
+						<div>
+							<ListChipsResume formSection='expertises' />
+						</div>
+					)}
 				</div>
 			</div>
 		</>
