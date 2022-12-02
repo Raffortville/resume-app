@@ -13,6 +13,15 @@ const SubDocIdSchema = new mongoose.Schema({
 	value: String,
 });
 
+const ObjectKeyItems = new mongoose.Schema(
+	{
+		title: String,
+		key: String,
+		items: [SubDocIdSchema],
+	},
+	{ versionKey: false, _id: false }
+);
+
 const UserSchema = new mongoose.Schema(
 	{
 		email: { type: String, required: true },
@@ -28,15 +37,6 @@ const UserSchema = new mongoose.Schema(
 	{ versionKey: false }
 );
 
-const ExpertiseSchema = new mongoose.Schema(
-	{
-		title: String,
-		key: String,
-		items: [SubDocIdSchema],
-	},
-	{ versionKey: false, _id: false }
-);
-
 const EducationSchema = new mongoose.Schema(
 	{
 		academy: String,
@@ -48,15 +48,15 @@ const EducationSchema = new mongoose.Schema(
 
 const ExperienceSchema = new mongoose.Schema(
 	{
+		exp_id: String,
 		company: String,
 		period: String,
 		place: String,
 		occupiedPosition: String,
-		achievements: [SubDocSchema],
-		stack: [SubDocSchema],
+		achievements: [ObjectKeyItems],
+		stack: [ObjectKeyItems],
 		description: String,
 		project: String,
-		exp_id: String,
 	},
 	{ versionKey: false }
 );
@@ -81,7 +81,7 @@ const ResumeSchema = new mongoose.Schema(
 		status: String,
 		createdtAt: Date,
 		profil: ProfileSchema,
-		expertises: [ExpertiseSchema],
+		expertises: [ObjectKeyItems],
 		experiences: [ExperienceSchema],
 		design: DesignSchema,
 	},

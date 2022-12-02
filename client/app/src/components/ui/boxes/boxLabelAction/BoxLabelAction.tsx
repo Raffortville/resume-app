@@ -1,5 +1,3 @@
-import { AddCircle } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
 import React from 'react';
 import { Box } from '../box/Box';
 
@@ -22,7 +20,7 @@ export const BoxLabelAction: React.FC<CustomProps> = ({
 	return (
 		<Box className={className} styles={styles?.container}>
 			<h3>{label}</h3>
-			{icon && <IconButton>{icon}</IconButton>}
+			{icon}
 		</Box>
 	);
 };

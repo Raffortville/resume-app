@@ -1,7 +1,10 @@
 import React from 'react';
 import { useResume } from '../../../../../hooks/resume';
 import { useAppDispatch } from '../../../../../store/hooks';
-import { deleteExpertiseFromResume } from '../../../../../store/resume/reducer';
+import {
+	deleteExpertiseFromResume,
+	setResume,
+} from '../../../../../store/resume/reducer';
 import {
 	FormSectionType,
 	ObjectKeyListItems,
@@ -43,6 +46,22 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 					(expert) => expert.key === 'soft_skills'
 				);
 
+			case 'experiences': {
+				if (!resume.experiences) {
+					return [];
+				}
+				return [
+					{
+						key: resume._id,
+						title: 'Experiences',
+						items: resume.experiences.map((exp) => ({
+							id: exp.exp_id,
+							value: exp.company,
+						})),
+					},
+				];
+			}
+
 			default:
 				return [];
 		}
@@ -61,6 +80,20 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 					deleteExpertiseFromResume({
 						expertiseKey: key as ExpertiseKeyType,
 						skillId: itemId,
+					})
+				);
+				break;
+
+			case 'experiences':
+				if (!resume.experiences) {
+					return;
+				}
+				dispatch(
+					setResume({
+						...resume,
+						experiences: resume.experiences.filter(
+							(exp) => exp.exp_id !== itemId
+						),
 					})
 				);
 				break;
