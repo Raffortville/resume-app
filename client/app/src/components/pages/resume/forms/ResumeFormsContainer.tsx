@@ -17,9 +17,9 @@ import { ExperiencesForm } from './experiencesForm';
 import { DesignForm } from './designForm/DesignForm';
 import { BreadCrumbs } from '../../../ui/breadcrumbs';
 import { UpdateTitleForm } from './updateTitleForm';
+import { PreviewResumeFormValues } from './previewResumeFormValues';
 
 import './resumeFormsStyles.scss';
-import { ListChipsResume } from './listChipsResume/';
 
 const breadcrumbsItems: IKeyNodeItem[] = [
 	{
@@ -175,9 +175,7 @@ export const ResumeFormContainer: React.FC = () => {
 						}
 					/>
 					{formSectionSelected === 'expertises' && (
-						<div>
-							<ListChipsResume formSection='expertises' />
-						</div>
+						<PreviewResumeFormValues formSection='expertises' />
 					)}
 				</div>
 			</div>

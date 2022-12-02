@@ -13,9 +13,14 @@ interface CustomProps {
 		chipKey: string;
 		itemId: string;
 	}) => void;
+	className?: string;
 }
 
-export const ListChips: React.FC<CustomProps> = ({ chips, onDeleteChip }) => {
+export const ListChips: React.FC<CustomProps> = ({
+	chips,
+	onDeleteChip,
+	className,
+}) => {
 	const renderChipsItem = ({
 		chipItems,
 		chipKey,
@@ -25,31 +30,37 @@ export const ListChips: React.FC<CustomProps> = ({ chips, onDeleteChip }) => {
 	}) => {
 		return chipItems.map((item) => {
 			return (
-				<ChipUI
-					key={item.id}
-					chipData={{
-						id: item.id,
-						value: item.value,
-					}}
-					onDeleteItem={(): void => onDeleteChip({ chipKey, itemId: item.id })}
-				/>
+				<li>
+					<ChipUI
+						key={item.id}
+						chipData={{
+							id: item.id,
+							value: item.value,
+						}}
+						onDeleteItem={(): void =>
+							onDeleteChip({ chipKey, itemId: item.id })
+						}
+						chipMuiProps={{ size: 'small' }}
+						styles={{ fontSize: '0.7em' }}
+					/>
+				</li>
 			);
 		});
 	};
 
 	return (
-		<>
+		<ul className={className}>
 			{chips.map(
 				(chip) =>
 					chip.items.length > 0 && (
-						<div key={chip.key} className='listChips'>
+						<li key={chip.key} className='listChips'>
 							<h3>{chip.title}</h3>
-							<div className='listChips-items'>
+							<ul className='listChips-items'>
 								{renderChipsItem({ chipItems: chip.items, chipKey: chip.key })}
-							</div>
-						</div>
+							</ul>
+						</li>
 					)
 			)}
-		</>
+		</ul>
 	);
 };
