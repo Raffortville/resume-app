@@ -1,0 +1,11 @@
+@import '../../../../styles/variables.scss';
+
+.box {
+	height: 42px;
+	display: flex;
+	align-items: center;
+	padding: 8px 16px;
+	background-color: $primary;
+	color: whitesmoke;
+	border-radius: 3px;
+}
