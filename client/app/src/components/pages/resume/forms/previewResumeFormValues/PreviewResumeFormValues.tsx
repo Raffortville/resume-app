@@ -48,18 +48,18 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 		}
 	};
 
-	const onDeleteChip = ({
-		chipKey,
+	const onDeleteResumeItem = ({
+		key,
 		itemId,
 	}: {
-		chipKey: string;
+		key: string;
 		itemId: string;
 	}): void => {
 		switch (formSection) {
 			case 'expertises':
 				dispatch(
 					deleteExpertiseFromResume({
-						expertiseKey: chipKey as ExpertiseKeyType,
+						expertiseKey: key as ExpertiseKeyType,
 						skillId: itemId,
 					})
 				);
@@ -70,20 +70,20 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 		}
 	};
 
-	const onDeleteText = ({
-		textKey,
-		itemId,
-	}: {
-		textKey: string;
-		itemId: string;
-	}): void => {
-		console.log(textKey, itemId);
-	};
-
 	return (
 		<div>
-			<ListChips chips={getChipsData()} onDeleteChip={onDeleteChip} />
-			<ListTexts texts={getTextsData()} onDeleteText={onDeleteText} />
+			<ListChips
+				chips={getChipsData()}
+				onDeleteChip={({ chipKey, itemId }) =>
+					onDeleteResumeItem({ key: chipKey, itemId })
+				}
+			/>
+			<ListTexts
+				texts={getTextsData()}
+				onDeleteText={({ textKey, itemId }) =>
+					onDeleteResumeItem({ key: textKey, itemId })
+				}
+			/>
 		</div>
 	);
 };

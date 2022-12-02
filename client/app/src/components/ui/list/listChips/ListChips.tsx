@@ -30,9 +30,8 @@ export const ListChips: React.FC<CustomProps> = ({
 	}) => {
 		return chipItems.map((item) => {
 			return (
-				<li>
+				<li key={item.id}>
 					<ChipUI
-						key={item.id}
 						chipData={{
 							id: item.id,
 							value: item.value,
