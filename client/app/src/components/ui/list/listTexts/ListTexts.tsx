@@ -1,7 +1,7 @@
-import { Cancel } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
 import React from 'react';
 import { ObjectIdValue, ObjectKeyListItems } from '../../../../types/common';
+import { Cancel } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 
 import './listTextsStyles.scss';
 

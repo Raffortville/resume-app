@@ -1,0 +1,26 @@
+@import '../../../../styles/variables.scss';
+
+.listRadios {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 32px;
+
+	.listRadios-items {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		.listRadios-items--item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.listRadios-radio {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+			}
+		}
+	}
+}

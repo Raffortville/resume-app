@@ -11,6 +11,7 @@ import {
 } from '../../../../../types/common';
 import { ExpertiseKeyType } from '../../../../../types/store';
 import { ListChips } from '../../../../ui/list/listChips';
+import { ListRadios } from '../../../../ui/list/listRadios';
 import { ListTexts } from '../../../../ui/list/listTexts';
 
 interface CustomProps {
@@ -46,6 +47,13 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 					(expert) => expert.key === 'soft_skills'
 				);
 
+			default:
+				return [];
+		}
+	};
+
+	const getRadiosData = (): ObjectKeyListItems[] => {
+		switch (formSection) {
 			case 'experiences': {
 				if (!resume.experiences) {
 					return [];
@@ -115,6 +123,12 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 				texts={getTextsData()}
 				onDeleteText={({ textKey, itemId }) =>
 					onDeleteResumeItem({ key: textKey, itemId })
+				}
+			/>
+			<ListRadios
+				radios={getRadiosData()}
+				onDeleteRadio={({ radioKey, itemId }) =>
+					onDeleteResumeItem({ key: radioKey, itemId })
 				}
 			/>
 		</div>
