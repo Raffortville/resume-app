@@ -34,14 +34,14 @@ export const ListRadios: React.FC<CustomProps> = ({
 		radioItems: ObjectIdValue[];
 		radioKey: string;
 	}) => {
-		return radioItems.map((item) => {
+		return radioItems.map((item, index) => {
 			return (
 				<li key={item.id} className='listRadios-items--item'>
 					<div className='listRadios-radio'>
 						<Radio
 							size='small'
 							value={item.id}
-							checked={selectedRadio === item.id}
+							checked={selectedRadio ? selectedRadio === item.id : index === 0}
 							onChange={(): void => {
 								setSelectedRadio(item.id);
 								onSelectRadio(item.id);

@@ -64,7 +64,7 @@ const ExpertisesFormInputFields: React.FC<IExpertisesFormInputFieldsProps> = ({
 								onClick={(): void => {
 									onIconAddClick('languages');
 								}}
-								className='resume-form--expertises-icon'
+								className='resume-form--icon'
 								color='primary'
 							/>
 						</InputAdornment>
@@ -83,7 +83,7 @@ const ExpertisesFormInputFields: React.FC<IExpertisesFormInputFieldsProps> = ({
 						<InputAdornment position='end'>
 							<AddCircleOutline
 								onClick={(): void => onIconAddClick('frameworks')}
-								className='resume-form--expertises-icon'
+								className='resume-form--icon'
 								color='primary'
 							/>
 						</InputAdornment>
@@ -102,7 +102,7 @@ const ExpertisesFormInputFields: React.FC<IExpertisesFormInputFieldsProps> = ({
 						<InputAdornment position='end'>
 							<AddCircleOutline
 								onClick={(): void => onIconAddClick('databases')}
-								className='resume-form--expertises-icon'
+								className='resume-form--icon'
 								color='primary'
 							/>
 						</InputAdornment>
@@ -121,7 +121,7 @@ const ExpertisesFormInputFields: React.FC<IExpertisesFormInputFieldsProps> = ({
 						<InputAdornment position='end'>
 							<AddCircleOutline
 								onClick={(): void => onIconAddClick('services')}
-								className='resume-form--expertises-icon'
+								className='resume-form--icon'
 								color='primary'
 							/>
 						</InputAdornment>
@@ -140,7 +140,7 @@ const ExpertisesFormInputFields: React.FC<IExpertisesFormInputFieldsProps> = ({
 						<InputAdornment position='end'>
 							<AddCircleOutline
 								onClick={(): void => onIconAddClick('control_version')}
-								className='resume-form--expertises-icon'
+								className='resume-form--icon'
 								color='primary'
 							/>
 						</InputAdornment>
@@ -159,7 +159,7 @@ const ExpertisesFormInputFields: React.FC<IExpertisesFormInputFieldsProps> = ({
 						<InputAdornment position='end'>
 							<AddCircleOutline
 								onClick={(): void => onIconAddClick('productivity')}
-								className='resume-form--expertises-icon'
+								className='resume-form--icon'
 								color='primary'
 							/>
 						</InputAdornment>
@@ -178,7 +178,7 @@ const ExpertisesFormInputFields: React.FC<IExpertisesFormInputFieldsProps> = ({
 						<InputAdornment position='end'>
 							<AddCircleOutline
 								onClick={(): void => onIconAddClick('soft_skills')}
-								className='resume-form--expertises-icon'
+								className='resume-form--icon'
 								color='primary'
 							/>
 						</InputAdornment>

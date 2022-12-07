@@ -5,8 +5,14 @@ import { useAppDispatch } from '../../../../../store/hooks';
 import { setResume } from '../../../../../store/resume/reducer';
 
 import { isStringEmpty } from '../../../../../helpers';
-import { Button, IconButton, TextField } from '@mui/material';
-import { AddCircle, Cancel } from '@mui/icons-material';
+import {
+	Button,
+	IconButton,
+	InputAdornment,
+	TextareaAutosize,
+	TextField,
+} from '@mui/material';
+import { AddCircle, AddCircleOutline, Cancel } from '@mui/icons-material';
 import { BoxLabelAction } from '../../../../ui/boxes/boxLabelAction';
 
 // exp_id: string;
@@ -19,6 +25,15 @@ import { BoxLabelAction } from '../../../../ui/boxes/boxLabelAction';
 // 	achievements: ObjectKeyListItems[];
 // 	stack: ObjectKeyListItems[];
 
+type ExperiencesFormType = {
+	occupiedPosition: string | undefined;
+	period: string | undefined;
+	place: string | undefined;
+	project: string | undefined;
+	description: string | undefined;
+	achievements: string | undefined;
+	stack: string | undefined;
+};
 interface IBoxAddNewExperienceProps {
 	onAddExperience: (companyValue: string) => void;
 }
@@ -110,9 +125,103 @@ const BoxAddNewExperience: React.FC<IBoxAddNewExperienceProps> = ({
 	);
 };
 
-const ExperiencesFormInputFields: React.FC = () => {
+interface IExperiencesFormInputFieldsProps {
+	initialState: ExperiencesFormType;
+}
+
+const ExperiencesFormInputFields: React.FC<
+	IExperiencesFormInputFieldsProps
+> = ({ initialState }) => {
+	const [experienceValues, setExperienceValues] =
+		useState<ExperiencesFormType>(initialState);
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+		const { name, value } = e.target;
+		setExperienceValues({ ...experienceValues, [name]: value });
+	};
+
 	return (
 		<div className='resume-form-container'>
+			<TextField
+				label='Poste occupé'
+				value={experienceValues.occupiedPosition || ''}
+				name='occupiedPosition'
+				onChange={handleChange}
+				helperText='Intitulé du poste'
+				variant='standard'
+			/>
+			<TextField
+				label='Période'
+				value={experienceValues.period}
+				name='period'
+				onChange={handleChange}
+				variant='standard'
+			/>
+			<TextField
+				label='Lieu'
+				value={experienceValues.place || ''}
+				name='place'
+				onChange={handleChange}
+				helperText='Ville, pays ou full-remote'
+				variant='standard'
+			/>
+			<TextField
+				label='Projet'
+				value={experienceValues.project || ''}
+				name='project'
+				onChange={handleChange}
+				helperText='Lien vers le projet'
+				variant='standard'
+			/>
+			<TextareaAutosize
+				name='description'
+				value={experienceValues.description || ''}
+				onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+					const { value } = event.target;
+					setExperienceValues({ ...experienceValues, description: value });
+				}}
+				minRows={3}
+				maxRows={6}
+				placeholder='Décrivez la mission globale réalisée'
+			/>
+			<TextField
+				label='Réalisations'
+				name='achievements'
+				value={experienceValues.achievements || ''}
+				onChange={handleChange}
+				helperText='Listez les tâches réalisées'
+				variant='standard'
+				InputProps={{
+					endAdornment: (
+						<InputAdornment position='end'>
+							<AddCircleOutline
+								onClick={(): void => console.log('achievements')}
+								className='resume-form--icon'
+								color='primary'
+							/>
+						</InputAdornment>
+					),
+				}}
+			/>
+			<TextField
+				label='Technologies utilisées'
+				name='stack'
+				value={experienceValues.stack || ''}
+				onChange={handleChange}
+				helperText='Ajouter les technos employées'
+				variant='standard'
+				InputProps={{
+					endAdornment: (
+						<InputAdornment position='end'>
+							<AddCircleOutline
+								onClick={(): void => console.log('stack')}
+								className='resume-form--icon'
+								color='primary'
+							/>
+						</InputAdornment>
+					),
+				}}
+			/>
 			<Button
 				className='resume-form-button'
 				onClick={(): void => console.log('test')}
@@ -131,11 +240,24 @@ export const ExperiencesForm: React.FC<IExperiencesFormProps> = ({
 	selectedExperienceId,
 }) => {
 	const { resume } = useResume();
-	const [openForm, setOpenForm] = useState<boolean>(false);
+
+	const experienceSelected = resume?.experiences
+		? selectedExperienceId
+			? resume.experiences.find((exp) => exp.exp_id === selectedExperienceId)
+			: resume.experiences[0]
+		: undefined;
+
+	const initialExperiencesState: ExperiencesFormType = {
+		occupiedPosition: experienceSelected?.occupiedPosition,
+		period: experienceSelected?.period,
+		place: experienceSelected?.place,
+		description: experienceSelected?.description,
+		project: experienceSelected?.project,
+		achievements: undefined,
+		stack: undefined,
+	};
 
 	const dispatch = useAppDispatch();
-
-	console.log(selectedExperienceId);
 
 	const onAddNewExperience = (companyValue: string) => {
 		if (!resume) {
@@ -151,13 +273,14 @@ export const ExperiencesForm: React.FC<IExperiencesFormProps> = ({
 				],
 			})
 		);
-		setOpenForm(true);
 	};
 
 	return (
 		<div className='resume-form-container'>
 			<BoxAddNewExperience onAddExperience={onAddNewExperience} />
-			{openForm && <ExperiencesFormInputFields />}
+			{experienceSelected && (
+				<ExperiencesFormInputFields initialState={initialExperiencesState} />
+			)}
 		</div>
 	);
 };
