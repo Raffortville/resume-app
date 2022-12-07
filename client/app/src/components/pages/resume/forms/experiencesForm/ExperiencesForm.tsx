@@ -123,11 +123,19 @@ const ExperiencesFormInputFields: React.FC = () => {
 	);
 };
 
-export const ExperiencesForm: React.FC = () => {
+interface IExperiencesFormProps {
+	selectedExperienceId: string | undefined;
+}
+
+export const ExperiencesForm: React.FC<IExperiencesFormProps> = ({
+	selectedExperienceId,
+}) => {
 	const { resume } = useResume();
 	const [openForm, setOpenForm] = useState<boolean>(false);
 
 	const dispatch = useAppDispatch();
+
+	console.log(selectedExperienceId);
 
 	const onAddNewExperience = (companyValue: string) => {
 		if (!resume) {

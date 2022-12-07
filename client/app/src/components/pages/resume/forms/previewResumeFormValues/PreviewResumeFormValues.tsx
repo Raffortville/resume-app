@@ -16,10 +16,12 @@ import { ListTexts } from '../../../../ui/list/listTexts';
 
 interface CustomProps {
 	formSection: FormSectionType;
+	onSelectExperienceId: (id: string) => void;
 }
 
 export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 	formSection,
+	onSelectExperienceId,
 }) => {
 	const { resume } = useResume();
 	const dispatch = useAppDispatch();
@@ -127,6 +129,7 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 			/>
 			<ListRadios
 				radios={getRadiosData()}
+				onSelectRadio={onSelectExperienceId}
 				onDeleteRadio={({ radioKey, itemId }) =>
 					onDeleteResumeItem({ key: radioKey, itemId })
 				}

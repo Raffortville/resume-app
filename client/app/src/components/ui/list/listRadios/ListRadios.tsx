@@ -8,6 +8,7 @@ import './listRadiosStyles.scss';
 
 interface CustomProps {
 	radios: ObjectKeyListItems[];
+	onSelectRadio: (id: string) => void;
 	onDeleteRadio: ({
 		radioKey,
 		itemId,
@@ -20,6 +21,7 @@ interface CustomProps {
 
 export const ListRadios: React.FC<CustomProps> = ({
 	radios,
+	onSelectRadio,
 	onDeleteRadio,
 	className,
 }) => {
@@ -40,7 +42,10 @@ export const ListRadios: React.FC<CustomProps> = ({
 							size='small'
 							value={item.id}
 							checked={selectedRadio === item.id}
-							onChange={(): void => setSelectedRadio(item.id)}
+							onChange={(): void => {
+								setSelectedRadio(item.id);
+								onSelectRadio(item.id);
+							}}
 							style={{ padding: 'unset' }}
 						/>
 						<p>{item.value}</p>

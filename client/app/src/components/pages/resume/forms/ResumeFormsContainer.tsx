@@ -67,9 +67,7 @@ const breadcrumbsItems: IKeyNodeItem[] = [
 export const ResumeFormContainer: React.FC = () => {
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
-	const showPreviewResumeForm =
-		formSectionSelected === 'experiences' ||
-		formSectionSelected === 'expertises';
+	const [experienceId, setExperienceId] = useState<string>();
 
 	const getFormTitle = (): string => {
 		switch (formSectionSelected) {
@@ -143,7 +141,7 @@ export const ResumeFormContainer: React.FC = () => {
 				);
 
 			case 'experiences':
-				return <ExperiencesForm />;
+				return <ExperiencesForm selectedExperienceId={experienceId} />;
 
 			case 'design':
 				return <DesignForm />;
@@ -152,6 +150,10 @@ export const ResumeFormContainer: React.FC = () => {
 				return null;
 		}
 	};
+
+	const showPreviewResumeForm =
+		formSectionSelected === 'experiences' ||
+		formSectionSelected === 'expertises';
 
 	return (
 		<>
@@ -179,7 +181,10 @@ export const ResumeFormContainer: React.FC = () => {
 					/>
 
 					{showPreviewResumeForm && (
-						<PreviewResumeFormValues formSection={formSectionSelected} />
+						<PreviewResumeFormValues
+							formSection={formSectionSelected}
+							onSelectExperienceId={(id: string): void => setExperienceId(id)}
+						/>
 					)}
 				</div>
 			</div>
