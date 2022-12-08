@@ -29,9 +29,9 @@ export const ListTexts: React.FC<CustomProps> = ({
 		textItems: ObjectIdValue[];
 		textKey: string;
 	}) => {
-		return textItems.map((item) => {
+		return textItems.map((item, index) => {
 			return (
-				<li key={item.id} className='listTexts-items--item'>
+				<li key={index} className='listTexts-items--item'>
 					<p>{item.value}</p>
 					<IconButton
 						onClick={(): void => onDeleteText({ textKey, itemId: item.id })}>
@@ -45,9 +45,9 @@ export const ListTexts: React.FC<CustomProps> = ({
 	return (
 		<ul className={className}>
 			{texts.map(
-				(text) =>
+				(text, index) =>
 					text.items.length > 0 && (
-						<li key={text.key} className='listTexts'>
+						<li key={index} className='listTexts'>
 							<h3>{text.title}</h3>
 							<ul className='listTexts-items'>
 								{rendeTextsItem({

@@ -141,7 +141,13 @@ export const ResumeFormContainer: React.FC = () => {
 				);
 
 			case 'experiences':
-				return <ExperiencesForm selectedExperienceId={experienceId} />;
+				return (
+					<ExperiencesForm
+						selectedExperienceId={experienceId}
+						onSelecteExperienceId={(id): void => setExperienceId(id)}
+						onSubmitForm={(): void => handleNavigateFormSections('next')}
+					/>
+				);
 
 			case 'design':
 				return <DesignForm />;
@@ -150,10 +156,6 @@ export const ResumeFormContainer: React.FC = () => {
 				return null;
 		}
 	};
-
-	const showPreviewResumeForm =
-		formSectionSelected === 'experiences' ||
-		formSectionSelected === 'expertises';
 
 	return (
 		<>
@@ -180,10 +182,14 @@ export const ResumeFormContainer: React.FC = () => {
 						}
 					/>
 
-					{showPreviewResumeForm && (
+					{(formSectionSelected === 'experiences' ||
+						formSectionSelected === 'expertises') && (
 						<PreviewResumeFormValues
 							formSection={formSectionSelected}
-							onSelectExperienceId={(id: string): void => setExperienceId(id)}
+							onSelectExperienceId={(id: string): void => {
+								setExperienceId(id);
+							}}
+							experienceId={experienceId}
 						/>
 					)}
 				</div>

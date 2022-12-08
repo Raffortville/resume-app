@@ -3,10 +3,22 @@ import { useLocation } from 'react-router-dom';
 
 import { useAppSelector } from '../../store/hooks';
 import { getResumeById } from '../../store/resume/actions';
-import { resumeSelector } from '../../store/resume/reducer';
+import {
+	resumeExperiencesSelector,
+	resumeProfileSelector,
+	resumeSelector,
+} from '../../store/resume/reducer';
+import { IResume } from '../../types/store';
 
-export const useResume = () => {
+export const useResume = (): {
+	resume: IResume | null;
+	resumeProfile: IResume['profil'];
+	resumeExperiences: IResume['experiences'];
+} => {
 	const resume = useAppSelector(resumeSelector);
+	const resumeProfile = useAppSelector(resumeProfileSelector);
+	const resumeExperiences = useAppSelector(resumeExperiencesSelector);
+
 	const location = useLocation();
 
 	useEffect(() => {
@@ -20,5 +32,7 @@ export const useResume = () => {
 
 	return {
 		resume,
+		resumeProfile,
+		resumeExperiences,
 	};
 };

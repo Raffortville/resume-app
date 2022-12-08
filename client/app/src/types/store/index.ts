@@ -1,9 +1,5 @@
 import type { AlertColor } from '@mui/material/Alert';
-import {
-	ObjectIdValue,
-	ObjectKeyListItems,
-	ObjKeyValueType,
-} from '../common/index';
+import { ObjectIdValue, ObjectKeyListItems } from '../common/index';
 
 export interface IUserLite {
 	_id?: string;
@@ -36,13 +32,13 @@ export interface IEducation {
 export interface IExperience {
 	exp_id: string;
 	company: string;
+	achievements: ObjectKeyListItems;
+	stack: ObjectKeyListItems;
 	period?: string;
 	place?: string;
 	occupiedPosition?: string;
 	description?: string;
 	project?: string;
-	achievements?: ObjectKeyListItems[];
-	stack?: ObjectKeyListItems[];
 }
 
 export type ExpertiseKeyType =

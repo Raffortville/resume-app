@@ -2,6 +2,7 @@ import React from 'react';
 import { useResume } from '../../../../../hooks/resume';
 import { useAppDispatch } from '../../../../../store/hooks';
 import {
+	deleteAchievementOrStackFromResumeExperience,
 	deleteExpertiseFromResume,
 	setResume,
 } from '../../../../../store/resume/reducer';
@@ -17,13 +18,15 @@ import { ListTexts } from '../../../../ui/list/listTexts';
 interface CustomProps {
 	formSection: FormSectionType;
 	onSelectExperienceId: (id: string) => void;
+	experienceId?: string;
 }
 
 export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 	formSection,
 	onSelectExperienceId,
+	experienceId,
 }) => {
-	const { resume } = useResume();
+	const { resume, resumeExperiences } = useResume();
 	const dispatch = useAppDispatch();
 
 	if (resume === null) {
@@ -36,7 +39,15 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 				return resume.expertises.filter(
 					(expert) => expert.key !== 'soft_skills'
 				);
-
+			case 'experiences': {
+				return resumeExperiences
+					? resumeExperiences.map((exp) => ({
+							title: exp.stack.title,
+							key: exp.stack.key,
+							items: exp.stack.items,
+					  }))
+					: [];
+			}
 			default:
 				return [];
 		}
@@ -48,7 +59,15 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 				return resume.expertises.filter(
 					(expert) => expert.key === 'soft_skills'
 				);
-
+			case 'experiences': {
+				return resumeExperiences
+					? resumeExperiences.map((exp) => ({
+							title: exp.achievements.title,
+							key: exp.achievements.key,
+							items: exp.achievements.items,
+					  }))
+					: [];
+			}
 			default:
 				return [];
 		}
@@ -57,14 +76,14 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 	const getRadiosData = (): ObjectKeyListItems[] => {
 		switch (formSection) {
 			case 'experiences': {
-				if (!resume.experiences) {
+				if (!resumeExperiences) {
 					return [];
 				}
 				return [
 					{
 						key: resume._id,
 						title: 'Experiences',
-						items: resume.experiences.map((exp) => ({
+						items: resumeExperiences.map((exp) => ({
 							id: exp.exp_id,
 							value: exp.company,
 						})),
@@ -77,7 +96,7 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 		}
 	};
 
-	const onDeleteResumeItem = ({
+	const onDeleteItemFromResume = ({
 		key,
 		itemId,
 	}: {
@@ -93,46 +112,79 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 					})
 				);
 				break;
-
 			case 'experiences':
-				if (!resume.experiences) {
+				if (!resumeExperiences || !resume) {
 					return;
 				}
 				dispatch(
 					setResume({
 						...resume,
-						experiences: resume.experiences.filter(
+						experiences: resumeExperiences.filter(
 							(exp) => exp.exp_id !== itemId
 						),
 					})
 				);
 				break;
-
 			default:
 				break;
 		}
+	};
+
+	const onDeleteAchievementOrStackFromResumeExperience = ({
+		categoryKey,
+		experienceKey,
+		itemId,
+	}: {
+		categoryKey: 'achievements' | 'stack';
+		experienceKey: string;
+		itemId: string;
+	}) => {
+		dispatch(
+			deleteAchievementOrStackFromResumeExperience({
+				categoryKey: categoryKey,
+				experienceId: experienceKey,
+				itemId,
+			})
+		);
 	};
 
 	return (
 		<div>
 			<ListChips
 				chips={getChipsData()}
-				onDeleteChip={({ chipKey, itemId }) =>
-					onDeleteResumeItem({ key: chipKey, itemId })
-				}
+				onDeleteChip={({ chipKey, itemId }) => {
+					if (formSection === 'experiences') {
+						onDeleteAchievementOrStackFromResumeExperience({
+							categoryKey: 'stack',
+							experienceKey: chipKey,
+							itemId,
+						});
+						return;
+					}
+					onDeleteItemFromResume({ key: chipKey, itemId });
+				}}
 			/>
 			<ListTexts
 				texts={getTextsData()}
-				onDeleteText={({ textKey, itemId }) =>
-					onDeleteResumeItem({ key: textKey, itemId })
-				}
+				onDeleteText={({ textKey, itemId }) => {
+					if (formSection === 'experiences') {
+						onDeleteAchievementOrStackFromResumeExperience({
+							categoryKey: 'achievements',
+							experienceKey: textKey,
+							itemId,
+						});
+						return;
+					}
+					onDeleteItemFromResume({ key: textKey, itemId });
+				}}
 			/>
 			<ListRadios
 				radios={getRadiosData()}
 				onSelectRadio={onSelectExperienceId}
-				onDeleteRadio={({ radioKey, itemId }) =>
-					onDeleteResumeItem({ key: radioKey, itemId })
-				}
+				onDeleteRadio={({ radioKey, itemId }) => {
+					onDeleteItemFromResume({ key: radioKey, itemId });
+				}}
+				defaultSelectedRadio={experienceId}
 			/>
 		</div>
 	);

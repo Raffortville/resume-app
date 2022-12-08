@@ -75,6 +75,69 @@ const resumeSlice = createSlice({
 				}),
 			};
 		},
+		addAchievementOrStackToResumeExperience: (
+			state,
+			{
+				payload,
+			}: PayloadAction<{
+				categoryKey: 'achievements' | 'stack';
+				experienceId: string;
+				objectValue: { id: string; value: string };
+			}>
+		) => {
+			if (state.resume === null || !state.resume.experiences?.length) {
+				return;
+			}
+			state.resume = {
+				...state.resume,
+				experiences: state.resume.experiences.map((experience) => {
+					if (payload.experienceId === experience.exp_id) {
+						return {
+							...experience,
+							[payload.categoryKey]: {
+								...experience[payload.categoryKey],
+								items: [
+									...experience[payload.categoryKey].items,
+									payload.objectValue,
+								],
+							},
+						};
+					}
+					return experience;
+				}),
+			};
+		},
+		deleteAchievementOrStackFromResumeExperience: (
+			state,
+			{
+				payload,
+			}: PayloadAction<{
+				categoryKey: 'achievements' | 'stack';
+				experienceId: string;
+				itemId: string;
+			}>
+		) => {
+			if (!state.resume || !state.resume.experiences?.length) {
+				return;
+			}
+			state.resume = {
+				...state.resume,
+				experiences: state.resume.experiences.map((experience) => {
+					if (experience.exp_id === payload.experienceId) {
+						return {
+							...experience,
+							[payload.categoryKey]: {
+								...[payload.categoryKey],
+								items: experience[payload.categoryKey].items.filter(
+									(item) => item.id !== payload.itemId
+								),
+							},
+						};
+					}
+					return experience;
+				}),
+			};
+		},
 		deleteResume: (state, { payload }: PayloadAction<string>) => {
 			if (state.resumes !== null) {
 				state.resumes = state.resumes.filter(
@@ -97,6 +160,8 @@ export const {
 	addResume,
 	addExpertiseToResume,
 	deleteExpertiseFromResume,
+	addAchievementOrStackToResumeExperience,
+	deleteAchievementOrStackFromResumeExperience,
 	deleteResume,
 	resetResume,
 	resetResumes,
@@ -106,5 +171,10 @@ export const resumeReducer = resumeSlice.reducer;
 
 export const resumeSelector = (state: RootState): IResume | null =>
 	state.resumeReducer.resume;
+export const resumeProfileSelector = (state: RootState): IResume['profil'] =>
+	state.resumeReducer.resume?.profil;
+export const resumeExperiencesSelector = (
+	state: RootState
+): IResume['experiences'] => state.resumeReducer.resume?.experiences;
 export const resumesSelector = (state: RootState): IResume[] | null =>
 	state.resumeReducer.resumes;

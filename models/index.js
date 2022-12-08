@@ -1,17 +1,12 @@
 import mongoose from 'mongoose';
 
-const SubDocSchema = new mongoose.Schema(
+const SubDocIdSchema = new mongoose.Schema(
 	{
-		value: String || Number,
-		key: String,
+		id: String,
+		value: String,
 	},
-	{ versionKey: false }
+	{ versionKey: false, _id: false }
 );
-
-const SubDocIdSchema = new mongoose.Schema({
-	id: String,
-	value: String,
-});
 
 const ObjectKeyItems = new mongoose.Schema(
 	{
@@ -53,8 +48,8 @@ const ExperienceSchema = new mongoose.Schema(
 		period: String,
 		place: String,
 		occupiedPosition: String,
-		achievements: [ObjectKeyItems],
-		stack: [ObjectKeyItems],
+		achievements: ObjectKeyItems,
+		stack: ObjectKeyItems,
 		description: String,
 		project: String,
 	},

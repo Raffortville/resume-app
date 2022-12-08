@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ObjectIdValue, ObjectKeyListItems } from '../../../../types/common';
 import { IconButton, Radio } from '@mui/material';
@@ -16,6 +16,7 @@ interface CustomProps {
 		radioKey: string;
 		itemId: string;
 	}) => void;
+	defaultSelectedRadio?: string;
 	className?: string;
 }
 
@@ -23,9 +24,16 @@ export const ListRadios: React.FC<CustomProps> = ({
 	radios,
 	onSelectRadio,
 	onDeleteRadio,
+	defaultSelectedRadio,
 	className,
 }) => {
-	const [selectedRadio, setSelectedRadio] = useState<string>();
+	const [selectedRadio, setSelectedRadio] = useState<string | undefined>(
+		defaultSelectedRadio
+	);
+
+	useEffect(() => {
+		defaultSelectedRadio && setSelectedRadio(defaultSelectedRadio);
+	}, [defaultSelectedRadio]);
 
 	const rendeRadiosItem = ({
 		radioItems,
@@ -36,7 +44,7 @@ export const ListRadios: React.FC<CustomProps> = ({
 	}) => {
 		return radioItems.map((item, index) => {
 			return (
-				<li key={item.id} className='listRadios-items--item'>
+				<li key={index} className='listRadios-items--item'>
 					<div className='listRadios-radio'>
 						<Radio
 							size='small'
@@ -61,14 +69,21 @@ export const ListRadios: React.FC<CustomProps> = ({
 
 	return (
 		<ul className={className}>
-			{radios.map((radio) => (
-				<li key={radio.key} className='listRadios'>
-					<h3>{radio.title}</h3>
-					<ul className='listRadios-items'>
-						{rendeRadiosItem({ radioItems: radio.items, radioKey: radio.key })}
-					</ul>
-				</li>
-			))}
+			{radios.map((radio, index) => {
+				return (
+					radio.items.length > 0 && (
+						<li key={index} className='listRadios'>
+							<h3>{radio.title}</h3>
+							<ul className='listRadios-items'>
+								{rendeRadiosItem({
+									radioItems: radio.items,
+									radioKey: radio.key,
+								})}
+							</ul>
+						</li>
+					)
+				);
+			})}
 		</ul>
 	);
 };

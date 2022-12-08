@@ -28,9 +28,9 @@ export const ListChips: React.FC<CustomProps> = ({
 		chipItems: ObjectIdValue[];
 		chipKey: string;
 	}) => {
-		return chipItems.map((item) => {
+		return chipItems.map((item, index) => {
 			return (
-				<li key={item.id}>
+				<li key={index}>
 					<ChipUI
 						chipData={{
 							id: item.id,
@@ -50,9 +50,9 @@ export const ListChips: React.FC<CustomProps> = ({
 	return (
 		<ul className={className}>
 			{chips.map(
-				(chip) =>
+				(chip, index) =>
 					chip.items.length > 0 && (
-						<li key={chip.key} className='listChips'>
+						<li key={index} className='listChips'>
 							<h3>{chip.title}</h3>
 							<ul className='listChips-items'>
 								{renderChipsItem({ chipItems: chip.items, chipKey: chip.key })}

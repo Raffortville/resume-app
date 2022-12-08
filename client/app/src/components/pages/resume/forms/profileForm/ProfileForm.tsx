@@ -126,11 +126,7 @@ interface IProfilFormProps {
 }
 
 export const ProfileForm: React.FC<IProfilFormProps> = ({ onSubmitForm }) => {
-	const { resume } = useResume();
-
-	const profileInitialState: IProfil = {
-		...resume?.profil,
-	};
+	const { resumeProfile, resume } = useResume();
 
 	const onUpdateResumeProfile = async (profil: IProfil): Promise<void> => {
 		if (!resume) {
@@ -152,7 +148,7 @@ export const ProfileForm: React.FC<IProfilFormProps> = ({ onSubmitForm }) => {
 
 	return (
 		<ProfileFormInputFields
-			initialState={profileInitialState}
+			initialState={{ ...resumeProfile }}
 			updateResumeProfil={onUpdateResumeProfile}
 		/>
 	);

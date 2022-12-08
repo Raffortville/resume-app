@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { useResume } from '../../../../../hooks/resume';
+import {
+	addAchievementOrStackToResumeExperience,
+	setResume,
+} from '../../../../../store/resume/reducer';
 import { useAppDispatch } from '../../../../../store/hooks';
-import { setResume } from '../../../../../store/resume/reducer';
 
 import { isStringEmpty } from '../../../../../helpers';
 import {
@@ -14,6 +17,8 @@ import {
 } from '@mui/material';
 import { AddCircle, AddCircleOutline, Cancel } from '@mui/icons-material';
 import { BoxLabelAction } from '../../../../ui/boxes/boxLabelAction';
+import { updateResumeToDB } from '../../../../../store/resume/actions';
+import { IExperience, IResume } from '../../../../../types/store';
 
 // exp_id: string;
 // 	company: string;
@@ -34,9 +39,6 @@ type ExperiencesFormType = {
 	achievements: string | undefined;
 	stack: string | undefined;
 };
-interface IBoxAddNewExperienceProps {
-	onAddExperience: (companyValue: string) => void;
-}
 
 type CompanyFormType = {
 	value: string | undefined;
@@ -48,8 +50,12 @@ const initialState: CompanyFormType = {
 	errorText: undefined,
 };
 
-const BoxAddNewExperience: React.FC<IBoxAddNewExperienceProps> = ({
-	onAddExperience,
+interface IBoxAddNewExperience {
+	onAddNewExperience: (companyValue: string) => void;
+}
+
+const BoxAddNewExperience: React.FC<IBoxAddNewExperience> = ({
+	onAddNewExperience,
 }) => {
 	const [company, setCompany] = useState<CompanyFormType>(initialState);
 	const [openTextField, setOpenTextField] = useState<boolean>(false);
@@ -80,8 +86,8 @@ const BoxAddNewExperience: React.FC<IBoxAddNewExperienceProps> = ({
 			setCompany({ ...company, errorText: 'Veuillez remplir le champs' });
 			return;
 		}
-		onAddExperience(company.value);
 		setOpenTextField(false);
+		onAddNewExperience(company.value);
 	};
 
 	return (
@@ -127,15 +133,34 @@ const BoxAddNewExperience: React.FC<IBoxAddNewExperienceProps> = ({
 
 interface IExperiencesFormInputFieldsProps {
 	initialState: ExperiencesFormType;
+	companyName: string;
+	onSubmit: () => void;
+	onBlur: (experienceValues: ExperiencesFormType) => void;
+	addAchievementsOrStack: (
+		category: 'achievements' | 'stack',
+		value: string | undefined
+	) => void;
 }
 
 const ExperiencesFormInputFields: React.FC<
 	IExperiencesFormInputFieldsProps
-> = ({ initialState }) => {
+> = ({
+	initialState,
+	addAchievementsOrStack,
+	companyName,
+	onSubmit,
+	onBlur,
+}) => {
 	const [experienceValues, setExperienceValues] =
 		useState<ExperiencesFormType>(initialState);
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+	useEffect(() => {
+		setExperienceValues(initialState);
+	}, [initialState]);
+
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>
+	): void => {
 		const { name, value } = e.target;
 		setExperienceValues({ ...experienceValues, [name]: value });
 	};
@@ -143,49 +168,54 @@ const ExperiencesFormInputFields: React.FC<
 	return (
 		<div className='resume-form-container'>
 			<TextField
-				label='Poste occupé'
+				label={`Poste occupé à ${companyName}`}
 				value={experienceValues.occupiedPosition || ''}
 				name='occupiedPosition'
 				onChange={handleChange}
+				onBlur={(): void => onBlur(experienceValues)}
 				helperText='Intitulé du poste'
 				variant='standard'
 			/>
 			<TextField
-				label='Période'
+				label={`Période évolué à ${companyName}`}
 				value={experienceValues.period}
 				name='period'
 				onChange={handleChange}
+				onBlur={(): void => onBlur(experienceValues)}
 				variant='standard'
 			/>
 			<TextField
-				label='Lieu'
+				label={`Lieu de travail à ${companyName}`}
 				value={experienceValues.place || ''}
 				name='place'
 				onChange={handleChange}
+				onBlur={(): void => onBlur(experienceValues)}
 				helperText='Ville, pays ou full-remote'
 				variant='standard'
 			/>
 			<TextField
-				label='Projet'
+				label={`Projet chez ${companyName}`}
 				value={experienceValues.project || ''}
 				name='project'
 				onChange={handleChange}
+				onBlur={(): void => onBlur(experienceValues)}
 				helperText='Lien vers le projet'
 				variant='standard'
 			/>
 			<TextareaAutosize
-				name='description'
+				name={`Description de la mission à ${companyName}`}
 				value={experienceValues.description || ''}
 				onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void => {
 					const { value } = event.target;
 					setExperienceValues({ ...experienceValues, description: value });
 				}}
+				onBlur={(): void => onBlur(experienceValues)}
 				minRows={3}
 				maxRows={6}
 				placeholder='Décrivez la mission globale réalisée'
 			/>
 			<TextField
-				label='Réalisations'
+				label={`Réalisations accomplis à ${companyName}`}
 				name='achievements'
 				value={experienceValues.achievements || ''}
 				onChange={handleChange}
@@ -195,7 +225,16 @@ const ExperiencesFormInputFields: React.FC<
 					endAdornment: (
 						<InputAdornment position='end'>
 							<AddCircleOutline
-								onClick={(): void => console.log('achievements')}
+								onClick={(): void => {
+									addAchievementsOrStack(
+										'achievements',
+										experienceValues.achievements
+									);
+									setExperienceValues({
+										...experienceValues,
+										achievements: undefined,
+									});
+								}}
 								className='resume-form--icon'
 								color='primary'
 							/>
@@ -204,7 +243,7 @@ const ExperiencesFormInputFields: React.FC<
 				}}
 			/>
 			<TextField
-				label='Technologies utilisées'
+				label={`Technologies utilisées à ${companyName}`}
 				name='stack'
 				value={experienceValues.stack || ''}
 				onChange={handleChange}
@@ -214,7 +253,13 @@ const ExperiencesFormInputFields: React.FC<
 					endAdornment: (
 						<InputAdornment position='end'>
 							<AddCircleOutline
-								onClick={(): void => console.log('stack')}
+								onClick={(): void => {
+									addAchievementsOrStack('stack', experienceValues.stack);
+									setExperienceValues({
+										...experienceValues,
+										stack: undefined,
+									});
+								}}
 								className='resume-form--icon'
 								color='primary'
 							/>
@@ -224,7 +269,7 @@ const ExperiencesFormInputFields: React.FC<
 			/>
 			<Button
 				className='resume-form-button'
-				onClick={(): void => console.log('test')}
+				onClick={onSubmit}
 				variant='contained'>
 				ENREGISTRER
 			</Button>
@@ -234,17 +279,22 @@ const ExperiencesFormInputFields: React.FC<
 
 interface IExperiencesFormProps {
 	selectedExperienceId: string | undefined;
+	onSelecteExperienceId: (id: string) => void;
+	onSubmitForm: () => void;
 }
 
 export const ExperiencesForm: React.FC<IExperiencesFormProps> = ({
 	selectedExperienceId,
+	onSelecteExperienceId,
+	onSubmitForm,
 }) => {
-	const { resume } = useResume();
+	const { resumeExperiences, resume } = useResume();
+	const dispatch = useAppDispatch();
 
-	const experienceSelected = resume?.experiences
+	const experienceSelected = resumeExperiences
 		? selectedExperienceId
-			? resume.experiences.find((exp) => exp.exp_id === selectedExperienceId)
-			: resume.experiences[0]
+			? resumeExperiences.find((exp) => exp.exp_id === selectedExperienceId)
+			: resumeExperiences[0]
 		: undefined;
 
 	const initialExperiencesState: ExperiencesFormType = {
@@ -257,29 +307,91 @@ export const ExperiencesForm: React.FC<IExperiencesFormProps> = ({
 		stack: undefined,
 	};
 
-	const dispatch = useAppDispatch();
+	const onAddNewExperience = useCallback(
+		(companyValue: string): void => {
+			if (!resume) {
+				return;
+			}
+			const experiencesCopy = resumeExperiences ?? [];
+			const exp_id = Date.now().toString();
+			const experienceCreated = {
+				exp_id,
+				company: companyValue,
+				achievements: {
+					title: companyValue,
+					key: exp_id,
+					items: [],
+				},
+				stack: { title: companyValue, key: exp_id, items: [] },
+			};
+			dispatch(
+				setResume({
+					...resume,
+					experiences: [...experiencesCopy, experienceCreated],
+				})
+			);
+			onSelecteExperienceId(experienceCreated.exp_id);
+		},
+		[dispatch, onSelecteExperienceId, resume, resumeExperiences]
+	);
 
-	const onAddNewExperience = (companyValue: string) => {
-		if (!resume) {
+	const onAddAchievementsOrStack = useCallback(
+		(category: 'achievements' | 'stack', value: string | undefined) => {
+			if (!resume || !value || !experienceSelected?.exp_id) {
+				return;
+			}
+			dispatch(
+				addAchievementOrStackToResumeExperience({
+					categoryKey: category,
+					experienceId: experienceSelected.exp_id,
+					objectValue: { value, id: Date.now().toString() },
+				})
+			);
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[experienceSelected?.exp_id, resume]
+	);
+
+	const updateExperienceValueToStore = (
+		experienceValues: ExperiencesFormType
+	): IResume | undefined => {
+		if (resume === null || !experienceSelected) {
 			return;
 		}
-		const experiencesCopy = resume.experiences ?? [];
-		dispatch(
-			setResume({
-				...resume,
-				experiences: [
-					...experiencesCopy,
-					{ exp_id: Date.now().toString(), company: companyValue },
-				],
-			})
+		const experienceValuesFiltred = Object.fromEntries(
+			Object.entries(experienceValues).filter(
+				([key, value]) => value !== undefined
+			)
 		);
+		const experience: IExperience = {
+			...experienceSelected,
+			...experienceValuesFiltred,
+		};
+		const experiences: IResume['experiences'] = resumeExperiences?.map((exp) =>
+			exp.exp_id === experience.exp_id ? experience : exp
+		);
+		dispatch(setResume({ ...resume, experiences: experiences }));
+	};
+
+	const updateResume = async (): Promise<void> => {
+		if (resume === null) {
+			return;
+		}
+		const resumeUpdated = await updateResumeToDB(resume);
+		resumeUpdated && onSubmitForm();
 	};
 
 	return (
 		<div className='resume-form-container'>
-			<BoxAddNewExperience onAddExperience={onAddNewExperience} />
+			<BoxAddNewExperience onAddNewExperience={onAddNewExperience} />
 			{experienceSelected && (
-				<ExperiencesFormInputFields initialState={initialExperiencesState} />
+				<ExperiencesFormInputFields
+					initialState={initialExperiencesState}
+					companyName={experienceSelected.company}
+					onSubmit={updateResume}
+					onBlur={updateExperienceValueToStore}
+					addAchievementsOrStack={onAddAchievementsOrStack}
+				/>
 			)}
 		</div>
 	);
