@@ -38,7 +38,7 @@ export const FormSkeleton: React.FC<CustomProps> = ({
 
 			<div className='skeleton-container'>
 				<div className='header'>
-					<h1>{title}</h1>
+					<h2>{title}</h2>
 				</div>
 				{children}
 			</div>

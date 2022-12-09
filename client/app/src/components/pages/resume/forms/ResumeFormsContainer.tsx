@@ -170,28 +170,33 @@ export const ResumeFormContainer: React.FC = () => {
 						hasTextLink
 					/>
 				</div>
-				<div className='resume-form--section'>
-					<UpdateTitleForm />
-					<FormSkeleton
-						title={getFormTitle()}
-						children={getFormContent()}
-						hasBackButton={formSectionSelected !== 'contact'}
-						hasNextButton={formSectionSelected !== 'design'}
-						onNavigateButtonClick={(direction) =>
-							handleNavigateFormSections(direction)
-						}
-					/>
-
-					{(formSectionSelected === 'experiences' ||
-						formSectionSelected === 'expertises') && (
-						<PreviewResumeFormValues
-							formSection={formSectionSelected}
-							onSelectExperienceId={(id: string): void => {
-								setExperienceId(id);
-							}}
-							experienceId={experienceId}
+				<div className='resume-form-row'>
+					<div className='resume-form--titleForm'>
+						<UpdateTitleForm />
+					</div>
+					<div className='resume-form--inputFields'>
+						<FormSkeleton
+							title={getFormTitle()}
+							children={getFormContent()}
+							hasBackButton={formSectionSelected !== 'contact'}
+							hasNextButton={formSectionSelected !== 'design'}
+							onNavigateButtonClick={(direction) =>
+								handleNavigateFormSections(direction)
+							}
 						/>
-					)}
+					</div>
+					<div className='resume-form--preview'>
+						{(formSectionSelected === 'experiences' ||
+							formSectionSelected === 'expertises') && (
+							<PreviewResumeFormValues
+								formSection={formSectionSelected}
+								onSelectExperienceId={(id: string): void => {
+									setExperienceId(id);
+								}}
+								experienceId={experienceId}
+							/>
+						)}
+					</div>
 				</div>
 			</div>
 		</>

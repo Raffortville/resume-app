@@ -15,6 +15,8 @@ import { ListChips } from '../../../../ui/list/listChips';
 import { ListRadios } from '../../../../ui/list/listRadios';
 import { ListTexts } from '../../../../ui/list/listTexts';
 
+import './previewResumeFormValuesStyles.scss';
+
 interface CustomProps {
 	formSection: FormSectionType;
 	onSelectExperienceId: (id: string) => void;
@@ -149,7 +151,15 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 	};
 
 	return (
-		<div>
+		<div className='previewResumeFormValues'>
+			<ListRadios
+				radios={getRadiosData()}
+				onSelectRadio={onSelectExperienceId}
+				onDeleteRadio={({ radioKey, itemId }) => {
+					onDeleteItemFromResume({ key: radioKey, itemId });
+				}}
+				defaultSelectedRadio={experienceId}
+			/>
 			<ListChips
 				chips={getChipsData()}
 				onDeleteChip={({ chipKey, itemId }) => {
@@ -177,14 +187,6 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 					}
 					onDeleteItemFromResume({ key: textKey, itemId });
 				}}
-			/>
-			<ListRadios
-				radios={getRadiosData()}
-				onSelectRadio={onSelectExperienceId}
-				onDeleteRadio={({ radioKey, itemId }) => {
-					onDeleteItemFromResume({ key: radioKey, itemId });
-				}}
-				defaultSelectedRadio={experienceId}
 			/>
 		</div>
 	);
