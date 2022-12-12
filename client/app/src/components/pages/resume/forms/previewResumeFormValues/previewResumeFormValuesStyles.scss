@@ -1,3 +1,10 @@
+@import '../../../../../styles/mixins.scss';
+@import '../../../../../styles/variables.scss';
+
 .previewResumeFormValues {
 	width: 100%;
+	border: 1px solid $grey;
+	border-radius: 8px;
+	padding: 24px;
+	@include box-shadow();
 }

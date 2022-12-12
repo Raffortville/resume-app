@@ -1,5 +1,5 @@
 import type { AlertColor } from '@mui/material/Alert';
-import { ObjectIdValue, ObjectKeyListItems } from '../common/index';
+import { ColorKey, ObjectIdValue, ObjectKeyListItems } from '../common/index';
 
 export interface IUserLite {
 	_id?: string;
@@ -64,7 +64,7 @@ export interface IProfil {
 }
 export interface IDesign {
 	profilPic?: string;
-	colorMain?: string;
+	colorMain?: ColorKey;
 }
 
 export type StatusType = 'complete' | 'draft';

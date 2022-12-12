@@ -28,6 +28,11 @@ export interface IKeyNodeItem {
 	nodeElement: React.ReactNode;
 }
 
+export type ColorKey = {
+	name: string | undefined;
+	hex: string | undefined;
+};
+
 // FORM
 export type FormSectionType =
 	| 'contact'

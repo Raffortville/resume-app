@@ -9,3 +9,43 @@
 	border: 1px dashed;
 	@include fade();
 }
+
+.resume-design--colors {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.resume-design--colorPick {
+	height: 45px;
+	width: 45px;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: all 0.3s ease;
+
+	&:hover {
+		transform: scale(1.1);
+		@include box-shadow();
+	}
+
+	&.grey {
+		background-color: $grey;
+	}
+
+	&.blue {
+		background-color: $blue;
+	}
+
+	&.maroon {
+		background-color: $maroon;
+	}
+
+	&.berry {
+		background-color: $berry;
+	}
+
+	&.selected {
+		margin: 0 auto;
+		@include box-shadow();
+		transform: scale(1.1);
+	}
+}

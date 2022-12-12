@@ -70,7 +70,7 @@ const ProfileSchema = new mongoose.Schema(
 const DesignSchema = new mongoose.Schema(
 	{
 		profilPic: String,
-		colorMain: String,
+		colorMain: { name: String, hex: String },
 	},
 	{ versionKey: false }
 );
