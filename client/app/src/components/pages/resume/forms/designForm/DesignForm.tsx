@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useResume } from '../../../../../hooks/resume';
 import { displayAlert } from '../../../../../store/alert/actions';
-import { sendPicToStorage } from '../../../../../utils';
-import { Backup } from '@mui/icons-material';
 import { useAppDispatch } from '../../../../../store/hooks';
 import { setResume } from '../../../../../store/resume/reducer';
+import { sendPicToStorage } from '../../../../../utils';
+
+import { Button } from '@mui/material';
+import { InputFile } from '../../../../ui/inputs/inputFile';
 
 interface IDesignFormInputFieldsProps {
 	onUploadFile: (imageFile: FileList | null) => Promise<void>;
@@ -16,23 +18,17 @@ const DesignFormInputFields: React.FC<IDesignFormInputFieldsProps> = ({
 }) => {
 	return (
 		<div className='resume-form-container'>
-			<label htmlFor='profil-pic' className='resume-form--design-button-upload'>
-				Votre photo
-				<Backup className='resume-form--design-button-upload-icon' />
-			</label>
-			<input
-				hidden
-				type='file'
-				accept='png/jpeg'
-				id='profil-pic'
-				onChange={(e: React.ChangeEvent<HTMLInputElement>): Promise<void> =>
-					onUploadFile(e.target.files)
-				}
-			/>
+			<InputFile label='Votre Photo' onChangeFile={onUploadFile} />
 			{/* <div className='previewPic' style={{ marginTop: '20px' }}>
 				<p style={{ marginRight: '10px' }}>Your choosen resume picture</p>
 				<img src={previewPic} alt='/' className='imgAvatar' />
 			</div> */}
+			<Button
+				onClick={() => console.log('submit')}
+				className='resume-form-button'
+				variant='contained'>
+				ENREGISTRER
+			</Button>
 		</div>
 	);
 };

@@ -1,0 +1,11 @@
+@import '../../../../../styles/mixins.scss';
+@import '../../../../../styles/variables.scss';
+
+.previewPicImg {
+	margin: 16px auto 0 auto;
+	height: 96px;
+	width: 96px;
+	border-radius: 50%;
+	border: 1px dashed;
+	@include fade();
+}

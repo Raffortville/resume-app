@@ -40,31 +40,6 @@
 					max-width: 182px;
 					margin: 32px auto 0;
 				}
-
-				.resume-form--design-button-upload {
-					display: flex;
-					align-items: center;
-					justify-content: space-evenly;
-					padding: 8px;
-					color: $primary;
-					font-weight: 500;
-					border: dashed 1px;
-					border-color: $primary-light;
-					border-radius: 15px;
-					cursor: pointer;
-					opacity: 0.8;
-					transition: all ease 0.2s;
-				}
-
-				.resume-form--design-button-upload:hover {
-					opacity: 1;
-					border: solid 1px;
-				}
-
-				.resume-form--design-button-upload-icon {
-					color: $primary;
-					border-color: $primary;
-				}
 			}
 		}
 
