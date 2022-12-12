@@ -171,10 +171,20 @@ export const resumeReducer = resumeSlice.reducer;
 
 export const resumeSelector = (state: RootState): IResume | null =>
 	state.resumeReducer.resume;
+
 export const resumeProfileSelector = (state: RootState): IResume['profil'] =>
 	state.resumeReducer.resume?.profil;
+
+export const resumeExpertisesSelector = (
+	state: RootState
+): IResume['expertises'] | undefined => state.resumeReducer.resume?.expertises;
+
 export const resumeExperiencesSelector = (
 	state: RootState
 ): IResume['experiences'] => state.resumeReducer.resume?.experiences;
+
+export const resumeDesignSelector = (state: RootState): IResume['design'] =>
+	state.resumeReducer.resume?.design;
+
 export const resumesSelector = (state: RootState): IResume[] | null =>
 	state.resumeReducer.resumes;

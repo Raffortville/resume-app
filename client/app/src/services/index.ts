@@ -1,1 +1,1 @@
-export { fireBaseAuth, firebaseStorageRef } from './firebase';
+export * from './firebase';

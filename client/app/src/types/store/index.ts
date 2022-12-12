@@ -63,8 +63,8 @@ export interface IProfil {
 	education?: IEducation;
 }
 export interface IDesign {
-	profilPic: string;
-	colorMain: string;
+	profilPic?: string;
+	colorMain?: string;
 }
 
 export type StatusType = 'complete' | 'draft';

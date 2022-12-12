@@ -56,18 +56,24 @@ const ExperienceSchema = new mongoose.Schema(
 	{ versionKey: false }
 );
 
-const ProfileSchema = new mongoose.Schema({
-	position: String,
-	introduction: String,
-	portfolio: String,
-	sosocialMedias: String,
-	education: EducationSchema,
-});
+const ProfileSchema = new mongoose.Schema(
+	{
+		position: String,
+		introduction: String,
+		portfolio: String,
+		sosocialMedias: String,
+		education: EducationSchema,
+	},
+	{ versionKey: false }
+);
 
-const DesignSchema = new mongoose.Schema({
-	profilPic: String,
-	colorMain: String,
-});
+const DesignSchema = new mongoose.Schema(
+	{
+		profilPic: String,
+		colorMain: String,
+	},
+	{ versionKey: false }
+);
 
 const ResumeSchema = new mongoose.Schema(
 	{
