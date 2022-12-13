@@ -23,13 +23,6 @@ export const Dashboard: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const onViewResume = (resumeId?: string) => {
-		if (!resumeId) {
-			return;
-		}
-		console.log(resumeId, 'view');
-	};
-
 	const renderListResumes = (): React.ReactNode => {
 		if (resumes === null) {
 			return null;
@@ -57,7 +50,12 @@ export const Dashboard: React.FC = () => {
 							nodeElement: (
 								<Tooltip
 									title='Voir CV'
-									onClick={(): void => onViewResume(resume._id)}>
+									onClick={(): void => {
+										navigate(`/resume/view/${resume._id}`, {
+											state: { resumeId: resume._id },
+										});
+										dispatch(setResume(resume));
+									}}>
 									<VisibilityRounded className='action-icon' />
 								</Tooltip>
 							),
