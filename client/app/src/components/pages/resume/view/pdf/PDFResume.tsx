@@ -13,7 +13,7 @@ export const PDFResume: React.FC = () => {
 	// 	section: { color: 'white', textAlign: 'center', margin: 30 },
 	// });
 	return (
-		<PDFViewer width='850px' height='800px'>
+		<PDFViewer width='850px' height='700px'>
 			<Document>
 				<Page size='A4'>
 					<View>
