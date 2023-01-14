@@ -33,7 +33,7 @@ Font.register({
 const text = { fontSize: 11, fontFamily: 'Sofia' };
 const textThin = { ...text, fontWeight: 300 };
 const textBold = { ...text, fontWeight: 700 };
-const title = { ...text, fontSize: 18 };
+const title = { ...text, fontSize: 14 };
 const titleBold = { ...title, fontWeight: 800 };
 
 export const PDFResume: React.FC = () => {
@@ -42,27 +42,32 @@ export const PDFResume: React.FC = () => {
 		aside: {
 			height: '100%',
 			width: '35%',
+			padding: 16,
 			backgroundColor: 'grey',
 			color: 'white',
 		},
-		main: { height: '100%', width: '65%' },
+		main: { height: '100%', width: '65%', padding: 16 },
 		text: text,
 		textThin: textThin,
 		textBold: textBold,
-		title: title,
-		titleBold: titleBold,
+		title: { ...title, textTransform: 'uppercase' },
+		titleBold: { ...titleBold, textTransform: 'uppercase' },
 	});
+
+	const getTitle = (section: 'profile'): JSX.Element => {
+		return (
+			<>
+				<Text style={styles.titleBold}>Profile</Text>
+				<Text style={styles.title}>professionnel</Text>
+			</>
+		);
+	};
+
 	return (
 		<PDFViewer width='850px' height='700px'>
 			<Document>
 				<Page size='A4' style={styles.page}>
-					<View style={styles.aside}>
-						<Text style={styles.titleBold}>Title bold</Text>
-						<Text style={styles.title}>Title</Text>
-						<Text style={styles.text}>text</Text>
-						<Text style={styles.textBold}>text bold</Text>
-						<Text style={styles.textThin}>text thin</Text>
-					</View>
+					<View style={styles.aside}>{getTitle('profile')}</View>
 					<View style={styles.main}>
 						<Text>Section #2</Text>
 					</View>
