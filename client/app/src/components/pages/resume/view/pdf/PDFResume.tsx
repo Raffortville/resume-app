@@ -42,6 +42,11 @@ const titleBold = { ...title, fontWeight: 800 };
 const spacing = { margin: '4px 0' };
 const spacingS = { margin: '2px 0' };
 const spacingL = { margin: '8px  0' };
+const box = {
+	backgroundColor: mainColor,
+	opacity: 0.1,
+	padding: 2,
+};
 
 const styles = StyleSheet.create({
 	page: { flexDirection: 'row' },
@@ -61,7 +66,9 @@ const styles = StyleSheet.create({
 	spacingL,
 	title: { ...title, textTransform: 'uppercase' },
 	titleBold: { ...titleBold, textTransform: 'uppercase' },
-	column: { display: 'flex', flexDirection: 'column', gap: 8 },
+	row: { display: 'flex', flexDirection: 'row' },
+	column: { display: 'flex', flexDirection: 'column' },
+	box,
 	separator: {
 		...spacingL,
 		height: 1,
@@ -113,15 +120,19 @@ const CandidateInfos: React.FC = () => {
 			<View style={styles.spacingS} />
 			<Text style={subTittle}>REACT / NODE JS DEVELOPER</Text>
 			<View style={styles.spacingL} />
-			<View
-				style={[styles.spacingS, { display: 'flex', flexDirection: 'row' }]}>
-				<Text style={[styles.text, { marginRight: 4 }]}>phone:</Text>
-				<Text style={styles.textThin}>+37498254994</Text>
+			<View style={[{ display: 'flex', flexDirection: 'row' }]}>
+				<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
+					phone:
+				</Text>
+				<Text style={[styles.textThin, { fontSize: 10 }]}>+37498254994</Text>
 			</View>
-			<View
-				style={[styles.spacingS, { display: 'flex', flexDirection: 'row' }]}>
-				<Text style={[styles.text, { marginRight: 4 }]}>email:</Text>
-				<Text style={styles.textThin}>raffihaycan@gmail.com</Text>
+			<View style={[{ display: 'flex', flexDirection: 'row', fontSize: 10 }]}>
+				<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
+					email:
+				</Text>
+				<Text style={[styles.textThin, { fontSize: 10 }]}>
+					raffihaycan@gmail.com
+				</Text>
 			</View>
 			{pictureElement}
 		</View>
@@ -167,6 +178,84 @@ const ListSkills: React.FC = () => {
 	);
 };
 
+const Experiences: React.FC = () => {
+	const infosElement = (
+		<View>
+			<View style={styles.row}>
+				<Text style={[styles.textBold, { textTransform: 'capitalize' }]}>
+					loumi
+				</Text>
+
+				<Text
+					style={[styles.text, { textTransform: 'capitalize', marginLeft: 2 }]}>
+					| Paris
+				</Text>
+			</View>
+			<View style={styles.spacingS} />
+			<Text style={styles.textBold}>FullStack Javascript Developer</Text>
+			<Text style={styles.text}>SaaS environment MERN Stack</Text>
+			<Text style={styles.textThin}>https://www.loumi.co/</Text>
+		</View>
+	);
+
+	const stackListElement = (
+		<View style={styles.column}>
+			<View style={styles.spacingS} />
+			<Text style={styles.textThin}>* React Functional components</Text>
+			<Text style={styles.textThin}>* Express.js</Text>
+		</View>
+	);
+
+	const projectsListElement = (
+		<View style={styles.column}>
+			<View style={styles.box}>
+				<Text style={[styles.text, { opacity: 1 }]}>PROJECTS</Text>
+			</View>
+			<View style={styles.spacingS} />
+			<Text style={[styles.textThin, { fontSize: 10 }]}>
+				* Design and implementation of new frontend features (forms, pages)
+			</Text>
+			<Text style={[styles.textThin, { fontSize: 10 }]}>
+				* Graphic integration from a design system (Figma)
+			</Text>
+		</View>
+	);
+
+	return (
+		<View style={styles.column}>
+			<View style={styles.row}>
+				<Text style={styles.titleBold}>Experiences</Text>
+				<Text style={[styles.title, { marginLeft: 4 }]}>Professionnelles</Text>
+			</View>
+			<View style={styles.spacing} />
+			<View style={styles.box}>
+				<Text style={[styles.text, { opacity: 1 }]}>02/2021 - 07/2021</Text>
+			</View>
+			<View style={styles.spacingS} />
+			{infosElement}
+			<View style={styles.spacingS} />
+			{stackListElement}
+			<View style={styles.spacingL} />
+			{projectsListElement}
+		</View>
+	);
+};
+
+const Education: React.FC = () => {
+	return (
+		<View style={styles.column}>
+			<Text style={[styles.titleBold, { opacity: 1 }]}>Education</Text>
+			<View style={styles.spacing} />
+			<View style={styles.box}>
+				<Text style={[styles.text, { opacity: 1 }]}>09/2019 – 08/2020</Text>
+			</View>
+			<View style={styles.spacingS} />
+			<Text style={styles.textBold}>OpenClass rooms</Text>
+			<Text style={styles.text}>Web applications developer</Text>
+		</View>
+	);
+};
+
 export const PDFResume: React.FC = () => {
 	return (
 		<PDFViewer width='850px' height='700px'>
@@ -183,6 +272,9 @@ export const PDFResume: React.FC = () => {
 					<View style={styles.main}>
 						<CandidateInfos />
 						<View style={styles.separator} />
+						<Experiences />
+						<View style={styles.separator} />
+						<Education />
 					</View>
 				</Page>
 			</Document>
