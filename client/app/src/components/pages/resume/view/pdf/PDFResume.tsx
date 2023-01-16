@@ -8,7 +8,8 @@ import {
 	StyleSheet,
 	Font,
 } from '@react-pdf/renderer';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useResume } from '../../../../../hooks/resume';
 
 Font.register({
 	family: 'Sofia',
@@ -32,7 +33,7 @@ Font.register({
 	],
 });
 
-const mainColor = 'grey';
+const defaultMainColor = 'grey';
 
 const text = { fontSize: 11, fontFamily: 'Sofia' };
 const textThin = { ...text, fontWeight: 300 };
@@ -43,7 +44,6 @@ const spacing = { margin: '4px 0' };
 const spacingS = { margin: '2px 0' };
 const spacingL = { margin: '8px  0' };
 const box = {
-	backgroundColor: mainColor,
 	opacity: 0.1,
 	padding: 2,
 };
@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
 		height: '100%',
 		width: '35%',
 		padding: 16,
-		backgroundColor: mainColor,
 		color: 'white',
 	},
 	main: { height: '100%', width: '65%', padding: 16 },
@@ -73,7 +72,6 @@ const styles = StyleSheet.create({
 		...spacingL,
 		height: 1,
 		width: '100%',
-		backgroundColor: mainColor,
 		opacity: 0.3,
 	},
 	photoContainer: {
@@ -89,7 +87,11 @@ const styles = StyleSheet.create({
 	},
 });
 
-const CandidateInfos: React.FC = () => {
+interface IResumeProps {
+	mainColor: string;
+}
+
+const CandidateInfos: React.FC<IResumeProps> = ({ mainColor }) => {
 	const headLineBold = {
 		fontSize: 28,
 		fontFamily: 'Helvetica-Bold',
@@ -139,26 +141,17 @@ const CandidateInfos: React.FC = () => {
 	);
 };
 
-const ProfilePro: React.FC = () => {
+interface IProfileProps {
+	introduction: string | undefined;
+}
+
+const ProfilePro: React.FC<IProfileProps> = ({ introduction }) => {
 	return (
 		<>
 			<Text style={styles.titleBold}>Profile</Text>
 			<Text style={styles.title}>professionnel</Text>
 			<View style={styles.spacing} />
-			<Text style={styles.text}>
-				Junior React / Node developer, passionate about web development, driven
-				by a strong desire to improve and apply my skills. Open to fresh job
-				opportunities. My previous work experience in a french startup company
-				Loumi.co allowed me to acquire a solid foundation in Front side and also
-				Back side programming in a SaaS software environment. Throughout my
-				internship experience as a Full Stack Javascript developer and a
-				freelance project experience as a Web integrator, I am familiar with
-				MERN stack, and I master Front end development. Also I made some full
-				stack personal projects, during which I used React on client side and
-				Firebase as server side. I started learning web development in 2019
-				through OpenClassRoom Online training program. However, my constantly
-				desire of acquiring knowledge driven me to be self-taught also.
-			</Text>
+			<Text style={styles.text}>{introduction}</Text>
 		</>
 	);
 };
@@ -178,7 +171,7 @@ const ListSkills: React.FC = () => {
 	);
 };
 
-const Experiences: React.FC = () => {
+const Experiences: React.FC<IResumeProps> = ({ mainColor }) => {
 	const infosElement = (
 		<View>
 			<View style={styles.row}>
@@ -208,7 +201,7 @@ const Experiences: React.FC = () => {
 
 	const projectsListElement = (
 		<View style={styles.column}>
-			<View style={styles.box}>
+			<View style={[styles.box, { backgroundColor: mainColor }]}>
 				<Text style={[styles.text, { opacity: 1 }]}>PROJECTS</Text>
 			</View>
 			<View style={styles.spacingS} />
@@ -257,23 +250,31 @@ const Education: React.FC = () => {
 };
 
 export const PDFResume: React.FC = () => {
+	const { resumeDesign, resumeProfile } = useResume();
+	const [mainColor, setMainColor] = useState<string>(defaultMainColor);
+	useEffect(() => {
+		if (resumeDesign?.colorMain?.hex) {
+			setMainColor(resumeDesign.colorMain.hex);
+		}
+	}, [resumeDesign]);
+
 	return (
 		<PDFViewer width='850px' height='700px'>
 			<Document>
 				<Page size='A4' style={styles.page}>
-					<View style={styles.aside}>
+					<View style={[styles.aside, { backgroundColor: mainColor }]}>
 						<View style={styles.column}>
-							<ProfilePro />
+							<ProfilePro introduction={resumeProfile?.introduction} />
 							<View style={styles.spacingL} />
 							<ListSkills />
 						</View>
 					</View>
 
 					<View style={styles.main}>
-						<CandidateInfos />
-						<View style={styles.separator} />
-						<Experiences />
-						<View style={styles.separator} />
+						<CandidateInfos mainColor={mainColor} />
+						<View style={[styles.separator, { backgroundColor: mainColor }]} />
+						<Experiences mainColor={mainColor} />
+						<View style={[styles.separator, { backgroundColor: mainColor }]} />
 						<Education />
 					</View>
 				</Page>
