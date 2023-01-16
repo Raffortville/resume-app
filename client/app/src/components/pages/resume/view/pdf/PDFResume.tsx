@@ -10,6 +10,13 @@ import {
 } from '@react-pdf/renderer';
 import React, { useEffect, useState } from 'react';
 import { useResume } from '../../../../../hooks/resume';
+import { useAppSelector } from '../../../../../store/hooks';
+import { userSelector } from '../../../../../store/user/reducer';
+import {
+	IEducation,
+	IExperience,
+	IExpertise,
+} from '../../../../../types/store';
 
 Font.register({
 	family: 'Sofia',
@@ -91,7 +98,24 @@ interface IResumeProps {
 	mainColor: string;
 }
 
-const CandidateInfos: React.FC<IResumeProps> = ({ mainColor }) => {
+interface ICandidateInfosProps extends IResumeProps {
+	picture: string | undefined;
+	position: string | undefined;
+	user: {
+		name: string | undefined;
+		lastName: string | undefined;
+		email: string | undefined;
+		phone: string | undefined;
+		mediaLink: string | undefined;
+	};
+}
+
+const CandidateInfos: React.FC<ICandidateInfosProps> = ({
+	mainColor,
+	picture,
+	position,
+	user,
+}) => {
 	const headLineBold = {
 		fontSize: 28,
 		fontFamily: 'Helvetica-Bold',
@@ -110,32 +134,44 @@ const CandidateInfos: React.FC<IResumeProps> = ({ mainColor }) => {
 		<View style={[styles.photoContainer, { backgroundColor: mainColor }]}>
 			<Image
 				style={{ width: '90px', height: '90px', borderRadius: '50%' }}
-				src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/L%C3%BCdinghausen%2C_Burg_Kakesbeck_--_2021_--_8860.jpg/2560px-L%C3%BCdinghausen%2C_Burg_Kakesbeck_--_2021_--_8860.jpg'
+				src={picture}
 			/>
 		</View>
 	);
 
 	return (
 		<View style={[styles.column, { position: 'relative' }]}>
-			<Text style={headLineBold}>Raffi</Text>
-			<Text style={headLine}>HAYCAN</Text>
+			<Text style={headLineBold}>{user.name}</Text>
+			<Text style={headLine}>{user.lastName}</Text>
 			<View style={styles.spacingS} />
-			<Text style={subTittle}>REACT / NODE JS DEVELOPER</Text>
+			<Text style={subTittle}>{position}</Text>
 			<View style={styles.spacingL} />
-			<View style={[{ display: 'flex', flexDirection: 'row' }]}>
-				<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
-					phone:
-				</Text>
-				<Text style={[styles.textThin, { fontSize: 10 }]}>+37498254994</Text>
-			</View>
+			{user.phone && (
+				<View style={[{ display: 'flex', flexDirection: 'row' }]}>
+					<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
+						phone:
+					</Text>
+					<Text style={[styles.textThin, { fontSize: 10 }]}>{user.phone}</Text>
+				</View>
+			)}
+
 			<View style={[{ display: 'flex', flexDirection: 'row', fontSize: 10 }]}>
 				<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
 					email:
 				</Text>
-				<Text style={[styles.textThin, { fontSize: 10 }]}>
-					raffihaycan@gmail.com
-				</Text>
+				<Text style={[styles.textThin, { fontSize: 10 }]}>{user.email}</Text>
 			</View>
+			{user.mediaLink && (
+				<View style={[{ display: 'flex', flexDirection: 'row', fontSize: 10 }]}>
+					<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
+						link:
+					</Text>
+					<Text style={[styles.textThin, { fontSize: 10 }]}>
+						{user.mediaLink}
+					</Text>
+				</View>
+			)}
+
 			{pictureElement}
 		</View>
 	);
@@ -156,63 +192,101 @@ const ProfilePro: React.FC<IProfileProps> = ({ introduction }) => {
 	);
 };
 
-const ListSkills: React.FC = () => {
+interface IListSkills {
+	expertises: IExpertise[] | undefined;
+}
+
+const ListSkills: React.FC<IListSkills> = ({ expertises }) => {
+	const renderSkills = () => {
+		if (!expertises) {
+			return null;
+		}
+
+		return expertises.map((expert, index) => {
+			if (expert.items.length === 0) {
+				return null;
+			}
+			return (
+				<View key={index}>
+					<Text style={styles.textBold}>{expert.title}</Text>
+					{expert.items.map((item, index) => (
+						<Text key={index} style={styles.textThin}>
+							* {item.value}
+						</Text>
+					))}
+					<View style={styles.spacingS} />
+				</View>
+			);
+		});
+	};
 	return (
 		<>
 			<Text style={styles.titleBold}>skills</Text>
 			<View style={styles.spacing} />
-			<Text style={styles.textBold}>Programming Languages:</Text>
-			<Text style={styles.textThin}>* HTML5/CSS3 JAVASCRIPT (ES6)</Text>
-			<View style={styles.spacingS} />
-			<Text style={styles.textBold}>Frameworks & Librairies:</Text>
-			<Text style={styles.textThin}>* React Js Functional Component</Text>
-			<Text style={styles.textThin}>* Node Js/Express Js</Text>
+			{renderSkills()}
 		</>
 	);
 };
 
-const Experiences: React.FC<IResumeProps> = ({ mainColor }) => {
-	const infosElement = (
-		<View>
-			<View style={styles.row}>
-				<Text style={[styles.textBold, { textTransform: 'capitalize' }]}>
-					loumi
-				</Text>
+interface IExperiences extends IResumeProps {
+	experiences: IExperience[] | undefined;
+}
 
-				<Text
-					style={[styles.text, { textTransform: 'capitalize', marginLeft: 2 }]}>
-					| Paris
-				</Text>
+const Experiences: React.FC<IExperiences> = ({ mainColor, experiences }) => {
+	const renderListExperiences = (): React.ReactNode => {
+		if (!experiences) {
+			return null;
+		}
+		return experiences.map((exp, index) => (
+			<View key={index}>
+				<View style={styles.box}>
+					<Text style={[styles.text, { opacity: 1 }]}>{exp.period}</Text>
+				</View>
+				<View style={styles.spacingS} />
+				<View>
+					<View style={styles.row}>
+						<Text style={[styles.textBold, { textTransform: 'capitalize' }]}>
+							{exp.company}
+						</Text>
+
+						<Text
+							style={[
+								styles.text,
+								{ textTransform: 'capitalize', marginLeft: 2 },
+							]}>
+							| {exp.place}
+						</Text>
+					</View>
+					<View style={styles.spacingS} />
+					<Text style={styles.textBold}>{exp.occupiedPosition}</Text>
+					<Text style={styles.text}>{exp.description}</Text>
+					<Text style={styles.textThin}>{exp.project}</Text>
+				</View>
+				<View style={styles.spacingS} />
+				<View key={index} style={styles.column}>
+					{exp.stack.items.map((item, index) => (
+						<Text key={index} style={styles.textThin}>
+							* {item.value}
+						</Text>
+					))}
+				</View>
+				<View style={styles.spacingL} />
+				{exp.achievements.items.length !== 0 && (
+					<View style={styles.column}>
+						<View style={[styles.box, { backgroundColor: mainColor }]}>
+							<Text style={[styles.text, { opacity: 1 }]}>PROJECTS</Text>
+						</View>
+						<View style={styles.spacingS} />
+						{exp.achievements.items.map((item, index) => (
+							<Text key={index} style={[styles.textThin, { fontSize: 10 }]}>
+								* {item.value}
+							</Text>
+						))}
+					</View>
+				)}
 			</View>
-			<View style={styles.spacingS} />
-			<Text style={styles.textBold}>FullStack Javascript Developer</Text>
-			<Text style={styles.text}>SaaS environment MERN Stack</Text>
-			<Text style={styles.textThin}>https://www.loumi.co/</Text>
-		</View>
-	);
-
-	const stackListElement = (
-		<View style={styles.column}>
-			<View style={styles.spacingS} />
-			<Text style={styles.textThin}>* React Functional components</Text>
-			<Text style={styles.textThin}>* Express.js</Text>
-		</View>
-	);
-
-	const projectsListElement = (
-		<View style={styles.column}>
-			<View style={[styles.box, { backgroundColor: mainColor }]}>
-				<Text style={[styles.text, { opacity: 1 }]}>PROJECTS</Text>
-			</View>
-			<View style={styles.spacingS} />
-			<Text style={[styles.textThin, { fontSize: 10 }]}>
-				* Design and implementation of new frontend features (forms, pages)
-			</Text>
-			<Text style={[styles.textThin, { fontSize: 10 }]}>
-				* Graphic integration from a design system (Figma)
-			</Text>
-		</View>
-	);
+		));
+	};
 
 	return (
 		<View style={styles.column}>
@@ -220,37 +294,36 @@ const Experiences: React.FC<IResumeProps> = ({ mainColor }) => {
 				<Text style={styles.titleBold}>Experiences</Text>
 				<Text style={[styles.title, { marginLeft: 4 }]}>Professionnelles</Text>
 			</View>
-			<View style={styles.spacing} />
-			<View style={styles.box}>
-				<Text style={[styles.text, { opacity: 1 }]}>02/2021 - 07/2021</Text>
-			</View>
-			<View style={styles.spacingS} />
-			{infosElement}
-			<View style={styles.spacingS} />
-			{stackListElement}
-			<View style={styles.spacingL} />
-			{projectsListElement}
+			{renderListExperiences()}
 		</View>
 	);
 };
 
-const Education: React.FC = () => {
+const Education: React.FC<IEducation> = ({ academy, period, certificate }) => {
 	return (
 		<View style={styles.column}>
 			<Text style={[styles.titleBold, { opacity: 1 }]}>Education</Text>
 			<View style={styles.spacing} />
-			<View style={styles.box}>
-				<Text style={[styles.text, { opacity: 1 }]}>09/2019 – 08/2020</Text>
-			</View>
-			<View style={styles.spacingS} />
-			<Text style={styles.textBold}>OpenClass rooms</Text>
-			<Text style={styles.text}>Web applications developer</Text>
+			{period && (
+				<>
+					<View style={styles.box}>
+						<Text style={[styles.text, { opacity: 1 }]}>09/2019 – 08/2020</Text>
+					</View>
+					<View style={styles.spacingS} />
+				</>
+			)}
+			{academy && <Text style={styles.textBold}>OpenClass rooms</Text>}
+			{certificate && (
+				<Text style={styles.text}>Web applications developer</Text>
+			)}
 		</View>
 	);
 };
 
 export const PDFResume: React.FC = () => {
-	const { resumeDesign, resumeProfile } = useResume();
+	const { resumeDesign, resumeProfile, resumeExpertises, resumeExperiences } =
+		useResume();
+	const user = useAppSelector(userSelector);
 	const [mainColor, setMainColor] = useState<string>(defaultMainColor);
 	useEffect(() => {
 		if (resumeDesign?.colorMain?.hex) {
@@ -266,16 +339,34 @@ export const PDFResume: React.FC = () => {
 						<View style={styles.column}>
 							<ProfilePro introduction={resumeProfile?.introduction} />
 							<View style={styles.spacingL} />
-							<ListSkills />
+							<ListSkills expertises={resumeExpertises} />
 						</View>
 					</View>
 
 					<View style={styles.main}>
-						<CandidateInfos mainColor={mainColor} />
+						<CandidateInfos
+							mainColor={mainColor}
+							picture={resumeDesign?.profilPic}
+							user={{
+								name: user?.firstName,
+								lastName: user?.lastName,
+								phone: user?.phone,
+								email: user?.emailPro,
+								mediaLink: resumeProfile?.socialMedias,
+							}}
+							position={resumeProfile?.position}
+						/>
 						<View style={[styles.separator, { backgroundColor: mainColor }]} />
-						<Experiences mainColor={mainColor} />
+						<Experiences
+							mainColor={mainColor}
+							experiences={resumeExperiences}
+						/>
 						<View style={[styles.separator, { backgroundColor: mainColor }]} />
-						<Education />
+						<Education
+							certificate={resumeProfile?.education?.certificate}
+							academy={resumeProfile?.education?.academy}
+							period={resumeProfile?.education?.period}
+						/>
 					</View>
 				</Page>
 			</Document>
