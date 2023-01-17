@@ -45,7 +45,7 @@ const ExperienceSchema = new mongoose.Schema(
 	{
 		exp_id: String,
 		company: String,
-		period: String,
+		period: { start: String, end: String },
 		place: String,
 		occupiedPosition: String,
 		achievements: ObjectKeyItems,

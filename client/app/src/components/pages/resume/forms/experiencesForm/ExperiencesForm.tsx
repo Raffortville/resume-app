@@ -19,20 +19,11 @@ import { AddCircle, AddCircleOutline, Cancel } from '@mui/icons-material';
 import { BoxLabelAction } from '../../../../ui/boxes/boxLabelAction';
 import { updateResumeToDB } from '../../../../../store/resume/actions';
 import { IExperience, IResume } from '../../../../../types/store';
-
-// exp_id: string;
-// 	company: string;
-// 	period: string;
-// 	place: string;
-// 	occupiedPosition: string;
-// 	description: string;
-// 	project: string;
-// 	achievements: ObjectKeyListItems[];
-// 	stack: ObjectKeyListItems[];
+import { DatePickerField } from '../../../../ui/datePicker';
 
 type ExperiencesFormType = {
 	occupiedPosition: string | undefined;
-	period: string | undefined;
+	period: { start: string | undefined; end: string | undefined };
 	place: string | undefined;
 	project: string | undefined;
 	description: string | undefined;
@@ -176,13 +167,12 @@ const ExperiencesFormInputFields: React.FC<
 				helperText='Intitulé du poste'
 				variant='standard'
 			/>
-			<TextField
+			<DatePickerField
 				label={`Période évolué à ${companyName}`}
-				value={experienceValues.period}
-				name='period'
-				onChange={handleChange}
-				onBlur={(): void => onBlur(experienceValues)}
-				variant='standard'
+				onChangeDate={(period): void => {
+					setExperienceValues({ ...experienceValues, period: period });
+					onBlur({ ...experienceValues, period: period });
+				}}
 			/>
 			<TextField
 				label={`Lieu de travail à ${companyName}`}
@@ -299,7 +289,7 @@ export const ExperiencesForm: React.FC<IExperiencesFormProps> = ({
 
 	const initialExperiencesState: ExperiencesFormType = {
 		occupiedPosition: experienceSelected?.occupiedPosition,
-		period: experienceSelected?.period,
+		period: experienceSelected?.period ?? { start: '', end: '' },
 		place: experienceSelected?.place,
 		description: experienceSelected?.description,
 		project: experienceSelected?.project,

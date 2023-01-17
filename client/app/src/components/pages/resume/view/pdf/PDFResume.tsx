@@ -251,7 +251,11 @@ const Experiences: React.FC<IExperiences> = ({ mainColor, experiences }) => {
 		return experiences.map((exp, index) => (
 			<View key={index}>
 				<View style={styles.box}>
-					<Text style={[styles.text, { opacity: 1 }]}>{exp.period}</Text>
+					<Text style={[styles.text, { opacity: 1 }]}>
+						{`${exp.period?.start} ${
+							exp.period?.end !== "aujourd'hui" ? '-' : 'à'
+						} ${exp.period?.end}`}
+					</Text>
 				</View>
 				<View style={styles.spacingS} />
 				<View>

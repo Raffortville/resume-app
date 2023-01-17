@@ -34,7 +34,7 @@ export interface IExperience {
 	company: string;
 	achievements: ObjectKeyListItems;
 	stack: ObjectKeyListItems;
-	period?: string;
+	period?: { start: string; end: string };
 	place?: string;
 	occupiedPosition?: string;
 	description?: string;
