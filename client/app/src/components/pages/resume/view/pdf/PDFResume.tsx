@@ -99,7 +99,7 @@ interface IResumeProps {
 }
 
 interface ICandidateInfosProps extends IResumeProps {
-	picture: string | undefined;
+	picture: string;
 	position: string | undefined;
 	user: {
 		name: string | undefined;
@@ -134,7 +134,7 @@ const CandidateInfos: React.FC<ICandidateInfosProps> = ({
 		<View style={[styles.photoContainer, { backgroundColor: mainColor }]}>
 			<Image
 				style={{ width: '90px', height: '90px', borderRadius: '50%' }}
-				src={picture}
+				source={picture}
 			/>
 		</View>
 	);
@@ -146,14 +146,14 @@ const CandidateInfos: React.FC<ICandidateInfosProps> = ({
 			<View style={styles.spacingS} />
 			<Text style={subTittle}>{position}</Text>
 			<View style={styles.spacingL} />
-			{user.phone && (
+			{user.phone ? (
 				<View style={[{ display: 'flex', flexDirection: 'row' }]}>
 					<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
 						phone:
 					</Text>
 					<Text style={[styles.textThin, { fontSize: 10 }]}>{user.phone}</Text>
 				</View>
-			)}
+			) : null}
 
 			<View style={[{ display: 'flex', flexDirection: 'row', fontSize: 10 }]}>
 				<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
@@ -161,7 +161,7 @@ const CandidateInfos: React.FC<ICandidateInfosProps> = ({
 				</Text>
 				<Text style={[styles.textThin, { fontSize: 10 }]}>{user.email}</Text>
 			</View>
-			{user.mediaLink && (
+			{user.mediaLink ? (
 				<View style={[{ display: 'flex', flexDirection: 'row', fontSize: 10 }]}>
 					<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
 						link:
@@ -170,7 +170,7 @@ const CandidateInfos: React.FC<ICandidateInfosProps> = ({
 						{user.mediaLink}
 					</Text>
 				</View>
-			)}
+			) : null}
 
 			{pictureElement}
 		</View>
@@ -271,7 +271,7 @@ const Experiences: React.FC<IExperiences> = ({ mainColor, experiences }) => {
 					))}
 				</View>
 				<View style={styles.spacingL} />
-				{exp.achievements.items.length !== 0 && (
+				{exp.achievements.items.length !== 0 ? (
 					<View style={styles.column}>
 						<View style={[styles.box, { backgroundColor: mainColor }]}>
 							<Text style={[styles.text, { opacity: 1 }]}>PROJECTS</Text>
@@ -283,7 +283,7 @@ const Experiences: React.FC<IExperiences> = ({ mainColor, experiences }) => {
 							</Text>
 						))}
 					</View>
-				)}
+				) : null}
 			</View>
 		));
 	};
@@ -304,18 +304,18 @@ const Education: React.FC<IEducation> = ({ academy, period, certificate }) => {
 		<View style={styles.column}>
 			<Text style={[styles.titleBold, { opacity: 1 }]}>Education</Text>
 			<View style={styles.spacing} />
-			{period && (
+			{period ? (
 				<>
 					<View style={styles.box}>
 						<Text style={[styles.text, { opacity: 1 }]}>09/2019 – 08/2020</Text>
 					</View>
 					<View style={styles.spacingS} />
 				</>
-			)}
-			{academy && <Text style={styles.textBold}>OpenClass rooms</Text>}
-			{certificate && (
+			) : null}
+			{academy ? <Text style={styles.textBold}>OpenClass rooms</Text> : null}
+			{certificate ? (
 				<Text style={styles.text}>Web applications developer</Text>
-			)}
+			) : null}
 		</View>
 	);
 };
@@ -346,7 +346,7 @@ export const PDFResume: React.FC = () => {
 					<View style={styles.main}>
 						<CandidateInfos
 							mainColor={mainColor}
-							picture={resumeDesign?.profilPic}
+							picture={resumeDesign?.profilPic ?? ''}
 							user={{
 								name: user?.firstName,
 								lastName: user?.lastName,

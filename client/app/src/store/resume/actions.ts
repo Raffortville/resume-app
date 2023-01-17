@@ -34,7 +34,7 @@ export const getResumes = async (userId: string): Promise<IResume[] | void> => {
 
 export const getResumeById = async (
 	resumeId: string
-): Promise<IResume | void> => {
+): Promise<IResume | undefined> => {
 	try {
 		const response = await fetch(
 			`${config.API.url}/resume/getById/${resumeId}`,
@@ -60,6 +60,7 @@ export const getResumeById = async (
 				type: 'error',
 			},
 		});
+		return;
 	}
 };
 
