@@ -38,12 +38,11 @@ const ContactFormInputFields: React.FC<IContactFormInputFieldProps> = ({
 
 	const handleSubmit = () => {
 		const { emailPro } = userValues;
-
-		if (emailPro !== undefined && emailPro !== '') {
-			const isEmailValid = checkIsValidInputFormat(emailPro, 'email');
-			setEmailError(!isEmailValid);
+		if (!emailPro || emailPro === '') {
 			return;
 		}
+		const isEmailValid = checkIsValidInputFormat(emailPro, 'email');
+		setEmailError(!isEmailValid);
 		onSubmitForm(userValues);
 	};
 

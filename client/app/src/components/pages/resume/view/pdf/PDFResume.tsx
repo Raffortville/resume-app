@@ -107,6 +107,7 @@ interface ICandidateInfosProps extends IResumeProps {
 		email: string | undefined;
 		phone: string | undefined;
 		mediaLink: string | undefined;
+		portfolio: string | undefined;
 	};
 }
 
@@ -171,6 +172,16 @@ const CandidateInfos: React.FC<ICandidateInfosProps> = ({
 					</Text>
 				</View>
 			) : null}
+			{user.portfolio ? (
+				<View style={[{ display: 'flex', flexDirection: 'row', fontSize: 10 }]}>
+					<Text style={[styles.text, { marginRight: 4, fontSize: 10 }]}>
+						répertoire GIT:
+					</Text>
+					<Text style={[styles.textThin, { fontSize: 10 }]}>
+						{user.portfolio}
+					</Text>
+				</View>
+			) : null}
 
 			{pictureElement}
 		</View>
@@ -210,7 +221,7 @@ const ListSkills: React.FC<IListSkills> = ({ expertises }) => {
 				<View key={index}>
 					<Text style={styles.textBold}>{expert.title}</Text>
 					{expert.items.map((item, index) => (
-						<Text key={index} style={styles.textThin}>
+						<Text key={index} style={[styles.textThin, { fontSize: 10 }]}>
 							* {item.value}
 						</Text>
 					))}
@@ -244,46 +255,55 @@ const Experiences: React.FC<IExperiences> = ({ mainColor, experiences }) => {
 				</View>
 				<View style={styles.spacingS} />
 				<View>
-					<View style={styles.row}>
-						<Text style={[styles.textBold, { textTransform: 'capitalize' }]}>
+					<View
+						style={[styles.row, styles.box, { backgroundColor: mainColor }]}>
+						<Text
+							style={[
+								styles.textBold,
+								{ textTransform: 'capitalize', opacity: 1 },
+							]}>
 							{exp.company}
 						</Text>
 
 						<Text
 							style={[
 								styles.text,
-								{ textTransform: 'capitalize', marginLeft: 2 },
+								{ textTransform: 'capitalize', marginLeft: 2, opacity: 1 },
 							]}>
 							| {exp.place}
 						</Text>
 					</View>
 					<View style={styles.spacingS} />
-					<Text style={styles.textBold}>{exp.occupiedPosition}</Text>
-					<Text style={styles.text}>{exp.description}</Text>
-					<Text style={styles.textThin}>{exp.project}</Text>
+					<Text style={[styles.textBold, { fontSize: 10 }]}>
+						{exp.occupiedPosition}
+					</Text>
+					<Text style={[styles.text, { fontSize: 10 }]}>{exp.description}</Text>
+					<Text style={[styles.textThin, { fontSize: 10 }]}>{exp.project}</Text>
 				</View>
 				<View style={styles.spacingS} />
-				<View key={index} style={styles.column}>
+				<View key={index} style={styles.row}>
 					{exp.stack.items.map((item, index) => (
-						<Text key={index} style={styles.textThin}>
-							* {item.value}
+						<Text key={index} style={[styles.textThin, { fontSize: 10 }]}>
+							{item.value} /
 						</Text>
 					))}
 				</View>
-				<View style={styles.spacingL} />
+				<View style={styles.spacingS} />
 				{exp.achievements.items.length !== 0 ? (
 					<View style={styles.column}>
+						<View style={styles.spacingS} />
 						<View style={[styles.box, { backgroundColor: mainColor }]}>
 							<Text style={[styles.text, { opacity: 1 }]}>PROJECTS</Text>
 						</View>
 						<View style={styles.spacingS} />
 						{exp.achievements.items.map((item, index) => (
-							<Text key={index} style={[styles.textThin, { fontSize: 10 }]}>
+							<Text key={index} style={[styles.textThin, { fontSize: 8 }]}>
 								* {item.value}
 							</Text>
 						))}
 					</View>
 				) : null}
+				<View style={styles.spacingL} />
 			</View>
 		));
 	};
@@ -353,6 +373,7 @@ export const PDFResume: React.FC = () => {
 								phone: user?.phone,
 								email: user?.emailPro,
 								mediaLink: resumeProfile?.socialMedias,
+								portfolio: resumeProfile?.portfolio,
 							}}
 							position={resumeProfile?.position}
 						/>

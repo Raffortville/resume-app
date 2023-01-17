@@ -61,7 +61,7 @@ const ProfileSchema = new mongoose.Schema(
 		position: String,
 		introduction: String,
 		portfolio: String,
-		sosocialMedias: String,
+		socialMedias: String,
 		education: EducationSchema,
 	},
 	{ versionKey: false }
