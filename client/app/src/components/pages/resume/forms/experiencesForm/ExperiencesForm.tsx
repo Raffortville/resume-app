@@ -313,6 +313,7 @@ export const ExperiencesForm: React.FC<IExperiencesFormProps> = ({
 					items: [],
 				},
 				stack: { title: companyValue, key: exp_id, items: [] },
+				period: { start: '0', end: '0' },
 			};
 			dispatch(
 				setResume({

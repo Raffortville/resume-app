@@ -11,6 +11,7 @@ import {
 	resumeSelector,
 } from '../../store/resume/reducer';
 import { IResume } from '../../types/store';
+import { sortExperiencesByDate } from '../../utils/resume';
 
 export const useResume = (): {
 	resume: IResume | null;
@@ -47,7 +48,7 @@ export const useResume = (): {
 		resume,
 		resumeProfile,
 		resumeExpertises,
-		resumeExperiences,
+		resumeExperiences: sortExperiencesByDate(resumeExperiences),
 		resumeDesign,
 		refetchResumeById,
 	};
