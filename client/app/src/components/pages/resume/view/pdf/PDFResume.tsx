@@ -129,7 +129,7 @@ const CandidateInfos: React.FC<ICandidateInfosProps> = ({
 		letterSpacing: '1px',
 		color: '#414A4C',
 	};
-	const subTittle = [styles.title, { letterSpacing: 1, fontSize: 15 }];
+	const subTittle = [styles.title, { fontSize: 14 }];
 
 	const pictureElement = (
 		<View style={[styles.photoContainer, { backgroundColor: mainColor }]}>

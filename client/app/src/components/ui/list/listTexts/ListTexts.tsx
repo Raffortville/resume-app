@@ -32,7 +32,7 @@ export const ListTexts: React.FC<CustomProps> = ({
 		return textItems.map((item, index) => {
 			return (
 				<li key={index} className='listTexts-items--item'>
-					<p>{item.value}</p>
+					<span>{item.value}</span>
 					<IconButton
 						onClick={(): void => onDeleteText({ textKey, itemId: item.id })}>
 						<Cancel fontSize='small' color='primary' />

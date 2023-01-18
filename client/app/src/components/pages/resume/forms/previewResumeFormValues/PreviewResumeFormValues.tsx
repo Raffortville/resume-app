@@ -141,7 +141,6 @@ export const PreviewResumeFormValues: React.FC<CustomProps> = ({
 		experienceKey: string;
 		itemId: string;
 	}) => {
-		console.log(categoryKey, experienceKey, itemId);
 		dispatch(
 			deleteAchievementOrStackFromResumeExperience({
 				categoryKey: categoryKey,
