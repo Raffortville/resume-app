@@ -1,7 +1,9 @@
 @import '../../../../styles/mixins.scss';
 
 .resumeView {
-	display: flex;
-	justify-content: center;
 	padding: 32px;
+	.resumeView-pdf {
+		display: flex;
+		justify-content: center;
+	}
 }

@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react';
 
 import './resumeViewStyles.scss';
 import { useResume } from '../../../../hooks/resume';
-import { CircularProgress } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { CircularProgress, IconButton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export const ResumeViewContainer: React.FC = () => {
-	const { refetchResumeById } = useResume();
+	const { refetchResumeById, resume } = useResume();
+	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const getResume = async (): Promise<void> => {
@@ -21,7 +24,7 @@ export const ResumeViewContainer: React.FC = () => {
 		getResume();
 	}, []);
 
-	if (isLoading) {
+	if (isLoading || !resume) {
 		return (
 			<CircularProgress
 				color='primary'
@@ -34,9 +37,23 @@ export const ResumeViewContainer: React.FC = () => {
 			/>
 		);
 	}
+
 	return (
 		<div className='resumeView'>
-			<PDFResume />
+			<IconButton
+				onClick={(): void => {
+					navigate(`/resume/form/${resume._id}`, {
+						state: { resumeId: resume._id },
+					});
+				}}
+				color='primary'
+				size='small'>
+				<ArrowBackIcon />
+				BACK TO FORM
+			</IconButton>
+			<div className='resumeView-pdf'>
+				<PDFResume />
+			</div>
 		</div>
 	);
 };
