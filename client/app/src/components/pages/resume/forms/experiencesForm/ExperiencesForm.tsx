@@ -20,10 +20,11 @@ import { BoxLabelAction } from '../../../../ui/boxes/boxLabelAction';
 import { updateResumeToDB } from '../../../../../store/resume/actions';
 import { IExperience, IResume } from '../../../../../types/store';
 import { DatePickerField } from '../../../../ui/datePicker';
+import { IPeriodRange } from '../../../../../types/common';
 
 type ExperiencesFormType = {
 	occupiedPosition: string | undefined;
-	period: { start: string | undefined; end: string | undefined };
+	period: IPeriodRange;
 	place: string | undefined;
 	project: string | undefined;
 	description: string | undefined;
@@ -168,6 +169,7 @@ const ExperiencesFormInputFields: React.FC<
 				variant='standard'
 			/>
 			<DatePickerField
+				period={experienceValues.period}
 				label={`Période évolué à ${companyName}`}
 				onChangeDate={(period): void => {
 					setExperienceValues({ ...experienceValues, period: period });

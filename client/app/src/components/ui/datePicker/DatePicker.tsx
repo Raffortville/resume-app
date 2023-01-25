@@ -1,64 +1,108 @@
 import * as React from 'react';
-import { Dayjs } from 'dayjs';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import { LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import {
-	DateRangePicker,
-	DateRange,
-} from '@mui/x-date-pickers-pro/DateRangePicker';
+import { format } from 'date-fns';
+import frLocale from 'date-fns/locale/fr';
+
+import type { IPeriodRange } from '../../../types/common';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import { DateRange, DateRangePicker } from 'mui-daterange-picker';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
 
 import './datePickerStyles.scss';
 
 interface IDatePickerFieldProps {
-	onChangeDate: ({
-		start,
-		end,
-	}: {
-		start: string | undefined;
-		end: string | undefined;
-	}) => void;
+	period: IPeriodRange;
+	onChangeDate: ({ start, end }: IPeriodRange) => void;
 	label?: string;
-	helperText?: string;
 }
 
 export const DatePickerField: React.FC<IDatePickerFieldProps> = ({
+	period,
 	onChangeDate,
 	label,
-	helperText,
 }) => {
-	const [value, setValue] = React.useState<DateRange<Dayjs>>([null, null]);
+	const [open, setOpen] = React.useState(false);
+	const [dateRange, setDateRange] = React.useState<IPeriodRange | null>(period);
 
-	const handleChange = (newValue: DateRange<Dayjs>): void => {
-		setValue(newValue);
-		const start = newValue[0]?.format('DD/MM/YYYY');
-		const end = newValue[1]?.format('DD/MM/YYYY') ?? "aujourd'hui";
-		onChangeDate({ start, end });
+	React.useEffect(() => {
+		setDateRange(period);
+	}, [period]);
+
+	const toggle = () => setOpen(!open);
+
+	const setPeriod = (range: DateRange): IPeriodRange => {
+		return {
+			start: range.startDate
+				? format(range.startDate, 'dd/MM/yyyy')
+				: undefined,
+			end: range.endDate ? format(range.endDate, 'dd/MM/yyyy') : undefined,
+		};
+	};
+
+	const handleChange = (range: DateRange): void => {
+		const period = setPeriod(range);
+		setDateRange(period);
+		onChangeDate(period);
 	};
 
 	return (
-		<div>
+		<div className='datePicker'>
 			{label && <label className='datePicker-label'>{label}</label>}
-			<LocalizationProvider
-				dateAdapter={AdapterDayjs}
-				localeText={{ start: 'Début', end: 'Fin' }}>
+
+			<div className='wrapperDatePicker'>
+				{open && (
+					<div className='datePicker-icons'>
+						{dateRange !== null && (
+							<span
+								onClick={(): void => {
+									setOpen(false);
+								}}>
+								<CheckCircleOutlineIcon fontSize='large' color='success' />
+							</span>
+						)}
+					</div>
+				)}
+
 				<DateRangePicker
-					value={value}
+					open={open}
+					toggle={toggle}
 					onChange={handleChange}
-					renderInput={(startProps, endProps) => (
-						<React.Fragment>
-							<TextField
-								{...startProps}
-								variant='standard'
-								helperText={helperText}
-							/>
-							<Box sx={{ mx: 2 }}> à </Box>
-							<TextField {...endProps} variant='standard' />
-						</React.Fragment>
-					)}
+					locale={frLocale}
 				/>
-			</LocalizationProvider>
+			</div>
+			<div className='datePicker-inputs'>
+				<TextField
+					aria-readonly
+					label='Début'
+					value={dateRange?.start ?? ''}
+					variant='standard'
+					InputProps={{
+						endAdornment: (
+							<InputAdornment position='end'>
+								<IconButton onClick={toggle}>
+									<DateRangeIcon color='primary' fontSize='small' />
+								</IconButton>
+							</InputAdornment>
+						),
+					}}
+				/>
+
+				<TextField
+					aria-readonly
+					label='Fin'
+					value={dateRange?.end ?? ''}
+					variant='standard'
+					InputProps={{
+						endAdornment: (
+							<InputAdornment position='end'>
+								<IconButton onClick={toggle}>
+									<DateRangeIcon color='primary' fontSize='small' />
+								</IconButton>
+							</InputAdornment>
+						),
+					}}
+				/>
+			</div>
 		</div>
 	);
 };

@@ -33,6 +33,11 @@ export type ColorKey = {
 	hex: string | undefined;
 };
 
+export interface IPeriodRange {
+	start: string | undefined;
+	end: string | undefined;
+}
+
 // FORM
 export type FormSectionType =
 	| 'contact'

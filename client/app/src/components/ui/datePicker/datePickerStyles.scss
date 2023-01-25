@@ -1,8 +1,31 @@
-.datePicker-label {
-	color: rgba(0, 0, 0, 0.6);
-	font-weight: 400;
-	font-size: 12px;
-	line-height: 1.4375em;
-	letter-spacing: 0.00938em;
-	padding-bottom: 16;
+.datePicker {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+
+	.datePicker-label {
+		color: rgba(0, 0, 0, 0.6);
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 1.4375em;
+		letter-spacing: 0.00938em;
+	}
+
+	.wrapperDatePicker {
+		position: absolute;
+		left: 25%;
+		top: 35%;
+
+		.datePicker-icons {
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+		}
+	}
+
+	.datePicker-inputs {
+		width: 100%;
+		display: flex;
+		gap: 32px;
+	}
 }

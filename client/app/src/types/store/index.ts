@@ -1,5 +1,10 @@
 import type { AlertColor } from '@mui/material/Alert';
-import { ColorKey, ObjectIdValue, ObjectKeyListItems } from '../common/index';
+import {
+	ColorKey,
+	IPeriodRange,
+	ObjectIdValue,
+	ObjectKeyListItems,
+} from '../common/index';
 
 export interface IUserLite {
 	_id?: string;
@@ -34,7 +39,7 @@ export interface IExperience {
 	company: string;
 	achievements: ObjectKeyListItems;
 	stack: ObjectKeyListItems;
-	period: { start: string; end: string };
+	period: IPeriodRange;
 	place?: string;
 	occupiedPosition?: string;
 	description?: string;
