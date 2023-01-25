@@ -22,7 +22,7 @@ export const ResumeViewContainer: React.FC = () => {
 
 	useEffect(() => {
 		getResume();
-	}, []);
+	}, [resume]);
 
 	if (isLoading || !resume) {
 		return (
