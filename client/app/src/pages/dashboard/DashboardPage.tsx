@@ -5,8 +5,8 @@ import { userSelector } from '../../store/user/reducer';
 import { getResumes } from '../../store/resume/actions';
 import { resumesSelector } from '../../store/resume/reducer';
 
-import { CircularProgress } from '@mui/material';
 import { Dashboard } from '../../components/pages/dashboard';
+import { CircularProgressLoad } from '../../components/ui/progress/circular';
 
 export const DashboardPage: React.FC = () => {
 	const user = useAppSelector(userSelector);
@@ -28,17 +28,7 @@ export const DashboardPage: React.FC = () => {
 	}, [resumes]);
 
 	if (resumes === null) {
-		return (
-			<CircularProgress
-				color='primary'
-				size={72}
-				style={{
-					position: 'absolute',
-					right: '50%',
-					top: '50%',
-				}}
-			/>
-		);
+		return <CircularProgressLoad />;
 	}
 
 	return <Dashboard />;

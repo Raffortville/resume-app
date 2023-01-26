@@ -6,10 +6,10 @@ import { getUser } from './store/user/actions';
 import { resetUser, setUser, userSelector } from './store/user/reducer';
 
 import { Header } from './components/layout/header';
-import CircularProgress from '@mui/material/CircularProgress';
 import { useAppSelector } from './store/hooks';
 import { ToastAlert } from './components/ui/toastAlert';
 import { alertSelector } from './store/alert/reducer';
+import { CircularProgressLoad } from './components/ui/progress/circular';
 
 function App() {
 	const [isUserLogged, setIsUserLogged] = useState<boolean | undefined>();
@@ -56,17 +56,7 @@ function App() {
 	}, []);
 
 	if (isLoading || isUserLogged === undefined) {
-		return (
-			<CircularProgress
-				color='primary'
-				size={72}
-				style={{
-					position: 'absolute',
-					right: '50%',
-					top: '50%',
-				}}
-			/>
-		);
+		return <CircularProgressLoad />;
 	}
 
 	return (

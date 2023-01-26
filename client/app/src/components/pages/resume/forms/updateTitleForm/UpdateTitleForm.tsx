@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { useResume } from '../../../../../hooks/resume';
 
 import { updateResumeToDB } from '../../../../../store/resume/actions';
+import { CircularProgressLoad } from '../../../../ui/progress/circular';
 import { EditRounded, TaskAlt, CloseRounded } from '@mui/icons-material';
 import { InputInfo } from '../../../../ui/inputs/inputInfo';
 import { IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
 
 import './updateTitleFormStyles.scss';
 
@@ -61,7 +61,7 @@ export const UpdateTitleForm: React.FC = () => {
 							endAdornment: (
 								<InputAdornment position='end'>
 									{isLoading ? (
-										<CircularProgress
+										<CircularProgressLoad
 											size={14}
 											style={{ marginRight: '8px' }}
 										/>
