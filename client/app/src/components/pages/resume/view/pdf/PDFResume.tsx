@@ -7,6 +7,7 @@ import {
 	Document,
 	StyleSheet,
 	Font,
+	PDFDownloadLink,
 } from '@react-pdf/renderer';
 import React, { useEffect, useState } from 'react';
 import { useResume } from '../../../../../hooks/resume';
@@ -351,52 +352,59 @@ export const PDFResume: React.FC = () => {
 		useResume();
 	const user = useAppSelector(userSelector);
 	const [mainColor, setMainColor] = useState<string>(defaultMainColor);
+
 	useEffect(() => {
 		if (resumeDesign?.colorMain?.hex) {
 			setMainColor(resumeDesign.colorMain.hex);
 		}
 	}, [resumeDesign]);
 
-	return (
-		<PDFViewer width='850px' height='700px'>
-			<Document>
-				<Page size='A4' style={styles.page}>
-					<View style={[styles.aside, { backgroundColor: mainColor }]}>
-						<View style={styles.column}>
-							<ProfilePro introduction={resumeProfile?.introduction} />
-							<View style={styles.spacingL} />
-							<ListSkills expertises={resumeExpertises} />
-						</View>
+	const pdfDoc = (
+		<Document>
+			<Page size='A4' style={styles.page}>
+				<View style={[styles.aside, { backgroundColor: mainColor }]}>
+					<View style={styles.column}>
+						<ProfilePro introduction={resumeProfile?.introduction} />
+						<View style={styles.spacingL} />
+						<ListSkills expertises={resumeExpertises} />
 					</View>
+				</View>
 
-					<View style={styles.main}>
-						<CandidateInfos
-							mainColor={mainColor}
-							picture={resumeDesign?.profilPic ?? ''}
-							user={{
-								name: user?.firstName,
-								lastName: user?.lastName,
-								phone: user?.phone,
-								email: user?.emailPro,
-								mediaLink: resumeProfile?.socialMedias,
-								portfolio: resumeProfile?.portfolio,
-							}}
-							position={resumeProfile?.position}
-						/>
-						<View style={[styles.separator, { backgroundColor: mainColor }]} />
-						<Experiences
-							mainColor={mainColor}
-							experiences={resumeExperiences}
-						/>
-						<View style={[styles.separator, { backgroundColor: mainColor }]} />
-						<Education
-							certificate={resumeProfile?.education?.certificate}
-							academy={resumeProfile?.education?.academy}
-							period={resumeProfile?.education?.period}
-						/>
-					</View>
-				</Page>
-			</Document>
-		</PDFViewer>
+				<View style={styles.main}>
+					<CandidateInfos
+						mainColor={mainColor}
+						picture={resumeDesign?.profilPic ?? ''}
+						user={{
+							name: user?.firstName,
+							lastName: user?.lastName,
+							phone: user?.phone,
+							email: user?.emailPro,
+							mediaLink: resumeProfile?.socialMedias,
+							portfolio: resumeProfile?.portfolio,
+						}}
+						position={resumeProfile?.position}
+					/>
+					<View style={[styles.separator, { backgroundColor: mainColor }]} />
+					<Experiences mainColor={mainColor} experiences={resumeExperiences} />
+					<View style={[styles.separator, { backgroundColor: mainColor }]} />
+					<Education
+						certificate={resumeProfile?.education?.certificate}
+						academy={resumeProfile?.education?.academy}
+						period={resumeProfile?.education?.period}
+					/>
+				</View>
+			</Page>
+		</Document>
+	);
+
+	return (
+		<>
+			<PDFDownloadLink document={pdfDoc} fileName='somename.pdf'>
+				{({ loading }) => (loading ? 'Loading document...' : 'Download now!')}
+			</PDFDownloadLink>
+			<PDFViewer width='850px' height='700px'>
+				{pdfDoc}
+			</PDFViewer>
+		</>
 	);
 };

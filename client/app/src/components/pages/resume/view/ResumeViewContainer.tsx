@@ -1,11 +1,12 @@
-import { PDFResume } from './pdf/PDFResume';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import './resumeViewStyles.scss';
 import { useResume } from '../../../../hooks/resume';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { CircularProgress, IconButton } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { PDFResume } from './pdf/PDFResume';
+
+import './resumeViewStyles.scss';
 
 export const ResumeViewContainer: React.FC = () => {
 	const { refetchResumeById, resume } = useResume();
