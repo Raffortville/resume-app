@@ -1,0 +1,32 @@
+@import '../../../styles/mixins.scss';
+@import '../../../styles/variables.scss';
+
+.homePage {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 32px auto;
+	color: $text-black;
+	@include fade();
+
+	.homePage-list {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+		margin-top: 42px;
+
+		.homePage-caption {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+
+			.homePage-caption-icon {
+				color: $primary-light;
+			}
+
+			.homePage-label {
+				color: $text-grey;
+			}
+		}
+	}
+}

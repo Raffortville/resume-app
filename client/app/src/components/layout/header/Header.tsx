@@ -37,7 +37,7 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 		<>
 			<header className='header'>
 				<h2 onClick={() => onNavItemClick('/')} className='header-title'>
-					Resume Maker
+					Make my CV Tech
 				</h2>
 				<div className='menu'>
 					<NavBar items={navBarItems} onItemClick={onNavItemClick} />

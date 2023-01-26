@@ -1,5 +1,6 @@
 import React from 'react';
+import { HomePageContainer } from '../../components/pages/home';
 
 export const HomePage: React.FC = () => {
-	return <h1>Home</h1>;
+	return <HomePageContainer />;
 };
