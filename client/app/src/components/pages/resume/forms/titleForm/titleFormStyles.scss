@@ -8,6 +8,7 @@
 	gap: 64px;
 	margin-top: 64px;
 	color: $primary;
+	@include fade();
 
 	.title-form--input {
 		width: 275px;

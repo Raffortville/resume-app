@@ -182,9 +182,9 @@ export const ResumeFormContainer: React.FC = () => {
 				/>
 				<Button
 					onClick={onNavigateToResumeView}
-					size='small'
 					variant='outlined'
-					startIcon={<VisibilityRounded color='primary' fontSize='small' />}>
+					color='info'
+					startIcon={<VisibilityRounded color='info' fontSize='small' />}>
 					<span>Voir CV</span>
 				</Button>
 			</div>

@@ -31,7 +31,7 @@ export const ResumeViewContainer: React.FC = () => {
 						state: { resumeId: resume._id },
 					});
 				}}
-				color='primary'
+				color='info'
 				size='small'>
 				<ArrowBackIcon />
 				BACK TO FORM

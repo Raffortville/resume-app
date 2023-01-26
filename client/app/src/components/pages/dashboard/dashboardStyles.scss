@@ -1,8 +1,11 @@
+@import '../../../styles/mixins.scss';
+
 .dashboard {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	padding: 64px;
+	@include fade();
 
 	.dashboard-resumes-list {
 		display: flex;
