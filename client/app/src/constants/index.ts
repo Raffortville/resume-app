@@ -16,8 +16,8 @@ export const expertises: IExpertise[] = [
 ];
 
 export const colors: ColorKey[] = [
-	{ name: 'grey', hex: '#0d8fcd' },
+	{ name: 'grey', hex: '#757575' },
 	{ name: 'maroon', hex: '#6a4952' },
 	{ name: 'berry', hex: '#847a9f' },
-	{ name: 'blue', hex: ' #0d8fcd' },
+	{ name: 'blue', hex: '#0d8fcd' },
 ];

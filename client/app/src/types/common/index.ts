@@ -29,8 +29,8 @@ export interface IKeyNodeItem {
 }
 
 export type ColorKey = {
-	name: string | undefined;
-	hex: string | undefined;
+	name: string;
+	hex: string;
 };
 
 export interface IPeriodRange {

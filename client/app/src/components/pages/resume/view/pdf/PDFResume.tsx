@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
 	PDFViewer,
 	Image,
@@ -47,8 +47,6 @@ Font.register({
 		},
 	],
 });
-
-const defaultMainColor = 'grey';
 
 const text = { fontSize: 11, fontFamily: 'Sofia' };
 const textThin = { ...text, fontWeight: 300 };
@@ -352,7 +350,7 @@ const Education: React.FC<IEducation> = ({ academy, period, certificate }) => {
 	);
 };
 
-export const PDFResume: React.FC = () => {
+export const PDFResume: React.FC<IResumeProps> = ({ mainColor }) => {
 	const {
 		resumeDesign,
 		resumeProfile,
@@ -361,16 +359,8 @@ export const PDFResume: React.FC = () => {
 		resumeTitle,
 	} = useResume();
 	const user = useAppSelector(userSelector);
-	const [mainColor, setMainColor] = useState<string>(defaultMainColor);
-	const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (resumeDesign?.colorMain?.hex) {
-			setMainColor(resumeDesign.colorMain.hex);
-		}
-	}, [resumeDesign]);
 
 	const pdfDoc = (
 		<Document>
@@ -418,7 +408,6 @@ export const PDFResume: React.FC = () => {
 		if (loading) {
 			return <LinearProgressBar color='primary' />;
 		}
-		setIsLoaded(true);
 		return <Button variant='contained'>Télécharger CV !</Button>;
 	};
 
@@ -441,11 +430,9 @@ export const PDFResume: React.FC = () => {
 				</Button>
 			</div>
 
-			{isLoaded && (
-				<PDFViewer width='850px' height='700px'>
-					{pdfDoc}
-				</PDFViewer>
-			)}
+			<PDFViewer width='850px' height='700px'>
+				{pdfDoc}
+			</PDFViewer>
 		</>
 	);
 };

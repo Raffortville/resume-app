@@ -69,7 +69,7 @@ export interface IProfil {
 }
 export interface IDesign {
 	profilPic?: string;
-	colorMain?: ColorKey;
+	colorMain: ColorKey;
 }
 
 export type StatusType = 'complete' | 'draft';

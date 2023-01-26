@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useResume } from '../../../../hooks/resume';
@@ -9,7 +9,7 @@ import { PDFResume } from './pdf/PDFResume';
 import './resumeViewStyles.scss';
 
 export const ResumeViewContainer: React.FC = () => {
-	const { refetchResumeById, resume } = useResume();
+	const { refetchResumeById, resume, resumeDesign } = useResume();
 	const navigate = useNavigate();
 
 	const getResume = async (): Promise<void> => {
@@ -36,9 +36,11 @@ export const ResumeViewContainer: React.FC = () => {
 				<ArrowBackIcon />
 				BACK TO FORM
 			</IconButton>
-			<div className='resumeView-pdf'>
-				<PDFResume />
-			</div>
+			{resumeDesign && (
+				<div className='resumeView-pdf'>
+					<PDFResume mainColor={resumeDesign.colorMain.hex} />
+				</div>
+			)}
 		</div>
 	);
 };
