@@ -331,7 +331,9 @@ const Education: React.FC<IEducation> = ({ academy, period, certificate }) => {
 			{period ? (
 				<>
 					<View style={styles.box}>
-						<Text style={[styles.text, { opacity: 1 }]}>09/2019 – 08/2020</Text>
+						<Text style={[styles.text, { opacity: 1 }]}>
+							{period.start} – {period.end}
+						</Text>
 					</View>
 					<View style={styles.spacingS} />
 				</>

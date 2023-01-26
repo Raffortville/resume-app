@@ -4,6 +4,7 @@ import { IProfil } from '../../../../../types/store';
 import { Button, TextareaAutosize, TextField } from '@mui/material';
 import { removeEmptyOrNullKeyValueFromObject } from '../../../../../helpers';
 import { updateResumeToDB } from '../../../../../store/resume/actions';
+import { DatePickerField } from '../../../../ui/datePicker';
 
 interface IProfileFormInputFieldsProps {
 	initialState: IProfil;
@@ -63,18 +64,15 @@ const ProfileFormInputFields: React.FC<IProfileFormInputFieldsProps> = ({
 				variant='standard'
 				helperText='Ecole, centre de formation, université...'
 			/>
-			<TextField
-				label='Periode'
-				value={profileValues.education?.period || ''}
-				onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-					const { value } = e.target;
+			<DatePickerField
+				period={profileValues.education?.period ?? { start: '', end: '' }}
+				label='Année de formations'
+				onChangeDate={(period): void => {
 					setProfileValues({
 						...profileValues,
-						education: { ...profileValues.education, period: value },
+						education: { ...profileValues.education, period },
 					});
 				}}
-				variant='standard'
-				helperText='Année de formations'
 			/>
 			<TextField
 				label='Diplôme'

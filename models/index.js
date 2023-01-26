@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema(
 const EducationSchema = new mongoose.Schema(
 	{
 		academy: String,
-		period: String,
+		period: { start: String, end: String },
 		certificate: String,
 	},
 	{ versionKey: false }

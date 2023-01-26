@@ -31,7 +31,7 @@ export interface IAlert {
 export type AlertType = IAlert | null;
 export interface IEducation {
 	academy?: string;
-	period?: string;
+	period?: IPeriodRange;
 	certificate?: string;
 }
 export interface IExperience {
