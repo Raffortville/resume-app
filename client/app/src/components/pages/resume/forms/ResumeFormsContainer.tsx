@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FormSectionType, IKeyNodeItem } from '../../../../types/common';
-
 import {
 	ImportContacts,
 	Face,
 	Work,
 	Brush,
 	DeveloperMode,
+	VisibilityRounded,
 } from '@mui/icons-material/';
+import { Button } from '@mui/material';
 import { FormSkeleton } from '../../../layout/form';
 import { ContactForm } from './contactForm';
 import { ExpertisesForm } from './expertisesForm';
@@ -68,6 +69,17 @@ export const ResumeFormContainer: React.FC = () => {
 	const [formSectionSelected, setFormSectionSelected] =
 		useState<FormSectionType>('contact');
 	const [experienceId, setExperienceId] = useState<string>();
+
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	const onNavigateToResumeView = (): void => {
+		const { resumeId } = location.state;
+		if (!resumeId) {
+			return;
+		}
+		navigate(`/resume/view/${resumeId}`, { state: { resumeId: resumeId } });
+	};
 
 	const getFormTitle = (): string => {
 		switch (formSectionSelected) {
@@ -158,47 +170,52 @@ export const ResumeFormContainer: React.FC = () => {
 	};
 
 	return (
-		<>
-			<div className='resume-form'>
-				<div className='resume-form-breadcrumbs-container'>
-					<BreadCrumbs
-						items={breadcrumbsItems}
-						onItemClick={(key): void =>
-							setFormSectionSelected(key as FormSectionType)
+		<div className='resume-form'>
+			<div className='resume-form-breadcrumbs-container'>
+				<BreadCrumbs
+					items={breadcrumbsItems}
+					onItemClick={(key): void =>
+						setFormSectionSelected(key as FormSectionType)
+					}
+					selectedKey={formSectionSelected}
+					hasTextLink
+				/>
+				<Button
+					onClick={onNavigateToResumeView}
+					size='small'
+					variant='outlined'
+					startIcon={<VisibilityRounded color='primary' fontSize='small' />}>
+					<span>Voir CV</span>
+				</Button>
+			</div>
+			<div className='resume-form-row'>
+				<div className='resume-form--titleForm'>
+					<UpdateTitleForm />
+				</div>
+				<div className='resume-form--inputFields'>
+					<FormSkeleton
+						title={getFormTitle()}
+						children={getFormContent()}
+						hasBackButton={formSectionSelected !== 'contact'}
+						hasNextButton={formSectionSelected !== 'design'}
+						onNavigateButtonClick={(direction) =>
+							handleNavigateFormSections(direction)
 						}
-						selectedKey={formSectionSelected}
-						hasTextLink
 					/>
 				</div>
-				<div className='resume-form-row'>
-					<div className='resume-form--titleForm'>
-						<UpdateTitleForm />
-					</div>
-					<div className='resume-form--inputFields'>
-						<FormSkeleton
-							title={getFormTitle()}
-							children={getFormContent()}
-							hasBackButton={formSectionSelected !== 'contact'}
-							hasNextButton={formSectionSelected !== 'design'}
-							onNavigateButtonClick={(direction) =>
-								handleNavigateFormSections(direction)
-							}
+				<div className='resume-form--preview'>
+					{(formSectionSelected === 'experiences' ||
+						formSectionSelected === 'expertises') && (
+						<PreviewResumeFormValues
+							formSection={formSectionSelected}
+							onSelectExperienceId={(id: string): void => {
+								setExperienceId(id);
+							}}
+							experienceId={experienceId}
 						/>
-					</div>
-					<div className='resume-form--preview'>
-						{(formSectionSelected === 'experiences' ||
-							formSectionSelected === 'expertises') && (
-							<PreviewResumeFormValues
-								formSection={formSectionSelected}
-								onSelectExperienceId={(id: string): void => {
-									setExperienceId(id);
-								}}
-								experienceId={experienceId}
-							/>
-						)}
-					</div>
+					)}
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
