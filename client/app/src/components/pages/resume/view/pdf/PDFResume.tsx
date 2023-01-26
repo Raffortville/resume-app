@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
 	PDFViewer,
 	Image,
@@ -9,7 +10,8 @@ import {
 	Font,
 	PDFDownloadLink,
 } from '@react-pdf/renderer';
-import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { useResume } from '../../../../../hooks/resume';
 import { useAppSelector } from '../../../../../store/hooks';
 import { userSelector } from '../../../../../store/user/reducer';
@@ -18,6 +20,11 @@ import {
 	IExperience,
 	IExpertise,
 } from '../../../../../types/store';
+import { Button } from '@mui/material';
+import { LinearProgressBar } from '../../../../ui/progress/linear';
+import RefreshIcon from '@mui/icons-material/Refresh';
+
+import '../resumeViewStyles.scss';
 
 Font.register({
 	family: 'Sofia',
@@ -339,19 +346,25 @@ const Education: React.FC<IEducation> = ({ academy, period, certificate }) => {
 					<View style={styles.spacingS} />
 				</>
 			) : null}
-			{academy ? <Text style={styles.textBold}>OpenClass rooms</Text> : null}
-			{certificate ? (
-				<Text style={styles.text}>Web applications developer</Text>
-			) : null}
+			{academy ? <Text style={styles.textBold}>{academy}</Text> : null}
+			{certificate ? <Text style={styles.text}>{certificate}</Text> : null}
 		</View>
 	);
 };
 
 export const PDFResume: React.FC = () => {
-	const { resumeDesign, resumeProfile, resumeExpertises, resumeExperiences } =
-		useResume();
+	const {
+		resumeDesign,
+		resumeProfile,
+		resumeExpertises,
+		resumeExperiences,
+		resumeTitle,
+	} = useResume();
 	const user = useAppSelector(userSelector);
 	const [mainColor, setMainColor] = useState<string>(defaultMainColor);
+	const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (resumeDesign?.colorMain?.hex) {
@@ -397,14 +410,42 @@ export const PDFResume: React.FC = () => {
 		</Document>
 	);
 
+	const renderPDFLink = ({
+		loading,
+	}: {
+		loading: boolean;
+	}): React.ReactNode => {
+		if (loading) {
+			return <LinearProgressBar color='primary' />;
+		}
+		setIsLoaded(true);
+		return <Button variant='contained'>Télécharger CV !</Button>;
+	};
+
 	return (
 		<>
-			<PDFDownloadLink document={pdfDoc} fileName='somename.pdf'>
-				{({ loading }) => (loading ? 'Loading document...' : 'Download now!')}
-			</PDFDownloadLink>
-			<PDFViewer width='850px' height='700px'>
-				{pdfDoc}
-			</PDFViewer>
+			<div className='resumeView-pdf--actions'>
+				<PDFDownloadLink
+					document={pdfDoc}
+					fileName={`${resumeTitle}.pdf`}
+					style={{ textDecoration: 'none' }}>
+					{renderPDFLink}
+				</PDFDownloadLink>
+				<Button
+					onClick={() => {
+						navigate(0);
+					}}
+					startIcon={<RefreshIcon />}
+					variant='outlined'>
+					refresh
+				</Button>
+			</div>
+
+			{isLoaded && (
+				<PDFViewer width='850px' height='700px'>
+					{pdfDoc}
+				</PDFViewer>
+			)}
 		</>
 	);
 };

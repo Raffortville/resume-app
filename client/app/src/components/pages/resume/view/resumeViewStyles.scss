@@ -1,9 +1,21 @@
 @import '../../../../styles/mixins.scss';
 
 .resumeView {
-	padding: 32px;
+	display: flex;
+	align-items: flex-start;
+	gap: 128px;
+	padding: 16px;
+
 	.resumeView-pdf {
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		gap: 32px;
+
+		.resumeView-pdf--actions {
+			display: flex;
+			align-items: center;
+			gap: 32px;
+		}
 	}
 }

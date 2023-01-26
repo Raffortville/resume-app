@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useAppSelector } from '../../store/hooks';
-import { getResumeById } from '../../store/resume/actions';
+import { getResumeById, resetResumeById } from '../../store/resume/actions';
 import {
 	resumeDesignSelector,
 	resumeExperiencesSelector,
@@ -15,6 +15,7 @@ import { sortExperiencesByDate } from '../../utils/resume';
 
 export const useResume = (): {
 	resume: IResume | null;
+	resumeTitle: string | undefined;
 	resumeProfile: IResume['profil'];
 	resumeExpertises: IResume['expertises'] | undefined;
 	resumeExperiences: IResume['experiences'];
@@ -44,8 +45,13 @@ export const useResume = (): {
 		return resume;
 	};
 
+	const getResumeTitle = () => {
+		return resume?.title;
+	};
+
 	return {
 		resume,
+		resumeTitle: getResumeTitle(),
 		resumeProfile,
 		resumeExpertises,
 		resumeExperiences: sortExperiencesByDate(resumeExperiences),

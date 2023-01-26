@@ -2,7 +2,13 @@ import { store } from '..';
 import config from '../../config';
 import { displayAlert } from '../alert/actions';
 import { IResume } from '../../types/store';
-import { addResume, deleteResume, setResume, setResumes } from './reducer';
+import {
+	addResume,
+	deleteResume,
+	setResume,
+	setResumes,
+	resetResume,
+} from './reducer';
 import { expertises } from '../../constants';
 
 export const getResumes = async (userId: string): Promise<IResume[] | void> => {
@@ -62,6 +68,10 @@ export const getResumeById = async (
 		});
 		return;
 	}
+};
+
+export const resetResumeById = () => {
+	store.dispatch(resetResume());
 };
 
 export const createResumeToDB = async (payload: {
