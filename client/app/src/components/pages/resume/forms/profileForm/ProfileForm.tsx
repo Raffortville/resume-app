@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useResume } from '../../../../../hooks/resume/';
 import { IProfil } from '../../../../../types/store';
-import { Button, TextareaAutosize, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { removeEmptyOrNullKeyValueFromObject } from '../../../../../helpers';
 import { updateResumeToDB } from '../../../../../store/resume/actions';
 import { DatePickerField } from '../../../../ui/datePicker';
+import { InputTextArea } from '../../../../ui/inputs/inputTextArea';
 
 interface IProfileFormInputFieldsProps {
 	initialState: IProfil;
@@ -40,17 +41,13 @@ const ProfileFormInputFields: React.FC<IProfileFormInputFieldsProps> = ({
 				helperText='Titre de votre profil professionnel'
 				variant='standard'
 			/>
-			<TextareaAutosize
+			<InputTextArea
+				label='Présentez-vous'
+				value={profileValues.introduction}
 				name='introduction'
-				value={profileValues.introduction || ''}
-				minRows={3}
-				maxRows={6}
-				placeholder='Présentez-vous en quelques mots'
-				onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void => {
-					const { name, value } = event.target;
-					handleChange({ value, name });
-				}}
+				onChange={handleChange}
 			/>
+
 			<TextField
 				label='Académie'
 				value={profileValues.education?.academy || ''}

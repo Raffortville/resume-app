@@ -9,6 +9,7 @@ import { DateRange, DateRangePicker } from 'mui-daterange-picker';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 
 import './datePickerStyles.scss';
+import { LabelInput } from '../label';
 
 interface IDatePickerFieldProps {
 	period: IPeriodRange;
@@ -47,7 +48,7 @@ export const DatePickerField: React.FC<IDatePickerFieldProps> = ({
 
 	return (
 		<div className='datePicker'>
-			{label && <label className='datePicker-label'>{label}</label>}
+			{label && <LabelInput label={label} />}
 
 			<div className='wrapperDatePicker'>
 				{open && (
