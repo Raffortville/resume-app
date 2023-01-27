@@ -32,14 +32,16 @@ const DesignFormInputFields: React.FC<IDesignFormInputFieldsProps> = ({
 			return (
 				<div
 					key={index}
-					className={`resume-design--colorPick ${color.name}`}
 					onClick={(): void =>
 						setMediaValues({
 							...mediaValues,
 							mainColor: { name: color.name, hex: color.hex },
 						})
 					}
-				/>
+					className='resume-design--color-item'>
+					<p>{color.name}</p>
+					<div className={`resume-design--colorPick ${color.name}`} />
+				</div>
 			);
 		});
 	};
@@ -64,9 +66,12 @@ const DesignFormInputFields: React.FC<IDesignFormInputFieldsProps> = ({
 			{mediaValues.mainColor.name && (
 				<>
 					<h4 style={{ textAlign: 'center' }}>Votre couleur sélectionné</h4>
-					<div
-						className={`resume-design--colorPick selected ${mediaValues.mainColor.name}`}
-					/>
+					<div className='resume-design--color-item'>
+						<p>{mediaValues.mainColor.name}</p>
+						<div
+							className={`resume-design--colorPick selected ${mediaValues.mainColor.name}`}
+						/>
+					</div>
 				</>
 			)}
 
