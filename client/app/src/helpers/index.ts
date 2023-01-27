@@ -49,3 +49,25 @@ export const removeEmptyOrNullKeyValueFromObject = (
 
 	return objectFilred;
 };
+
+export const converObjectToArray = (obj: object) => {
+	return Object.keys(obj).map((key) => ({ [key]: obj[key as keyof object] }));
+};
+
+export const fitlterArrayFromKeys = ({
+	array,
+	keys,
+}: {
+	array: any[];
+	keys: string[];
+}): any[] => {
+	let filtredArray: any[] = [];
+	array.forEach((a) => {
+		const [target] = Object.keys(a);
+		if (keys.includes(target)) {
+			filtredArray.push(a);
+		}
+	});
+
+	return filtredArray;
+};

@@ -21,3 +21,17 @@ export const colors: ColorKey[] = [
 	{ name: 'berry', hex: '#847a9f' },
 	{ name: 'blue', hex: '#0d8fcd' },
 ];
+
+export const userContactProgressKeys: string[] = [
+	'firstName',
+	'lastName',
+	'phone',
+	'emailPro',
+	'city',
+];
+
+export const resumeProfilProgressKeys: string[] = [
+	'education',
+	'introduction',
+	'position',
+];
