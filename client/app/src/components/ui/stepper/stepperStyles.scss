@@ -1,0 +1,12 @@
+.stepper {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	.stepper-label {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 4px;
+	}
+}

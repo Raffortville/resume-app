@@ -21,6 +21,15 @@ import { UpdateTitleForm } from './updateTitleForm';
 import { PreviewResumeFormValues } from './previewResumeFormValues';
 
 import './resumeFormsStyles.scss';
+import { StepperProgress, StepType } from '../../../ui/stepper';
+
+const stepperItems: StepType[] = [
+	{ label: 'Contact', isCompleted: true },
+	{ label: 'Profile', isCompleted: false },
+	{ label: 'Expertises', isCompleted: false },
+	{ label: 'Expériences', isCompleted: false },
+	{ label: 'Design', isCompleted: false },
+];
 
 const breadcrumbsItems: IKeyNodeItem[] = [
 	{
@@ -189,8 +198,9 @@ export const ResumeFormContainer: React.FC = () => {
 				</Button>
 			</div>
 			<div className='resume-form-row'>
-				<div className='resume-form--titleForm'>
+				<div className='resume-form--left'>
 					<UpdateTitleForm />
+					<StepperProgress steps={stepperItems} />
 				</div>
 				<div className='resume-form--inputFields'>
 					<FormSkeleton
