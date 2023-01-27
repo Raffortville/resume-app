@@ -148,8 +148,8 @@ export const updateResumeToDB = async (
 			store.dispatch(setResume(updatedResume));
 			displayAlert({
 				payload: {
-					message: 'Vos informations ont bien été enregisrtés',
-					type: 'info',
+					message: 'Vos informations ont bien été enregisttés',
+					type: 'success',
 				},
 			});
 			return updatedResume;
