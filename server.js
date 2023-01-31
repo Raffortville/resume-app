@@ -8,7 +8,14 @@ import config from './config/index.js';
 
 const app = express();
 
+app.options('*', cors());
 app.use(cors());
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
+	res.header('Access-Control-Expose-Headers', '*');
+	next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,3 +42,11 @@ app.use((err, res) => {
 		message: err.message || 'there was an error processing request',
 	});
 });
+
+if (process.env.NODE_ENV === 'production') {
+	//*Set static folder up in production
+	app.use(express.static('client/app/build'));
+	app.get('*', (req, res) =>
+		res.sendFile(path.resolve(__dirname, './client/app/build/index.html'))
+	);
+}

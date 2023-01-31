@@ -50,6 +50,7 @@ export const getResumeById = async (
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
+				referrerPolicy: 'unsafe-url',
 			}
 		);
 		if (response.status === 200) {
