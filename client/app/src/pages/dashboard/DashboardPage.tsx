@@ -13,10 +13,10 @@ export const DashboardPage: React.FC = () => {
 	const resumes = useAppSelector(resumesSelector);
 
 	const getResumesByUser = (): void => {
-		if (user === null || !user._id) {
+		if (user === null || !user.uid) {
 			return;
 		}
-		getResumes(user?._id);
+		getResumes(user?.uid);
 	};
 
 	useEffect(() => {

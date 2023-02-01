@@ -11,9 +11,9 @@ import {
 } from './reducer';
 import { expertises } from '../../constants';
 
-export const getResumes = async (userId: string): Promise<IResume[] | void> => {
+export const getResumes = async (uid: string): Promise<IResume[] | void> => {
 	try {
-		const response = await fetch(`${config.API.url}/resume/getAll/${userId}`, {
+		const response = await fetch(`${config.API.url}/resume/getAll/${uid}`, {
 			method: 'GET',
 			headers: {
 				Accept: 'application/json',
@@ -90,7 +90,7 @@ export const createResumeToDB = async (payload: {
 	}
 	const data = {
 		...payload,
-		userId: user._id,
+		userId: user.uid,
 		expertises: expertises,
 	};
 

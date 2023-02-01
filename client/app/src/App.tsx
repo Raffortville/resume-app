@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useAppSelector } from './store/hooks';
 import { fireBaseAuth } from './services';
 import { MainRoutes } from './routes';
 import { store } from './store';
 import { getUser } from './store/user/actions';
 import { resetUser, setUser, userSelector } from './store/user/reducer';
+import { alertSelector } from './store/alert/reducer';
 
 import { Header } from './components/layout/header';
-import { useAppSelector } from './store/hooks';
 import { ToastAlert } from './components/ui/toastAlert';
-import { alertSelector } from './store/alert/reducer';
+
 import { CircularProgressLoad } from './components/ui/progress/circular';
 
 function App() {
