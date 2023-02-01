@@ -168,6 +168,13 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 		});
 	};
 
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+		if (e.key === 'Enter') {
+			handleSubmit();
+		}
+		return;
+	};
+
 	const renderFormFields = (): React.ReactNode => {
 		return formFields.map((field) => {
 			return (
@@ -178,6 +185,7 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 					value={field.value}
 					name={field.key}
 					onChange={handleChange}
+					onKeyUp={handleKeyPress}
 					required={field.key !== 'username'}
 					variant='standard'
 					fullWidth
