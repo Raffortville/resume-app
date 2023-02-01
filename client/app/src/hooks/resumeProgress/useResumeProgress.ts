@@ -71,11 +71,11 @@ export const useResumeProgress = (): IuseResumeProgressOutput => {
 				return step;
 			})
 		);
-	}, [resumeDesign, resumeExperiences, resumeExpertises, resumeProfile, user]);
+	}, [resume, user]);
 
 	useEffect(() => {
 		setResumeProgress();
-	}, [resumeDesign, resumeExperiences, resumeExpertises, resumeProfile, user]);
+	}, [resume, user]);
 
 	return { stepperItems };
 };
