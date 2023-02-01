@@ -1,14 +1,15 @@
-import {
-	createUserWithEmailAndPassword,
-	signInWithEmailAndPassword,
-} from 'firebase/auth';
-import { fireBaseAuth } from '../../services';
-
-import config from '../../config';
 import { store } from '../../store';
 import type { IUser, IUserLite } from '../../types/store';
 import { displayAlert } from '../alert/actions';
 import { setUser, updateUser } from './reducer';
+import {
+	createUser,
+	createUserOnDB,
+	fetchUserFromDB,
+	signInUser,
+	signOutFromFBaseAuth,
+	updateUserOnDB,
+} from '../../api/userApi';
 
 export const signUp = async (payload: {
 	email: string;
@@ -18,14 +19,16 @@ export const signUp = async (payload: {
 	const { email, password, userName } = payload;
 
 	try {
-		const { user } = await createUserWithEmailAndPassword(
-			fireBaseAuth,
-			email,
-			password
-		);
+		const user = await createUser({ email, password, userName });
 
-		if (!user.email || user.email === null) {
-			return;
+		if (!user || !user.email || user.email === null) {
+			displayAlert({
+				payload: {
+					message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
+					type: 'error',
+				},
+			});
+			throw new Error('Error create user with firebase auth');
 		}
 
 		return await logIn({
@@ -53,20 +56,16 @@ export const logIn = async ({
 	const { password, email, userName } = payload;
 
 	try {
-		const { user } = await signInWithEmailAndPassword(
-			fireBaseAuth,
-			email,
-			password
-		);
+		const user = await signInUser({ email, password });
 
-		if (!user.email || user.email === null) {
+		if (!user || !user.email || user.email === null) {
 			displayAlert({
 				payload: {
 					message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
 					type: 'error',
 				},
 			});
-			return;
+			throw new Error('Error signIn with firebase auth');
 		}
 
 		if (isFirstLogin) {
@@ -84,21 +83,21 @@ export const logIn = async ({
 };
 
 export const saveUserToDb = async (payload: IUser): Promise<any> => {
-	const { email, uid, userName } = payload;
-
 	try {
-		const response = await fetch(`${config.API.url}/user`, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ email, uid, userName }),
-		});
+		const user = await createUserOnDB(payload);
 
-		const data: IUser = await response.json();
-		store.dispatch(setUser(data));
-		return data;
+		if (!user) {
+			displayAlert({
+				payload: {
+					message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
+					type: 'error',
+				},
+			});
+			throw new Error('Error create user on DB');
+		}
+
+		store.dispatch(setUser(user));
+		return user;
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -111,20 +110,19 @@ export const saveUserToDb = async (payload: IUser): Promise<any> => {
 };
 
 export const getUser = async (payload: IUser): Promise<IUser | undefined> => {
-	const { email, uid } = payload;
 	try {
-		const response = await fetch(`${config.API.url}/user/getUser`, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ email, uid }),
-		});
-
-		const userUpdated: IUser = await response.json();
-		store.dispatch(updateUser(userUpdated));
-		return userUpdated;
+		const user = await fetchUserFromDB(payload);
+		if (!user) {
+			displayAlert({
+				payload: {
+					message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
+					type: 'error',
+				},
+			});
+			throw new Error('Error fetching user from DB');
+		}
+		store.dispatch(updateUser(user));
+		return user;
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -140,37 +138,27 @@ export const updateUserToDB = async (
 	payload: IUserLite
 ): Promise<IUser | undefined> => {
 	try {
-		const response = await fetch(
-			`${config.API.url}/user/update/${payload._id}`,
-			{
-				method: 'PUT',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(payload),
-			}
-		);
-
-		if (response.status === 200) {
-			const userUpdated = await response.json();
-			store.dispatch(updateUser(userUpdated));
+		const userUpdated = await updateUserOnDB(payload);
+		if (!userUpdated) {
 			displayAlert({
 				payload: {
-					message: 'Vos données ont enregistrés avec succès !',
-					type: 'success',
+					message:
+						"Erreur lors l'enregistrement de vos données, veuillez essayer plus tard",
+					type: 'error',
 				},
 			});
-			return userUpdated;
+
+			throw new Error('Error updatein user on DB');
 		}
 
+		store.dispatch(updateUser(userUpdated));
 		displayAlert({
 			payload: {
-				message:
-					"Erreur lors l'enregistrement de vos données, veuillez essayer plus tard",
-				type: 'error',
+				message: 'Vos données ont enregistrés avec succès !',
+				type: 'success',
 			},
 		});
+		return userUpdated;
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -184,9 +172,5 @@ export const updateUserToDB = async (
 };
 
 export const signOut = async (): Promise<void> => {
-	try {
-		return await fireBaseAuth.signOut();
-	} catch (error) {
-		console.log(error);
-	}
+	await signOutFromFBaseAuth();
 };
