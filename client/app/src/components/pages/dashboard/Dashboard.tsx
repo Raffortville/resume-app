@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { deleteResumeFromDB } from '../../../store/resume/actions';
@@ -14,14 +14,29 @@ import {
 } from '@mui/icons-material';
 import { ResumeCard } from '../../ui/cards/resumeCard';
 import { Separator } from '../../ui/separator';
+import { DialogConfirm } from '../../ui/dialogs/dialogConfirm';
 
 import './dashboardStyles.scss';
 
 export const Dashboard: React.FC = () => {
 	const resumes = useAppSelector(resumesSelector);
-	const hasResumeIems = resumes !== null && resumes?.length > 0;
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+
+	const [openDialog, setOpenDialog] = useState<boolean>(false);
+
+	const resumeId = useRef<string | null>(null);
+	const hasResumeIems = resumes !== null && resumes?.length > 0;
+
+	const onDeleteResume = (): void => {
+		if (resumeId.current === null) {
+			return;
+		}
+		const id = resumeId.current;
+		deleteResumeFromDB(id);
+		setOpenDialog(false);
+		resumeId.current = null;
+	};
 
 	const renderListResumes = (): React.ReactNode => {
 		if (resumes === null) {
@@ -39,7 +54,8 @@ export const Dashboard: React.FC = () => {
 								<Tooltip
 									title='Supprimer CV'
 									onClick={(): void => {
-										resume._id && deleteResumeFromDB(resume._id);
+										setOpenDialog(true);
+										resumeId.current = resume._id;
 									}}>
 									<RemoveCircleRounded className='action-icon' />
 								</Tooltip>
@@ -84,6 +100,16 @@ export const Dashboard: React.FC = () => {
 
 	return (
 		<>
+			<DialogConfirm
+				open={openDialog}
+				onCancel={(): void => {
+					setOpenDialog(false);
+					resumeId.current = null;
+				}}
+				onConfirm={onDeleteResume}
+				title='Suppression CV'
+				text='Confirmez vous la suppression de votre cv ?'
+			/>
 			<div className='dashboard'>
 				<ResumeCard
 					bottomLabel='creér cv'

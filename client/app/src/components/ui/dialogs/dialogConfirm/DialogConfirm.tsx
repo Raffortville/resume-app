@@ -39,8 +39,12 @@ export const DialogConfirm: React.FC<IDialogConfirmProps> = ({
 				<DialogContentText>{text}</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button variant='outlined'>{cancelButtonLabel ?? 'Cancel'}</Button>
-				<Button variant='contained'>{confirmButtonLabel ?? 'OK'}</Button>
+				<Button onClick={onCancel} variant='outlined'>
+					{cancelButtonLabel ?? 'Cancel'}
+				</Button>
+				<Button onClick={onConfirm} variant='contained'>
+					{confirmButtonLabel ?? 'OK'}
+				</Button>
 			</DialogActions>
 		</Dialog>
 	);

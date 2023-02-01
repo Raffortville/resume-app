@@ -1,18 +1,20 @@
-import React from 'react';
-import { NavBar } from '../../ui/navBar';
-import type { ObjectKeyLabel } from '../../../types/common';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import type { ObjectKeyLabel } from '../../../types/common';
+import { signOut } from '../../../store/user/actions';
 // import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { NavBar } from '../../ui/navBar';
+import { DialogConfirm } from '../../ui/dialogs/dialogConfirm';
 
 import './header.scss';
-import { signOut } from '../../../store/user/actions';
-import { DialogConfirm } from '../../ui/dialogs/dialogConfirm';
 
 interface CustomPros {
 	isUserLogged: boolean;
 }
 
 export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
+	const [openDialog, setOpenDialog] = useState<boolean>(false);
 	const navigate = useNavigate();
 
 	const navBarItems: ObjectKeyLabel[] = [
@@ -24,10 +26,15 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 		},
 	];
 
+	const onLoggOut = (): void => {
+		setOpenDialog(false);
+		signOut();
+		navigate('/connexion');
+	};
+
 	const onNavItemClick = (linkKey: string): void => {
 		if (linkKey === '/deconnexion') {
-			signOut();
-			navigate('/connexion');
+			setOpenDialog(true);
 			return;
 		}
 		navigate(linkKey);
@@ -37,11 +44,11 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 	return (
 		<>
 			<DialogConfirm
+				open={openDialog}
+				onCancel={(): void => setOpenDialog(false)}
+				onConfirm={onLoggOut}
 				title='Déconnexion'
 				text='Voulez-vous vous déconnecter ?'
-				open={true}
-				onCancel={() => console.log('cancel')}
-				onConfirm={() => console.log('onConfirm')}
 			/>
 			<header className='header'>
 				<h2 onClick={() => onNavItemClick('/')} className='header-title'>
