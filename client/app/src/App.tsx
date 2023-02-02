@@ -20,7 +20,6 @@ function App() {
 	useEffect(() => {
 		const unsub = fireBaseAuth.onAuthStateChanged((user) => {
 			if (user?.email) {
-				console.log(user.displayName);
 				setUserOnStore({
 					email: user.email,
 					uid: user.uid,
