@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useAppSelector } from '../../store/hooks';
-import { getResumeById, resetResumeById } from '../../store/resume/actions';
+import { getResumeById } from '../../store/resume/actions';
 import {
 	resumeDesignSelector,
 	resumeExperiencesSelector,

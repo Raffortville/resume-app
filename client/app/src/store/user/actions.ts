@@ -10,6 +10,7 @@ import {
 	signOutFromFBaseAuth,
 	updateUserOnDB,
 } from '../../api/userApi';
+import { resetAllResumes, resetCurrentResume } from '../resume/actions';
 
 export const signUp = async (payload: {
 	email: string;
@@ -164,5 +165,7 @@ export const setUserOnStore = (user: IUser) => {
 
 export const signOut = async (): Promise<void> => {
 	await signOutFromFBaseAuth();
+	resetCurrentResume();
+	resetAllResumes();
 	store.dispatch(resetUser());
 };

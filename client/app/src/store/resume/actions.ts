@@ -8,6 +8,7 @@ import {
 	setResume,
 	setResumes,
 	resetResume,
+	resetResumes,
 } from './reducer';
 import { expertises } from '../../constants';
 
@@ -69,10 +70,6 @@ export const getResumeById = async (
 		});
 		return;
 	}
-};
-
-export const resetResumeById = () => {
-	store.dispatch(resetResume());
 };
 
 export const createResumeToDB = async (payload: {
@@ -193,4 +190,12 @@ export const deleteResumeFromDB = async (id: string) => {
 			},
 		});
 	}
+};
+
+export const resetCurrentResume = () => {
+	store.dispatch(resetResume());
+};
+
+export const resetAllResumes = () => {
+	store.dispatch(resetResumes());
 };
