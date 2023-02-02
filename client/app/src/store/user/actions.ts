@@ -1,12 +1,12 @@
 import { store } from '../../store';
 import type { IUser, IUserLite } from '../../types/store';
 import { displayAlert } from '../alert/actions';
-import { setUser, updateUser } from './reducer';
+import { resetUser, setUser, updateUser } from './reducer';
 import {
-	createUser,
+	createUserOnFBase,
 	createUserOnDB,
 	fetchUserFromDB,
-	signInUser,
+	signInUserOnFBase,
 	signOutFromFBaseAuth,
 	updateUserOnDB,
 } from '../../api/userApi';
@@ -19,7 +19,7 @@ export const signUp = async (payload: {
 	const { email, password, userName } = payload;
 
 	try {
-		const user = await createUser({ email, password, userName });
+		const user = await createUserOnFBase({ email, password, userName });
 
 		if (!user || !user.email || user.email === null) {
 			displayAlert({
@@ -30,11 +30,8 @@ export const signUp = async (payload: {
 			});
 			throw new Error('Error create user with firebase auth');
 		}
-
-		return await logIn({
-			payload: { email: user.email, password, userName },
-			isFirstLogin: true,
-		});
+		saveUserToDb({ email: email, uid: user.uid, userName: userName });
+		logIn(payload);
 	} catch (err) {
 		console.log(err);
 		displayAlert({
@@ -47,16 +44,14 @@ export const signUp = async (payload: {
 };
 
 export const logIn = async ({
-	payload,
-	isFirstLogin,
+	email,
+	password,
 }: {
-	payload: { email: string; password: string; userName?: string };
-	isFirstLogin: boolean;
-}): Promise<IUser | undefined> => {
-	const { password, email, userName } = payload;
-
+	email: string;
+	password: string;
+}): Promise<void> => {
 	try {
-		const user = await signInUser({ email, password });
+		const user = await signInUserOnFBase({ email, password });
 
 		if (!user || !user.email || user.email === null) {
 			displayAlert({
@@ -66,10 +61,6 @@ export const logIn = async ({
 				},
 			});
 			throw new Error('Error signIn with firebase auth');
-		}
-
-		if (isFirstLogin) {
-			return await saveUserToDb({ email: user.email, uid: user.uid, userName });
 		}
 	} catch (error) {
 		console.log(error);
@@ -82,7 +73,7 @@ export const logIn = async ({
 	}
 };
 
-export const saveUserToDb = async (payload: IUser): Promise<any> => {
+export const saveUserToDb = async (payload: IUser): Promise<void> => {
 	try {
 		const user = await createUserOnDB(payload);
 
@@ -95,9 +86,6 @@ export const saveUserToDb = async (payload: IUser): Promise<any> => {
 			});
 			throw new Error('Error create user on DB');
 		}
-
-		store.dispatch(setUser(user));
-		return user;
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -121,7 +109,6 @@ export const getUser = async (payload: IUser): Promise<IUser | undefined> => {
 			});
 			throw new Error('Error fetching user from DB');
 		}
-		store.dispatch(updateUser(user));
 		return user;
 	} catch (error) {
 		console.log(error);
@@ -171,6 +158,11 @@ export const updateUserToDB = async (
 	}
 };
 
+export const setUserOnStore = (user: IUser) => {
+	store.dispatch(setUser(user));
+};
+
 export const signOut = async (): Promise<void> => {
 	await signOutFromFBaseAuth();
+	store.dispatch(resetUser());
 };

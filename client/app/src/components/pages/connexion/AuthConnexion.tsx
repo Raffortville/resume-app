@@ -162,10 +162,7 @@ export const AuthConnexion: React.FC<ISignUpAndLoginFormProps> = ({
 		}
 
 		const [email, password] = formFields;
-		return logIn({
-			payload: { email: email.value, password: password.value },
-			isFirstLogin: false,
-		});
+		return logIn({ email: email.value, password: password.value });
 	};
 
 	const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>): void => {

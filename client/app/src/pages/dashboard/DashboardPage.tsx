@@ -25,7 +25,7 @@ export const DashboardPage: React.FC = () => {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [resumes]);
+	}, [resumes, user]);
 
 	if (resumes === null) {
 		return <CircularProgressLoad />;

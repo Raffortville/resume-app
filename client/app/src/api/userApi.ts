@@ -1,6 +1,7 @@
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	updateProfile,
 	User,
 } from 'firebase/auth';
 import config from '../config';
@@ -8,7 +9,7 @@ import { fireBaseAuth } from '../services';
 import { IUser, IUserLite } from '../types/store';
 import { headers } from './configApi';
 
-const createUser = async (user: {
+const createUserOnFBase = async (user: {
 	email: string;
 	password: string;
 	userName?: string;
@@ -26,12 +27,14 @@ const createUser = async (user: {
 	}
 };
 
-const signInUser = async ({
+const signInUserOnFBase = async ({
 	email,
 	password,
+	userName,
 }: {
 	email: string;
 	password: string;
+	userName?: string;
 }): Promise<User | undefined> => {
 	try {
 		const { user } = await signInWithEmailAndPassword(
@@ -39,7 +42,26 @@ const signInUser = async ({
 			email,
 			password
 		);
+		if (!user) {
+			throw new Error('error user not found in firebase auth');
+		}
+		if (userName) {
+			updateUserOnFBase(userName);
+		}
 		return user;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const updateUserOnFBase = async (userName: string): Promise<void> => {
+	const { currentUser } = fireBaseAuth;
+	if (!currentUser) {
+		throw new Error('Current user not found on fbase');
+	}
+
+	try {
+		await updateProfile(currentUser, { displayName: userName });
 	} catch (error) {
 		console.log(error);
 	}
@@ -108,8 +130,8 @@ const signOutFromFBaseAuth = async (): Promise<void> => {
 };
 
 export {
-	createUser,
-	signInUser,
+	createUserOnFBase,
+	signInUserOnFBase,
 	createUserOnDB,
 	fetchUserFromDB,
 	updateUserOnDB,
