@@ -91,8 +91,8 @@ export const DesignForm: React.FC = () => {
 	const initialMediaValuesState: MediaValuesFormType = {
 		profilePic: resumeDesign?.profilPic,
 		mainColor: {
-			name: resumeDesign?.colorMain.name ?? 'grey',
-			hex: resumeDesign?.colorMain.hex ?? '#757575',
+			name: resumeDesign?.colorMain.name,
+			hex: resumeDesign?.colorMain.hex,
 		},
 	};
 

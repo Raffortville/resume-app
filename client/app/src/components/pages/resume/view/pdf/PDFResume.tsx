@@ -105,7 +105,7 @@ interface IResumeProps {
 }
 
 interface ICandidateInfosProps extends IResumeProps {
-	picture: string;
+	picture: string | undefined;
 	position: string | undefined;
 	user: {
 		name: string | undefined;
@@ -189,7 +189,7 @@ const CandidateInfos: React.FC<ICandidateInfosProps> = ({
 				</View>
 			) : null}
 
-			{pictureElement}
+			{picture && pictureElement}
 		</View>
 	);
 };
@@ -376,7 +376,7 @@ export const PDFResume: React.FC<IResumeProps> = ({ mainColor }) => {
 				<View style={styles.main}>
 					<CandidateInfos
 						mainColor={mainColor}
-						picture={resumeDesign?.profilPic ?? ''}
+						picture={resumeDesign?.profilPic}
 						user={{
 							name: resumeContact?.firstName,
 							lastName: resumeContact?.lastName,

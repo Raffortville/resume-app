@@ -189,9 +189,16 @@ export const resumeExperiencesSelector = (
 	state: RootState
 ): IResume['experiences'] => state.resumeReducer.resume?.experiences;
 
-export const resumeDesignSelector = (state: RootState): IResume['design'] =>
-	state.resumeReducer.resume?.design;
-
+export const resumeDesignSelector = (state: RootState): IResume['design'] => {
+	return (
+		state.resumeReducer.resume?.design ?? {
+			colorMain: {
+				name: 'grey',
+				hex: '#757575',
+			},
+		}
+	);
+};
 export const resumeContactSelector = (state: RootState): IResume['contact'] =>
 	state.resumeReducer.resume?.contact;
 

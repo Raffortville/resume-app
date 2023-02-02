@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from './store/hooks';
 import { fireBaseAuth } from './services';
 import { MainRoutes } from './routes';
-import { setUserOnStore } from './store/user/actions';
+import { setUserOnStore, signOut } from './store/user/actions';
 import { userSelector } from './store/user/reducer';
 import { alertSelector } from './store/alert/reducer';
 
@@ -27,6 +27,8 @@ function App() {
 				});
 				setIsLoading(false);
 				return;
+			} else {
+				signOut();
 			}
 			setIsLoading(false);
 		});

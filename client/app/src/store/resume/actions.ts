@@ -89,6 +89,12 @@ export const createResumeToDB = async (payload: {
 		...payload,
 		userId: user.uid,
 		expertises: expertises,
+		design: {
+			colorMain: {
+				name: 'grey',
+				hex: '#757575',
+			},
+		},
 	};
 
 	try {
