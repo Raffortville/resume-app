@@ -353,12 +353,12 @@ const Education: React.FC<IEducation> = ({ academy, period, certificate }) => {
 export const PDFResume: React.FC<IResumeProps> = ({ mainColor }) => {
 	const {
 		resumeDesign,
+		resumeContact,
 		resumeProfile,
 		resumeExpertises,
 		resumeExperiences,
 		resumeTitle,
 	} = useResume();
-	const user = useAppSelector(userSelector);
 
 	const navigate = useNavigate();
 
@@ -378,10 +378,10 @@ export const PDFResume: React.FC<IResumeProps> = ({ mainColor }) => {
 						mainColor={mainColor}
 						picture={resumeDesign?.profilPic ?? ''}
 						user={{
-							name: user?.firstName,
-							lastName: user?.lastName,
-							phone: user?.phone,
-							email: user?.emailPro,
+							name: resumeContact?.firstName,
+							lastName: resumeContact?.lastName,
+							phone: resumeContact?.phone,
+							email: resumeContact?.emailPro,
 							mediaLink: resumeProfile?.socialMedias,
 							portfolio: resumeProfile?.portfolio,
 						}}

@@ -28,12 +28,12 @@ export const useResumeProgress = (): IuseResumeProgressOutput => {
 		useState<StepType[]>(initialStepperItems);
 	const {
 		resume,
+		resumeContact,
 		resumeProfile,
 		resumeExpertises,
 		resumeExperiences,
 		resumeDesign,
 	} = useResume();
-	const user = useAppSelector(userSelector);
 
 	const setResumeProgress = useCallback(() => {
 		if (!resume) {
@@ -42,7 +42,10 @@ export const useResumeProgress = (): IuseResumeProgressOutput => {
 		setStepperItems(
 			stepperItems.map((step) => {
 				if (step.label === 'Contact') {
-					return { ...step, isCompleted: checkUserContactProgress(user) };
+					return {
+						...step,
+						isCompleted: checkUserContactProgress(resumeContact),
+					};
 				}
 				if (step.label === 'Profile') {
 					return {
@@ -71,11 +74,11 @@ export const useResumeProgress = (): IuseResumeProgressOutput => {
 				return step;
 			})
 		);
-	}, [resume, user]);
+	}, [resume]);
 
 	useEffect(() => {
 		setResumeProgress();
-	}, [resume, user]);
+	}, [resume]);
 
 	return { stepperItems };
 };

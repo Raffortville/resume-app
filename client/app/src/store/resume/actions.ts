@@ -76,7 +76,7 @@ export const createResumeToDB = async (payload: {
 	title: string;
 }): Promise<IResume | void> => {
 	const { user } = store.getState().userReducer;
-	if (!user || user === null || !user._id) {
+	if (!user || user === null) {
 		displayAlert({
 			payload: {
 				message: "Vous n'êtes pas connecté, veuillez vous logger",

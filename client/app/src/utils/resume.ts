@@ -29,7 +29,7 @@ export const sortExperiencesByDate = (
 		.sort((a, b) => (a.period.start > b.period.start ? -1 : 1));
 };
 
-export const checkUserContactProgress = (user: IUser | null): boolean => {
+export const checkUserContactProgress = (user: IUser | undefined): boolean => {
 	if (!user) {
 		return false;
 	}

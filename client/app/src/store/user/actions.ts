@@ -2,6 +2,8 @@ import { store } from '../../store';
 import type { IUser, IUserLite } from '../../types/store';
 import { displayAlert } from '../alert/actions';
 import { resetUser, setUser, updateUser } from './reducer';
+import { resetAllResumes, resetCurrentResume } from '../resume/actions';
+import { updateResumeContact } from '../resume/reducer';
 import {
 	createUserOnFBase,
 	createUserOnDB,
@@ -10,7 +12,6 @@ import {
 	signOutFromFBaseAuth,
 	updateUserOnDB,
 } from '../../api/userApi';
-import { resetAllResumes, resetCurrentResume } from '../resume/actions';
 
 export const signUp = async (payload: {
 	email: string;
@@ -140,6 +141,7 @@ export const updateUserToDB = async (
 		}
 
 		store.dispatch(updateUser(userUpdated));
+		store.dispatch(updateResumeContact(userUpdated));
 		displayAlert({
 			payload: {
 				message: 'Vos données ont enregistrés avec succès !',

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
-import type { ExpertiseKeyType, IResume } from '../../types/store';
+import type { ExpertiseKeyType, IResume, IUser } from '../../types/store';
 
 export const initialState: {
 	resumes: IResume[] | null;
@@ -24,6 +24,11 @@ const resumeSlice = createSlice({
 		addResume: (state, { payload }: PayloadAction<IResume>) => {
 			if (state.resumes !== null) {
 				state.resumes = [...state.resumes, payload];
+			}
+		},
+		updateResumeContact: (state, { payload }: PayloadAction<IUser>) => {
+			if (state.resume) {
+				state.resume = { ...state.resume, contact: payload };
 			}
 		},
 		addExpertiseToResume: (
@@ -165,6 +170,7 @@ export const {
 	deleteResume,
 	resetResume,
 	resetResumes,
+	updateResumeContact,
 } = resumeSlice.actions;
 
 export const resumeReducer = resumeSlice.reducer;
@@ -185,6 +191,9 @@ export const resumeExperiencesSelector = (
 
 export const resumeDesignSelector = (state: RootState): IResume['design'] =>
 	state.resumeReducer.resume?.design;
+
+export const resumeContactSelector = (state: RootState): IResume['contact'] =>
+	state.resumeReducer.resume?.contact;
 
 export const resumesSelector = (state: RootState): IResume[] | null =>
 	state.resumeReducer.resumes;

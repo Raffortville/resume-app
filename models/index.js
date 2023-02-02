@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const SubDocIdSchema = new mongoose.Schema(
 	{
@@ -79,8 +79,8 @@ const ResumeSchema = new mongoose.Schema(
 	{
 		userId: { type: String, required: true },
 		title: String,
-		status: String,
 		createdtAt: Date,
+		contact: { type: Schema.Types.ObjectId, ref: 'user' },
 		profil: ProfileSchema,
 		expertises: [ObjectKeyItems],
 		experiences: [ExperienceSchema],

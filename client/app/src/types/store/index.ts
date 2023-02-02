@@ -79,6 +79,7 @@ export interface IResume {
 	_id: string;
 	title: string;
 	expertises: IExpertise[];
+	contact?: IUser;
 	createdtAt?: Date;
 	status?: StatusType;
 	profil?: IProfil;

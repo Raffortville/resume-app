@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useAppSelector } from '../../../../../store/hooks';
-import { userSelector } from '../../../../../store/user/reducer';
+import { useResume } from '../../../../../hooks/resume';
 import { updateUserToDB } from '../../../../../store/user/actions';
-
 import { IUserLite } from '../../../../../types/store';
 import {
 	checkIsValidInputFormat,
@@ -22,6 +20,10 @@ const ContactFormInputFields: React.FC<IContactFormInputFieldProps> = ({
 }) => {
 	const [userValues, setUserValues] = useState<IUserLite>(initialState);
 	const [emailError, setEmailError] = useState<boolean>(false);
+
+	useEffect(() => {
+		setUserValues(initialState);
+	}, [initialState]);
 
 	const handleChange = ({
 		value,
@@ -131,8 +133,8 @@ interface IContactFormProps {
 }
 
 export const ContactForm: React.FC<IContactFormProps> = ({ onSubmitForm }) => {
-	const user = useAppSelector(userSelector);
-	const initialUserState = { ...user };
+	const { resumeContact } = useResume();
+	const initialResumeContact = { ...resumeContact };
 
 	const updateUser = async (userValues: IUserLite): Promise<void> => {
 		const userFiltred: IUserLite | undefined =
@@ -140,13 +142,18 @@ export const ContactForm: React.FC<IContactFormProps> = ({ onSubmitForm }) => {
 		if (!userFiltred) {
 			return;
 		}
-		const userUpdated = await updateUserToDB(userFiltred);
-		userUpdated && onSubmitForm();
+		const userUpdated = await updateUserToDB({
+			...userFiltred,
+			_id: resumeContact?._id,
+		});
+		if (userUpdated) {
+			onSubmitForm();
+		}
 	};
 
 	return (
 		<ContactFormInputFields
-			initialState={initialUserState}
+			initialState={initialResumeContact}
 			onSubmitForm={updateUser}
 		/>
 	);

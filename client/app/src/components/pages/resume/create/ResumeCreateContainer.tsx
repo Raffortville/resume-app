@@ -8,12 +8,10 @@ export const ResumeCreateContainer: React.FC = () => {
 	const navigate = useNavigate();
 
 	const createResume = async (title: string): Promise<void> => {
-		const createdResume = await createResumeToDB({ title });
-		createdResume &&
-			navigate(`/resume/form/${createdResume._id}`, {
-				state: { resumeId: createdResume._id },
-				replace: true,
-			});
+		const createdResume = await createResumeToDB({
+			title,
+		});
+		createdResume && navigate('/dashboard');
 	};
 	return <TitleForm onSubmitForm={createResume} />;
 };

@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../store/hooks';
 import { getResumeById } from '../../store/resume/actions';
 import {
+	resumeContactSelector,
 	resumeDesignSelector,
 	resumeExperiencesSelector,
 	resumeExpertisesSelector,
@@ -16,13 +17,16 @@ import { sortExperiencesByDate } from '../../utils/resume';
 export const useResume = (): {
 	resume: IResume | null;
 	resumeTitle: string | undefined;
+	resumeContact: IResume['contact'];
 	resumeProfile: IResume['profil'];
 	resumeExpertises: IResume['expertises'] | undefined;
 	resumeExperiences: IResume['experiences'];
 	resumeDesign: IResume['design'];
+	resumeId: string | undefined;
 	refetchResumeById: () => Promise<IResume | undefined>;
 } => {
 	const resume = useAppSelector(resumeSelector);
+	const resumeContact = useAppSelector(resumeContactSelector);
 	const resumeProfile = useAppSelector(resumeProfileSelector);
 	const resumeExpertises = useAppSelector(resumeExpertisesSelector);
 	const resumeExperiences = useAppSelector(resumeExperiencesSelector);
@@ -52,10 +56,12 @@ export const useResume = (): {
 	return {
 		resume,
 		resumeTitle: getResumeTitle(),
+		resumeContact,
 		resumeProfile,
 		resumeExpertises,
 		resumeExperiences: sortExperiencesByDate(resumeExperiences),
 		resumeDesign,
 		refetchResumeById,
+		resumeId: resume?._id,
 	};
 };

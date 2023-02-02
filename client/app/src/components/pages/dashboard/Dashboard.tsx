@@ -85,7 +85,6 @@ export const Dashboard: React.FC = () => {
 										navigate(`/resume/form/${resume._id}`, {
 											state: { resumeId: resume._id },
 										});
-										dispatch(setResume(resume));
 									}}>
 									<CreateRounded className='action-icon' />
 								</Tooltip>
