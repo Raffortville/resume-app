@@ -14,13 +14,16 @@ const createUserOnFBase = async (user: {
 	password: string;
 	userName?: string;
 }): Promise<User | undefined> => {
-	const { email, password } = user;
+	const { email, password, userName } = user;
 	try {
 		const { user } = await createUserWithEmailAndPassword(
 			fireBaseAuth,
 			email,
 			password
 		);
+		if (userName) {
+			updateUserOnFBase(userName);
+		}
 		return user;
 	} catch (error) {
 		console.log(error);
@@ -44,9 +47,6 @@ const signInUserOnFBase = async ({
 		);
 		if (!user) {
 			throw new Error('error user not found in firebase auth');
-		}
-		if (userName) {
-			updateUserOnFBase(userName);
 		}
 		return user;
 	} catch (error) {
