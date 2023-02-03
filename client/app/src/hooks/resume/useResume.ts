@@ -22,7 +22,6 @@ export const useResume = (): {
 	resumeExpertises: IResume['expertises'] | undefined;
 	resumeExperiences: IResume['experiences'];
 	resumeDesign: IResume['design'];
-	resumeId: string | undefined;
 	refetchResumeById: () => Promise<IResume | undefined>;
 } => {
 	const resume = useAppSelector(resumeSelector);
@@ -36,12 +35,12 @@ export const useResume = (): {
 	const { resumeId } = location.state;
 
 	useEffect(() => {
-		if (resume !== null || !location.state?.resumeId) {
+		if (!location.state?.resumeId) {
 			return;
 		}
 		getResumeById(resumeId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [resume]);
+	}, [resumeId]);
 
 	const refetchResumeById = async (): Promise<IResume | undefined> => {
 		const resume = await getResumeById(resumeId);
@@ -61,6 +60,5 @@ export const useResume = (): {
 		resumeExperiences: sortExperiencesByDate(resumeExperiences),
 		resumeDesign,
 		refetchResumeById,
-		resumeId: resume?._id,
 	};
 };
