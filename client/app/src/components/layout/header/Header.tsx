@@ -8,12 +8,15 @@ import { NavBar } from '../../ui/navBar';
 import { DialogConfirm } from '../../ui/dialogs/dialogConfirm';
 
 import './header.scss';
+import { useAppSelector } from '../../../store/hooks';
+import { userSelector } from '../../../store/user/reducer';
 interface CustomPros {
 	isUserLogged: boolean;
 }
 
 export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 	const [openDialog, setOpenDialog] = useState<boolean>(false);
+	const user = useAppSelector(userSelector);
 	const navigate = useNavigate();
 
 	const navBarItems: ObjectKeyLabel[] = [
@@ -56,7 +59,7 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 				<div className='menu'>
 					<NavBar items={navBarItems} onItemClick={onNavItemClick} />
 				</div>
-				{/* <h4>{userName}</h4> */}
+				<h4>{user?.userName}</h4>
 				{/* <AccountCircleIcon fontSize='large' style={{ cursor: 'pointer' }} /> */}
 			</header>
 		</>
