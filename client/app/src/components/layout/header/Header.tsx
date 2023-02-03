@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import type { ObjectKeyLabel } from '../../../types/common';
 import { signOut } from '../../../store/user/actions';
-// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Avatar from '@mui/material/Avatar';
 import { NavBar } from '../../ui/navBar';
 import { DialogConfirm } from '../../ui/dialogs/dialogConfirm';
 
@@ -59,8 +59,11 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 				<div className='menu'>
 					<NavBar items={navBarItems} onItemClick={onNavItemClick} />
 				</div>
-				<h4>{user?.userName}</h4>
-				{/* <AccountCircleIcon fontSize='large' style={{ cursor: 'pointer' }} /> */}
+				{user?.userName && (
+					<Avatar style={{ textTransform: 'capitalize' }}>
+						{user.userName.slice(0, 1)}
+					</Avatar>
+				)}
 			</header>
 		</>
 	);
