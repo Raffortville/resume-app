@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useResume } from '../../../../../hooks/resume';
 import { updateUserToDB } from '../../../../../store/user/actions';
-import { IUserLite } from '../../../../../types/store';
+import { IBaseUser } from '../../../../../types/store';
 import {
 	checkIsValidInputFormat,
 	removeEmptyOrNullKeyValueFromObject,
@@ -10,15 +10,15 @@ import {
 import { Button, TextField } from '@mui/material';
 
 interface IContactFormInputFieldProps {
-	initialState: IUserLite;
-	onSubmitForm: (userValues: IUserLite) => void;
+	initialState: IBaseUser;
+	onSubmitForm: (userValues: IBaseUser) => void;
 }
 
 const ContactFormInputFields: React.FC<IContactFormInputFieldProps> = ({
 	initialState,
 	onSubmitForm,
 }) => {
-	const [userValues, setUserValues] = useState<IUserLite>(initialState);
+	const [userValues, setUserValues] = useState<IBaseUser>(initialState);
 	const [emailError, setEmailError] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -136,8 +136,8 @@ export const ContactForm: React.FC<IContactFormProps> = ({ onSubmitForm }) => {
 	const { resumeContact } = useResume();
 	const initialResumeContact = { ...resumeContact };
 
-	const updateUser = async (userValues: IUserLite): Promise<void> => {
-		const userFiltred: IUserLite | undefined =
+	const updateUser = async (userValues: IBaseUser): Promise<void> => {
+		const userFiltred: IBaseUser | undefined =
 			removeEmptyOrNullKeyValueFromObject(userValues);
 		if (!userFiltred) {
 			return;

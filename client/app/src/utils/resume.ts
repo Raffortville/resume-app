@@ -12,7 +12,7 @@ import {
 	IExperience,
 	IExpertise,
 	IProfil,
-	IUser,
+	IBaseUser,
 } from '../types/store';
 
 export const sortExperiencesByDate = (
@@ -29,7 +29,9 @@ export const sortExperiencesByDate = (
 		.sort((a, b) => (a.period.start > b.period.start ? -1 : 1));
 };
 
-export const checkUserContactProgress = (user: IUser | undefined): boolean => {
+export const checkUserContactProgress = (
+	user: IBaseUser | undefined
+): boolean => {
 	if (!user) {
 		return false;
 	}

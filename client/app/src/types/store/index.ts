@@ -6,7 +6,9 @@ import {
 	ObjectKeyListItems,
 } from '../common/index';
 
-export interface IUserLite {
+export interface IBaseUser {
+	email?: string;
+	password?: string;
 	_id?: string;
 	userName?: string;
 	emailPro?: string;
@@ -16,13 +18,8 @@ export interface IUserLite {
 	phone?: string;
 	country?: string;
 }
-export interface IUser extends IUserLite {
-	email: string;
-	uid: string;
-	password?: string;
-}
 
-export type UserType = IUser | null;
+export type UserType = IBaseUser | null;
 export interface IAlert {
 	type: AlertColor | undefined;
 	message: string;
@@ -80,7 +77,7 @@ export interface IResume {
 	title: string;
 	expertises: IExpertise[];
 	design: IDesign;
-	contact?: IUser;
+	contact?: IBaseUser;
 	createdtAt?: Date;
 	status?: StatusType;
 	profil?: IProfil;

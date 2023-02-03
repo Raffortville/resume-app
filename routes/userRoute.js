@@ -5,10 +5,10 @@ import { success } from '../helpers/index.js';
 const router = Router();
 
 router.post('/', async (req, res, next) => {
-	const { userName, email, uid } = req.body;
+	const { userName, email } = req.body;
 
 	try {
-		const user = new UserModel({ email, uid, userName });
+		const user = new UserModel({ email, userName });
 		const userSaved = await user.save();
 
 		if (userSaved) {
@@ -20,9 +20,9 @@ router.post('/', async (req, res, next) => {
 });
 
 router.post('/getUser', async (req, res, next) => {
-	const { email, uid } = req.body;
+	const { email } = req.body;
 	try {
-		const user = await UserModel.findOne({ email, uid });
+		const user = await UserModel.findOne({ email });
 		return success(res, user);
 	} catch (error) {
 		next(error);

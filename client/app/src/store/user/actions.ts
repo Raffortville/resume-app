@@ -1,5 +1,5 @@
 import { store } from '../../store';
-import type { IUser, IUserLite } from '../../types/store';
+import type { IBaseUser } from '../../types/store';
 import { displayAlert } from '../alert/actions';
 import { resetUser, setUser, updateUser } from './reducer';
 import { resetAllResumes, resetCurrentResume } from '../resume/actions';
@@ -19,9 +19,8 @@ export const signUp = async (payload: {
 	userName?: string;
 }): Promise<any> => {
 	const { email, password, userName } = payload;
-
 	try {
-		const user = await createUserOnFBase({ email, password, userName });
+		const user = await saveUserToDb({ email: email, userName: userName });
 
 		if (!user || !user.email || user.email === null) {
 			displayAlert({
@@ -30,10 +29,14 @@ export const signUp = async (payload: {
 					type: 'error',
 				},
 			});
+			throw new Error('Error save user on DB');
+		}
+		const createdUser = await createUserOnFBase({ email, password });
+		if (!createdUser?.email) {
 			throw new Error('Error create user with firebase auth');
 		}
-		saveUserToDb({ email: email, uid: user.uid, userName: userName });
-		logIn(payload);
+
+		logIn({ email: createdUser.email, password });
 	} catch (err) {
 		console.log(err);
 		displayAlert({
@@ -54,7 +57,6 @@ export const logIn = async ({
 }): Promise<void> => {
 	try {
 		const user = await signInUserOnFBase({ email, password });
-
 		if (!user || !user.email || user.email === null) {
 			displayAlert({
 				payload: {
@@ -75,10 +77,11 @@ export const logIn = async ({
 	}
 };
 
-export const saveUserToDb = async (payload: IUser): Promise<void> => {
+export const saveUserToDb = async (
+	payload: IBaseUser
+): Promise<IBaseUser | undefined> => {
 	try {
 		const user = await createUserOnDB(payload);
-
 		if (!user) {
 			displayAlert({
 				payload: {
@@ -87,29 +90,6 @@ export const saveUserToDb = async (payload: IUser): Promise<void> => {
 				},
 			});
 			throw new Error('Error create user on DB');
-		}
-	} catch (error) {
-		console.log(error);
-		displayAlert({
-			payload: {
-				message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
-				type: 'error',
-			},
-		});
-	}
-};
-
-export const getUser = async (payload: IUser): Promise<IUser | undefined> => {
-	try {
-		const user = await fetchUserFromDB(payload);
-		if (!user) {
-			displayAlert({
-				payload: {
-					message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
-					type: 'error',
-				},
-			});
-			throw new Error('Error fetching user from DB');
 		}
 		return user;
 	} catch (error) {
@@ -123,9 +103,36 @@ export const getUser = async (payload: IUser): Promise<IUser | undefined> => {
 	}
 };
 
+export const getUser = async (
+	payload: IBaseUser
+): Promise<IBaseUser | undefined> => {
+	try {
+		const user = await fetchUserFromDB(payload);
+		if (!user) {
+			displayAlert({
+				payload: {
+					message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
+					type: 'error',
+				},
+			});
+			throw new Error('Error fetching user from DB');
+		}
+		store.dispatch(setUser(user));
+		return user;
+	} catch (error) {
+		console.log(error);
+		displayAlert({
+			payload: {
+				message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
+				type: 'error',
+			},
+		});
+	}
+};
+
 export const updateUserToDB = async (
-	payload: IUserLite
-): Promise<IUser | undefined> => {
+	payload: IBaseUser
+): Promise<IBaseUser | undefined> => {
 	try {
 		const userUpdated = await updateUserOnDB(payload);
 		if (!userUpdated) {
@@ -161,7 +168,7 @@ export const updateUserToDB = async (
 	}
 };
 
-export const setUserOnStore = (user: IUser) => {
+export const setUserOnStore = (user: IBaseUser) => {
 	store.dispatch(setUser(user));
 };
 

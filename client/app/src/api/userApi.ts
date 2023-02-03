@@ -6,7 +6,7 @@ import {
 } from 'firebase/auth';
 import config from '../config';
 import { fireBaseAuth } from '../services';
-import { IUser, IUserLite } from '../types/store';
+import { IBaseUser } from '../types/store';
 import { headers } from './configApi';
 
 const createUserOnFBase = async (user: {
@@ -33,11 +33,9 @@ const createUserOnFBase = async (user: {
 const signInUserOnFBase = async ({
 	email,
 	password,
-	userName,
 }: {
 	email: string;
 	password: string;
-	userName?: string;
 }): Promise<User | undefined> => {
 	try {
 		const { user } = await signInWithEmailAndPassword(
@@ -67,14 +65,16 @@ const updateUserOnFBase = async (userName: string): Promise<void> => {
 	}
 };
 
-const createUserOnDB = async (payload: IUser): Promise<IUser | undefined> => {
-	const { email, uid, userName } = payload;
+const createUserOnDB = async (
+	payload: IBaseUser
+): Promise<IBaseUser | undefined> => {
+	const { email, userName } = payload;
 
 	try {
 		const response = await fetch(`${config.API.url}/user`, {
 			method: 'POST',
 			headers: headers,
-			body: JSON.stringify({ email, uid, userName }),
+			body: JSON.stringify({ email, userName }),
 		});
 
 		return await response.json();
@@ -83,14 +83,15 @@ const createUserOnDB = async (payload: IUser): Promise<IUser | undefined> => {
 	}
 };
 
-const fetchUserFromDB = async (payload: IUser): Promise<IUser | undefined> => {
-	const { email, uid } = payload;
-
+const fetchUserFromDB = async (
+	payload: IBaseUser
+): Promise<IBaseUser | undefined> => {
+	const { email } = payload;
 	try {
 		const response = await fetch(`${config.API.url}/user/getUser`, {
 			method: 'POST',
 			headers: headers,
-			body: JSON.stringify({ email, uid }),
+			body: JSON.stringify({ email }),
 		});
 
 		return await response.json();
@@ -100,8 +101,8 @@ const fetchUserFromDB = async (payload: IUser): Promise<IUser | undefined> => {
 };
 
 const updateUserOnDB = async (
-	payload: IUserLite
-): Promise<IUser | undefined> => {
+	payload: IBaseUser
+): Promise<IBaseUser | undefined> => {
 	try {
 		const response = await fetch(
 			`${config.API.url}/user/update/${payload._id}`,

@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from './store/hooks';
 import { fireBaseAuth } from './services';
 import { MainRoutes } from './routes';
-import { setUserOnStore, signOut } from './store/user/actions';
-import { userSelector } from './store/user/reducer';
+import { getUser, signOut } from './store/user/actions';
 import { alertSelector } from './store/alert/reducer';
 
 import { Header } from './components/layout/header';
@@ -13,24 +12,28 @@ import { CircularProgressLoad } from './components/ui/progress/circular';
 
 function App() {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isUserLogged, setIsUserLogged] = useState<boolean>(false);
 
-	const userSelect = useAppSelector(userSelector);
 	const alert = useAppSelector(alertSelector);
+
+	const fetchUser = async (email: string) => {
+		const user = await getUser({ email });
+		if (user) {
+			setIsUserLogged(true);
+			setIsLoading(false);
+		}
+	};
 
 	useEffect(() => {
 		const unsub = fireBaseAuth.onAuthStateChanged((user) => {
 			if (user?.email) {
-				setUserOnStore({
-					email: user.email,
-					uid: user.uid,
-					userName: user.displayName ?? undefined,
-				});
-				setIsLoading(false);
+				fetchUser(user.email);
 				return;
 			} else {
+				setIsUserLogged(false);
 				signOut();
+				setIsLoading(false);
 			}
-			setIsLoading(false);
 		});
 
 		return () => unsub();
@@ -49,8 +52,8 @@ function App() {
 					severity={alert?.type ?? 'info'}
 				/>
 			)}
-			<Header isUserLogged={!!userSelect} />
-			<MainRoutes isUserLogged={!!userSelect} />
+			<Header isUserLogged={isUserLogged} />
+			<MainRoutes isUserLogged={isUserLogged} />
 		</>
 	);
 }

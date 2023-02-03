@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
-import type { ExpertiseKeyType, IResume, IUser } from '../../types/store';
+import type { ExpertiseKeyType, IResume, IBaseUser } from '../../types/store';
 
 export const initialState: {
 	resumes: IResume[] | null;
@@ -26,7 +26,7 @@ const resumeSlice = createSlice({
 				state.resumes = [...state.resumes, payload];
 			}
 		},
-		updateResumeContact: (state, { payload }: PayloadAction<IUser>) => {
+		updateResumeContact: (state, { payload }: PayloadAction<IBaseUser>) => {
 			if (state.resume) {
 				state.resume = { ...state.resume, contact: payload };
 			}

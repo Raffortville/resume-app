@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useUserInfos } from '../../../hooks/user';
 import type { ObjectKeyLabel } from '../../../types/common';
 import { signOut } from '../../../store/user/actions';
 // import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -16,7 +15,6 @@ interface CustomPros {
 export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 	const [openDialog, setOpenDialog] = useState<boolean>(false);
 	const navigate = useNavigate();
-	const { userName } = useUserInfos();
 
 	const navBarItems: ObjectKeyLabel[] = [
 		{ key: '/resume/create', label: 'Créer nouveau CV' },
@@ -58,7 +56,7 @@ export const Header: React.FC<CustomPros> = ({ isUserLogged }) => {
 				<div className='menu'>
 					<NavBar items={navBarItems} onItemClick={onNavItemClick} />
 				</div>
-				<h4>{userName}</h4>
+				{/* <h4>{userName}</h4> */}
 				{/* <AccountCircleIcon fontSize='large' style={{ cursor: 'pointer' }} /> */}
 			</header>
 		</>

@@ -20,7 +20,6 @@ const ObjectKeyItems = new mongoose.Schema(
 const UserSchema = new mongoose.Schema(
 	{
 		email: { type: String, required: true },
-		uid: { type: String, required: true },
 		userName: String,
 		emailPro: String,
 		firstName: String,

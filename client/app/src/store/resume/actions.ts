@@ -87,7 +87,7 @@ export const createResumeToDB = async (payload: {
 	}
 	const data = {
 		...payload,
-		userId: user.uid,
+		userId: user._id,
 		expertises: expertises,
 		design: {
 			colorMain: {
