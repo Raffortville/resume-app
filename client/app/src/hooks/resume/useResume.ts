@@ -39,7 +39,6 @@ export const useResume = (): {
 		if (resume !== null || !location.state?.resumeId) {
 			return;
 		}
-
 		getResumeById(resumeId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [resume]);

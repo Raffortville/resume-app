@@ -74,20 +74,10 @@ export const getResumeById = async (
 
 export const createResumeToDB = async (payload: {
 	title: string;
+	userId: string;
 }): Promise<IResume | void> => {
-	const { user } = store.getState().userReducer;
-	if (!user || user === null) {
-		displayAlert({
-			payload: {
-				message: "Vous n'êtes pas connecté, veuillez vous logger",
-				type: 'error',
-			},
-		});
-		return;
-	}
 	const data = {
 		...payload,
-		userId: user._id,
 		expertises: expertises,
 		design: {
 			colorMain: {
@@ -115,7 +105,6 @@ export const createResumeToDB = async (payload: {
 					type: 'success',
 				},
 			});
-			store.dispatch(setResume(createdResume));
 			store.dispatch(addResume(createdResume));
 			return createdResume;
 		}

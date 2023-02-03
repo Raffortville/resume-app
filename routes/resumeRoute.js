@@ -6,7 +6,7 @@ const router = Router();
 
 router.post('/create', async (req, res, next) => {
 	try {
-		const user = await UserModel.findOne({ uid: req.body.userId });
+		const user = await UserModel.findOne({ _id: req.body.userId });
 		if (!user) {
 			next({ status: 400, message: 'failed to create resume' });
 			return;
@@ -39,11 +39,11 @@ router.put('/update/:id', async (req, res, next) => {
 	}
 });
 
-router.get('/getAll/:uid', async (req, res, next) => {
+router.get('/getAll/:userId', async (req, res, next) => {
 	try {
 		const resumes = await ResumeModel.find()
 			.where('userId')
-			.equals(req.params.uid)
+			.equals(req.params.userId)
 			.populate('contact');
 		return success(res, resumes);
 	} catch (error) {
