@@ -10,7 +10,11 @@ import {
 	resetResume,
 	resetResumes,
 } from './reducer';
-import { expertises } from '../../constants';
+import {
+	addResumeOnDB,
+	fetchResumeById,
+	updateResumeOnDB,
+} from '../../api/resumeApi';
 
 export const getResumes = async (uid: string): Promise<IResume[] | void> => {
 	try {
@@ -43,22 +47,19 @@ export const getResumeById = async (
 	resumeId: string
 ): Promise<IResume | undefined> => {
 	try {
-		const response = await fetch(
-			`${config.API.url}/resume/getById/${resumeId}`,
-			{
-				method: 'GET',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
+		const resume = await fetchResumeById(resumeId);
+		if (!resume) {
+			displayAlert({
+				payload: {
+					message:
+						'Erreur lors du chargement de votre cv, veuillez essayer plus tard',
+					type: 'error',
 				},
-				referrerPolicy: 'unsafe-url',
-			}
-		);
-		if (response.status === 200) {
-			const resume: IResume = await response.json();
-			store.dispatch(setResume(resume));
-			return resume;
+			});
+			return;
 		}
+		store.dispatch(setResume(resume));
+		return resume;
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -68,7 +69,6 @@ export const getResumeById = async (
 				type: 'error',
 			},
 		});
-		return;
 	}
 };
 
@@ -76,38 +76,34 @@ export const createResumeToDB = async (payload: {
 	title: string;
 	userId: string;
 }): Promise<IResume | void> => {
-	const data = {
-		...payload,
-		expertises: expertises,
-		design: {
-			colorMain: {
-				name: 'grey',
-				hex: '#757575',
-			},
-		},
-	};
+	const { title, userId } = payload;
 
 	try {
-		const response = await fetch(`${config.API.url}/resume/create`, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data),
+		const createdResume = await addResumeOnDB({
+			userId,
+			title,
 		});
 
-		if (response.status === 200) {
-			const createdResume: IResume = await response.json();
+		if (!createdResume) {
 			displayAlert({
 				payload: {
-					message: `${createdResume.title} a été initié avec succès !`,
-					type: 'success',
+					message:
+						'Erreur lors de la création de votre cv, veuillez essayer plus tard',
+					type: 'error',
 				},
 			});
-			store.dispatch(addResume(createdResume));
-			return createdResume;
+			return;
 		}
+
+		displayAlert({
+			payload: {
+				message: `${createdResume.title} a été initié avec succès !`,
+				type: 'success',
+			},
+		});
+
+		store.dispatch(addResume(createdResume));
+		return createdResume;
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -124,29 +120,26 @@ export const updateResumeToDB = async (
 	payload: IResume
 ): Promise<IResume | undefined> => {
 	try {
-		const response = await fetch(
-			`${config.API.url}/resume/update/${payload._id}`,
-			{
-				method: 'PUT',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(payload),
-			}
-		);
-
-		if (response.status === 200) {
-			const updatedResume = await response.json();
-			store.dispatch(setResume(updatedResume));
+		const updatedResume = await updateResumeOnDB(payload);
+		if (!updatedResume) {
 			displayAlert({
 				payload: {
-					message: 'Vos informations ont bien été enregisttés',
-					type: 'success',
+					message:
+						'Erreur lors de la modification de votre cv, veuillez essayer plus tard',
+					type: 'error',
 				},
 			});
-			return updatedResume;
+			return;
 		}
+
+		store.dispatch(setResume(updatedResume));
+		displayAlert({
+			payload: {
+				message: 'Vos informations ont bien été enregisttés',
+				type: 'success',
+			},
+		});
+		return updatedResume;
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -161,13 +154,7 @@ export const updateResumeToDB = async (
 
 export const deleteResumeFromDB = async (id: string) => {
 	try {
-		await fetch(`${config.API.url}/resume/delete/${id}`, {
-			method: 'DELETE',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-		});
+		deleteResumeFromDB(id);
 		store.dispatch(deleteResume(id));
 		displayAlert({
 			payload: {
