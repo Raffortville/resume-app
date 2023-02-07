@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteResumeFromDB } from '../../../store/resume/actions';
+import { removeResumeFromDB } from '../../../store/resume/actions';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { resumesSelector, setResume } from '../../../store/resume/reducer';
 
@@ -33,7 +33,7 @@ export const Dashboard: React.FC = () => {
 			return;
 		}
 		const id = resumeId.current;
-		deleteResumeFromDB(id);
+		removeResumeFromDB(id);
 		setOpenDialog(false);
 		resumeId.current = null;
 	};

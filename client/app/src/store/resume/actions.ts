@@ -14,6 +14,7 @@ import {
 	addResumeOnDB,
 	fetchResumeById,
 	updateResumeOnDB,
+	deleteResumeFromDB,
 } from '../../api/resumeApi';
 
 export const getResumes = async (uid: string): Promise<IResume[] | void> => {
@@ -152,7 +153,7 @@ export const updateResumeToDB = async (
 	}
 };
 
-export const deleteResumeFromDB = async (id: string) => {
+export const removeResumeFromDB = async (id: string) => {
 	try {
 		deleteResumeFromDB(id);
 		store.dispatch(deleteResume(id));
