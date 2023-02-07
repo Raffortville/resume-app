@@ -9,10 +9,12 @@ import { Header } from './components/layout/header';
 import { ToastAlert } from './components/ui/toastAlert';
 
 import { CircularProgressLoad } from './components/ui/progress/circular';
+import { userSelector } from './store/user/reducer';
 
 function App() {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [isUserLogged, setIsUserLogged] = useState<boolean>(false);
+	const currentUser = useAppSelector(userSelector);
 
 	const alert = useAppSelector(alertSelector);
 
@@ -26,7 +28,7 @@ function App() {
 
 	useEffect(() => {
 		const unsub = fireBaseAuth.onAuthStateChanged((user) => {
-			if (user?.email) {
+			if (user?.email && !currentUser) {
 				fetchUser(user.email);
 				return;
 			} else {

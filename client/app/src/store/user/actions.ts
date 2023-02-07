@@ -66,6 +66,17 @@ export const logIn = async ({
 			});
 			throw new Error('Error signIn with firebase auth');
 		}
+		const userFromDB = await getUser({ email });
+		if (!userFromDB) {
+			displayAlert({
+				payload: {
+					message: 'Erreur lors de votre connexion, veuillez essayer plus tard',
+					type: 'error',
+				},
+			});
+			throw new Error('Error fetching user from db');
+		}
+		store.dispatch(setUser(userFromDB));
 	} catch (error) {
 		console.log(error);
 		displayAlert({
