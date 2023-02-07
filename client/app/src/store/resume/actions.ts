@@ -29,7 +29,7 @@ export const getResumes = async (uid: string): Promise<IResume[] | void> => {
 
 		if (response.status === 200) {
 			const resumes: IResume[] = await response.json();
-			store.dispatch(setResumes(resumes));
+			setAllResumes(resumes);
 			return resumes;
 		}
 	} catch (error) {
@@ -59,7 +59,7 @@ export const getResumeById = async (
 			});
 			return;
 		}
-		store.dispatch(setResume(resume));
+		setCurrentResume(resume);
 		return resume;
 	} catch (error) {
 		console.log(error);
@@ -102,8 +102,7 @@ export const createResumeToDB = async (payload: {
 				type: 'success',
 			},
 		});
-
-		store.dispatch(addResume(createdResume));
+		addResumeToStore(createdResume);
 		return createdResume;
 	} catch (error) {
 		console.log(error);
@@ -132,8 +131,7 @@ export const updateResumeToDB = async (
 			});
 			return;
 		}
-
-		store.dispatch(setResume(updatedResume));
+		setCurrentResume(updatedResume);
 		displayAlert({
 			payload: {
 				message: 'Vos informations ont bien été enregisttés',
@@ -156,7 +154,7 @@ export const updateResumeToDB = async (
 export const removeResumeFromDB = async (id: string) => {
 	try {
 		deleteResumeFromDB(id);
-		store.dispatch(deleteResume(id));
+		deleteResumeById(id);
 		displayAlert({
 			payload: {
 				message: 'Votre cv a bien été supprimé',
@@ -181,4 +179,20 @@ export const resetCurrentResume = () => {
 
 export const resetAllResumes = () => {
 	store.dispatch(resetResumes());
+};
+
+export const deleteResumeById = (id: string) => {
+	store.dispatch(deleteResume(id));
+};
+
+export const setCurrentResume = (resume: IResume) => {
+	store.dispatch(setResume(resume));
+};
+
+export const addResumeToStore = (resume: IResume) => {
+	store.dispatch(addResume(resume));
+};
+
+export const setAllResumes = (resumes: IResume[]) => {
+	store.dispatch(setResumes(resumes));
 };

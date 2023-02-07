@@ -76,7 +76,7 @@ export const logIn = async ({
 			});
 			throw new Error('Error fetching user from db');
 		}
-		store.dispatch(setUser(userFromDB));
+		setCurrentUser(userFromDB);
 	} catch (error) {
 		console.log(error);
 		displayAlert({
@@ -128,7 +128,7 @@ export const getUser = async (
 			});
 			throw new Error('Error fetching user from DB');
 		}
-		store.dispatch(setUser(user));
+		setCurrentUser(user);
 		return user;
 	} catch (error) {
 		console.log(error);
@@ -158,8 +158,8 @@ export const updateUserToDB = async (
 			throw new Error('Error updatein user on DB');
 		}
 
-		store.dispatch(updateUser(userUpdated));
-		store.dispatch(updateResumeContact(userUpdated));
+		updateCurrentUser(userUpdated);
+		updateCurrentResumeContact(userUpdated);
 		displayAlert({
 			payload: {
 				message: 'Vos données ont enregistrés avec succès !',
@@ -179,13 +179,21 @@ export const updateUserToDB = async (
 	}
 };
 
-export const setUserOnStore = (user: IBaseUser) => {
-	store.dispatch(setUser(user));
-};
-
 export const signOut = async (): Promise<void> => {
 	await signOutFromFBaseAuth();
 	resetCurrentResume();
 	resetAllResumes();
 	store.dispatch(resetUser());
+};
+
+export const updateCurrentUser = (user: IBaseUser) => {
+	store.dispatch(updateUser(user));
+};
+
+export const updateCurrentResumeContact = (user: IBaseUser) => {
+	store.dispatch(updateResumeContact(user));
+};
+
+export const setCurrentUser = (user: IBaseUser) => {
+	store.dispatch(setUser(user));
 };
